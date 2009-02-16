@@ -17,7 +17,8 @@ To install this gem (and all other missing gem dependencies), run rake gems:inst
 In older versions of Rails:
 
 $ gem sources -a http://gems.github.com
-$ gem install whenever
+
+$ gem install javan-whenever
 
 in your "config/environment.rb" file:
 
@@ -30,6 +31,7 @@ in your "config/environment.rb" file:
 == Getting started
 
 $ cd /my/rails/app
+
 $ wheneverize .
 
 This will create an initial "config/schedule.rb" file you.
@@ -61,6 +63,7 @@ This will create an initial "config/schedule.rb" file you.
 == Cron output
 
 $ cd /my/rails/app
+
 $ whenever
 
 And you'll see your schedule.rb converted to cron sytax
