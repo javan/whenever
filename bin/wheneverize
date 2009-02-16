@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+
+# This file is based heavily on Capistrano's `capify` command
+
+require 'optparse'
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{File.basename($0)} [path]"
+
+  begin
+    opts.parse!(ARGV)
+  rescue OptionParser::ParseError => e
+    warn e.message
+    puts opts
+    exit 1
+  end
+end
+
+if ARGV.empty?
+  abort "Please specify the directory to wheneverize, e.g. `#{File.basename($0)} .'"
+elsif !File.exists?(ARGV.first)
+  abort "`#{ARGV.first}' does not exist."
+elsif !File.directory?(ARGV.first)
+  abort "`#{ARGV.first}' is not a directory."
+elsif ARGV.length > 1
+  abort "Too many arguments; please specify only the directory to wheneverize."
+end
+
+
+content = <<-FILE
+# Use this file to easily define all of your cron jobs.
+#
+# It's helpful, but not entirely necessary to understand cron before proceeding.
+# http://en.wikipedia.org/wiki/Cron
+
+# Example:
+#
+# set :cron_log, "/path/to/my/cron_log.log"
+#
+# every 2.hours do
+#   command "/usr/bin/some_great_command"
+#   runner "MyModel.some_method"
+# end
+#
+# every 4.days do
+#   runner "AnotherModel.prune_old_records"
+# end
+
+# Learn more: http://github.com/javan/whenever
+FILE
+
+file = 'config/schedule.rb'
+base = ARGV.shift
+
+file = File.join(base, file)
+if File.exists?(file)
+  warn "[skip] `#{file}' already exists"
+elsif File.exists?(file.downcase)
+  warn "[skip] `#{file.downcase}' exists, which could conflict with `#{file}'"
+elsif !File.exists?(File.dirname(file))
+  warn "[skip] directory `#{File.dirname(file)}' does not exist"
+else
+  puts "[add] writing `#{file}'"
+  File.open(file, "w") { |f| f.write(content) }
+end
+
+puts "[done] wheneverized!"

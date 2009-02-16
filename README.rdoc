@@ -1,0 +1,79 @@
+= Whenever
+
+Whenever is a ruby gem that provides a ruby syntax for defining cron jobs. It was designed to work well with Rails applications, but can be used independently as well.
+
+== Installation
+
+To install Whenever in a Rails (2.1 or greater) application:
+  
+in your "config/environment.rb" file:
+
+  Rails::Initializer.run do |config|
+    config.gem 'javan-whenever', :lib => 'whenever', :source => 'http://gems.github.com'
+  end
+  
+To install this gem (and all other missing gem dependencies), run rake gems:install (use sudo if necessary).
+
+In older versions of Rails:
+
+$ gem sources -a http://gems.github.com
+$ gem install whenever
+
+in your "config/environment.rb" file:
+
+  Rails::Initializer.run do |config|
+    ...
+  end
+
+  require "whenever"
+  
+== Getting started
+
+$ cd /my/rails/app
+$ wheneverize .
+
+This will create an initial "config/schedule.rb" file you.
+
+== Example schedule.rb file
+
+  set :runner_path, '/var/www/apps/my_app' # Whenever will try to use your RAILS_ROOT if this isn't set
+  set :runner_environment, :production # Whenever defaults to production so only set this if you want to use a different environment.
+  set :cron_log, '/path/to/my/cronlog.log' # Where to log (this should NOT be your Rails log)
+
+
+  every 2.hours do
+    runner "MyModel.some_process" # runners are the script/runners you know and love
+    command "/usr/local/bin/my_great_command" # commands are any unix command
+  end
+
+  every 1.day, :at => '4:30 am' do # If not :at option is set these jobs will run at midnight
+    runner "DB.Backup", :cron_log => false # You can specify false for no logging or a string a different log file to override logging.
+  end
+
+  every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
+    runner "SomeModel.ladeda"
+  end
+
+  every :sunday do # Use any day of the week or :weekend, :weekday 
+    runner "Task.do_something_great"
+  end
+  
+== Cron output
+
+$ cd /my/rails/app
+$ whenever
+
+And you'll see your schedule.rb converted to cron sytax
+
+== Capistrano integration
+
+Use the "whenever:write_cron" task to automatically write your crontab file with each deploy.
+
+in your "config/deploy.rb" file do something like:
+
+  after "deploy:symlink", "whenever:write_cron"
+  
+THIS WILL COMPLETELY OVERWRITE ANY EXISTING CRONTAB ENTRIES!
+------------------------------------------------------------
+
+Better documentation on the way!
