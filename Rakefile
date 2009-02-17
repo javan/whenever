@@ -1,16 +1,13 @@
-require './lib/version'
-
 require 'rubygems'
 require 'rake'
 require 'echoe'
 
-WHENEVER_VERSION = Whenever::VERSION::STRING.dup
+require File.expand_path(File.dirname(__FILE__) + "/lib/version")
 
-Echoe.new('whenever', WHENEVER_VERSION) do |p|
-  p.changelog      = "CHANGELOG.rdoc"
+Echoe.new('whenever', Whenever::VERSION::STRING) do |p|
   p.description    = "Provides clean ruby syntax for defining messy cron jobs and running them Whenever."
   p.url            = "http://github.com/javan/whenever"
   p.author         = "Javan Makhmali"
   p.email          = "javan@javan.us"
-  p.dependencies   = ["chronic", "activesupport"]
+  p.dependencies   = ["chronic >=0.2.3", "activesupport >=1.3.0"]
 end

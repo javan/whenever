@@ -21,6 +21,7 @@ require 'activesupport'
 require 'chronic'
 
 require 'base'
+require 'version'
 require 'job_list'
 require 'job_types/default'
 require 'job_types/rake_task'
