@@ -14,14 +14,14 @@ In a Rails (2.1 or greater) application:
 in your "config/environment.rb" file:
 
   Rails::Initializer.run do |config|
-    config.gem 'javan-whenever', :lib => false, :version => '>= 0.1.3' :source => 'http://gems.github.com'
+    config.gem 'javan-whenever', :lib => false, :version => '>= 0.1.4' :source => 'http://gems.github.com'
   end
   
 To install this gem (and all other missing gem dependencies), run rake gems:install (use sudo if necessary).
 
 In older versions of Rails:
 
-  $ gem sources -a http://gems.github.com
+  $ gem sources -a http://gems.github.com (you only need to run this once)
   $ gem install javan-whenever
 
 in your "config/environment.rb" file:
@@ -81,7 +81,7 @@ in your "config/deploy.rb" file do something like:
   namespace :deploy do
     desc "write the crontab file"
     task :write_crontab, :roles => :app do
-      run "cd #{release_path} && whenever -c"
+      run "cd #{release_path} && whenever --write-crontab"
     end
   end
   

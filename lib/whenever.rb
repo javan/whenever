@@ -7,19 +7,13 @@ unless defined?(Whenever)
   rescue LoadError => e
     nil
   end
-  
-  # Load Whenever's rake tasks
-  begin
-    Dir[File.join(File.dirname(__FILE__), 'tasks', '*.rake')].each { |rake| load rake }
-  rescue LoadError => e
-    nil
-  end
 end
 
-
+# Dependencies
 require 'activesupport'
 require 'chronic'
 
+# Whenever files
 require 'base'
 require 'version'
 require 'job_list'

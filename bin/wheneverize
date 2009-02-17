@@ -3,6 +3,7 @@
 # This file is based heavily on Capistrano's `capify` command
 
 require 'optparse'
+require 'fileutils'
 
 OptionParser.new do |opts|
   opts.banner = "Usage: #{File.basename($0)} [path]"
@@ -40,6 +41,7 @@ content = <<-FILE
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
 #   runner "MyModel.some_method"
+#   rake "some:great:rake:task"
 # end
 #
 # every 4.days do
