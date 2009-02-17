@@ -22,3 +22,8 @@ require 'activesupport'
 require 'chronic'
 
 require 'base'
+require 'job_list'
+require 'job_types/default'
+require 'job_types/rake_task'
+require 'job_types/runner'
+require 'outputs/cron'

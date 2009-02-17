@@ -4,7 +4,7 @@ class OutputEnvTest < Test::Unit::TestCase
 
   context "The output from Whenever with environment variables set" do
     setup do
-      @output = load_whenever_output \
+      @output = Whenever.cron \
       <<-file
         env :MYVAR, 'blah'
         env 'MAILTO', "someone@example.com"

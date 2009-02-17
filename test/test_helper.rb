@@ -21,13 +21,10 @@ require 'whenever'
 
 module TestExtensions
   
-  def load_whenever_output(input) 
-    Whenever.cron(input)
-  end
-  
   def two_hours
     "0 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
   end
+  
 end
 
 class Test::Unit::TestCase

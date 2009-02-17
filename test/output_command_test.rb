@@ -4,7 +4,7 @@ class OutputCommandTest < Test::Unit::TestCase
   
   context "A plain command" do
     setup do
-      @output = load_whenever_output \
+      @output = Whenever.cron \
       <<-file
         every 2.hours do
           command "blahblah"
@@ -19,7 +19,7 @@ class OutputCommandTest < Test::Unit::TestCase
   
   context "A command when the cron_log is set" do
     setup do
-      @output = load_whenever_output \
+      @output = Whenever.cron \
       <<-file
         set :cron_log, 'logfile.log'
         every 2.hours do
@@ -35,7 +35,7 @@ class OutputCommandTest < Test::Unit::TestCase
   
   context "A command when the cron_log is set and the comand overrides it" do
     setup do
-      @output = load_whenever_output \
+      @output = Whenever.cron \
       <<-file
         set :cron_log, 'logfile.log'
         every 2.hours do
@@ -52,7 +52,7 @@ class OutputCommandTest < Test::Unit::TestCase
   
   context "A command when the cron_log is set and the comand rejects it" do
     setup do
-      @output = load_whenever_output \
+      @output = Whenever.cron \
       <<-file
         set :cron_log, 'logfile.log'
         every 2.hours do

@@ -41,8 +41,14 @@ module Whenever
     end
     
     def runner(task, options = {})
-      options.reverse_merge!(:environment => @runner_environment, :path => @runner_path)
+      options.reverse_merge!(:environment => @environment, :path => @path)
       options[:class] = Whenever::Job::Runner
+      command(task, options)
+    end
+    
+    def rake(task, options = {})
+      options.reverse_merge!(:environment => @environment, :path => @path)
+      options[:class] = Whenever::Job::RakeTask
       command(task, options)
     end
   
