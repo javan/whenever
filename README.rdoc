@@ -1,17 +1,20 @@
 == Introduction
 
-Whenever is a ruby gem that provides a ruby syntax for defining cron jobs. It is designed to work well with Rails applications, but can be used independently as well.
+Whenever is a ruby gem that provides a ruby syntax for defining cron jobs. It outputs valid cron syntax and can even write your crontab file for you. It is designed to work well with Rails applications and can be deployed with Capistrano. Whenever works fine independently as well.
 
 == Installation
 
-NOTE: Requiring the whenever gem inside your Rails application is technically optional. However, if you plan to use something like Capistrano to automatically deploy and write your crontab file, you'll need to have the gem installed on your servers, and requiring it in your app is one to ensure this. If you plan to manually install the gem on your servers or you don't care about Rails, deploying, etc., you can skip the next step.
+Regular (non-Rails) install:
+  
+  $ gem sources -a http://gems.github.com (you only need to run this once)
+  $ sudo gem install javan-whenever
 
-To install Whenever in a Rails (2.1 or greater) application:
+In a Rails (2.1 or greater) application:
   
 in your "config/environment.rb" file:
 
   Rails::Initializer.run do |config|
-    config.gem 'javan-whenever', :lib => 'whenever', :source => 'http://gems.github.com'
+    config.gem 'javan-whenever', :lib => false, :version => '>= 0.1.1' :source => 'http://gems.github.com'
   end
   
 To install this gem (and all other missing gem dependencies), run rake gems:install (use sudo if necessary).
@@ -27,8 +30,10 @@ in your "config/environment.rb" file:
     ...
   end
 
-  require "whenever"
+  require 'whenever'
   
+NOTE: Requiring the whenever gem inside your Rails application is technically optional. However, if you plan to use something like Capistrano to automatically deploy and write your crontab file, you'll need to have the gem installed on your servers, and requiring it in your app is one to ensure this.
+
 == Getting started
 
   $ cd /my/rails/app
@@ -43,17 +48,17 @@ This will create an initial "config/schedule.rb" file you.
   set :cron_log, '/my/cronlog.log'  # Where to log (this should NOT be your Rails log)
 
   every 2.hours do
-    runner "MyModel.some_process" # runners are the script/runners you know and love
-    rake "my:rake:task" # conveniently run rake tasks
-    command "/usr/local/bin/my_great_command" # commands are any unix command
+    runner "MyModel.some_process"       # runners are the script/runners you know and love
+    rake "my:rake:task"                 # conveniently run rake tasks
+    command "/usr/bin/my_great_command" # commands are any unix command
   end
 
-  every 1.day, :at => '4:30 am' do # If not :at option is set these jobs will run at midnight
-    runner "DB.Backup", :cron_log => false # You can specify false for no logging or a string a different log file to override logging.
+  every 1.day, :at => '4:30 am' do         # If not :at option is set these jobs will run at midnight
+    runner "DB.Backup", :cron_log => false # You can specify false for no logging or a string with a different log file to override any global logging.
   end
 
   every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
-    runner "SomeModel.ladeda"
+    runner "SomeModel.ladeeda"
   end
 
   every :sunday do # Use any day of the week or :weekend, :weekday 
