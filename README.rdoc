@@ -1,8 +1,10 @@
-= Whenever
+== Introduction
 
-Whenever is a ruby gem that provides a ruby syntax for defining cron jobs. It was designed to work well with Rails applications, but can be used independently as well.
+Whenever is a ruby gem that provides a ruby syntax for defining cron jobs. It is designed to work well with Rails applications, but can be used independently as well.
 
 == Installation
+
+NOTE: Requiring the whenever gem inside your Rails application is technically optional. However, if you plan to use something like Capistrano to automatically deploy and write your crontab file, you'll need to have the gem installed on your servers, and requiring it in your app is one to ensure this. If you plan to manually install the gem on your servers or you don't care about Rails, deploying, etc., you can skip the next step.
 
 To install Whenever in a Rails (2.1 or greater) application:
   
@@ -16,9 +18,8 @@ To install this gem (and all other missing gem dependencies), run rake gems:inst
 
 In older versions of Rails:
 
-$ gem sources -a http://gems.github.com
-
-$ gem install javan-whenever
+  $ gem sources -a http://gems.github.com
+  $ gem install javan-whenever
 
 in your "config/environment.rb" file:
 
@@ -30,21 +31,20 @@ in your "config/environment.rb" file:
   
 == Getting started
 
-$ cd /my/rails/app
-
-$ wheneverize .
+  $ cd /my/rails/app
+  $ wheneverize .
 
 This will create an initial "config/schedule.rb" file you.
 
 == Example schedule.rb file
 
-  set :runner_path, '/var/www/apps/my_app' # Whenever will try to use your RAILS_ROOT if this isn't set
-  set :runner_environment, :production # Whenever defaults to production so only set this if you want to use a different environment.
-  set :cron_log, '/path/to/my/cronlog.log' # Where to log (this should NOT be your Rails log)
-
+  set :path, '/var/www/apps/my_app' # Whenever will try to use your RAILS_ROOT if this isn't set
+  set :environment, :production     # Whenever defaults to production so you only need to set this for something different
+  set :cron_log, '/my/cronlog.log'  # Where to log (this should NOT be your Rails log)
 
   every 2.hours do
     runner "MyModel.some_process" # runners are the script/runners you know and love
+    rake "my:rake:task" # conveniently run rake tasks
     command "/usr/local/bin/my_great_command" # commands are any unix command
   end
 
@@ -62,19 +62,23 @@ This will create an initial "config/schedule.rb" file you.
   
 == Cron output
 
-$ cd /my/rails/app
-
-$ whenever
+  $ cd /my/rails/app
+  $ whenever
 
 And you'll see your schedule.rb converted to cron sytax
 
 == Capistrano integration
 
-Use the "whenever:write_cron" task to automatically write your crontab file with each deploy.
-
 in your "config/deploy.rb" file do something like:
 
-  after "deploy:symlink", "whenever:write_cron"
+  after "deploy:symlink", "deploy:write_crontab"
+
+  namespace :deploy do
+    desc "write the crontab file"
+    task :write_crontab, :roles => :app do
+      run "cd #{release_path} && whenever -c"
+    end
+  end
   
 THIS WILL COMPLETELY OVERWRITE ANY EXISTING CRONTAB ENTRIES!
 ------------------------------------------------------------
