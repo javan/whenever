@@ -1,8 +1,12 @@
-== 0.1.1 / February 16th, 2009
+== 0.1.2 / February 16th, 2009
 
 * Added 'rake' helper for defining scheduled rake tasks. [Javan Makhmali]
 
 * Renamed :cron_environment and :cron_path to :enviroment and :path for better (word) compatibility with rake tasks. [Javan Makhmali]
+
+* Improved test load paths so tests can be run individually. [Javan Makhmali]
+
+* Got rid of already initialized constant warning. [Javan Makhmali]
 
 
 == 0.1.0 / February 15th, 2009

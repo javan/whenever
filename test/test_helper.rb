@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'test/unit'
 
+require File.expand_path(File.dirname(__FILE__) + "/../lib/whenever")
+
 begin
   require 'shoulda'
 rescue LoadError
@@ -17,7 +19,6 @@ rescue LoadError
   exit(1)
 end
 
-require 'whenever'
 
 module TestExtensions
   

@@ -9,7 +9,7 @@ task = "whenever:output_cron"
 OptionParser.new do |opts|
   opts.banner = "Usage: whenever [options]"
   opts.on('-c', '--write-crontab') { task = "whenever:write_cron" }
-  opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit }
+  opts.on('-v', '--version') { puts "Whenever v#{WHENEVER_VERSION}"; exit }
 end.parse!
 
 Rake::Task[task].invoke

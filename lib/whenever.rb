@@ -14,7 +14,6 @@ unless defined?(Whenever)
   rescue LoadError => e
     nil
   end
-  
 end
 
 
