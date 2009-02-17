@@ -85,9 +85,9 @@ in your "config/deploy.rb" file do something like:
     end
   end
   
-By mixing and matching the --load-file and --user options with your various :roles in Capistrano it is entirely possible to deploy different crontab schedules under different users to all your various servers. Get creative!
+By mixing and matching the "--load-file" and "--user" options with your various :roles in Capistrano it is entirely possible to deploy different crontab schedules under different users to all your various servers. Get creative!
   
-USING THE --write-crontab OPTION WILL COMPLETELY OVERWRITE ANY EXISTING CRONTAB ENTRIES!
+USING THE "--write-crontab" OPTION WILL COMPLETELY OVERWRITE ANY EXISTING CRONTAB ENTRIES!
 
 ------------------------------------------------------------
 
