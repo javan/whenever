@@ -43,18 +43,14 @@ This will create an initial "config/schedule.rb" file you.
 
 == Example schedule.rb file
 
-  set :path, '/var/www/apps/my_app' # Whenever will try to use your RAILS_ROOT if this isn't set
-  set :environment, :production     # Whenever defaults to production so you only need to set this for something different
-  set :cron_log, '/my/cronlog.log'  # Where to log (this should NOT be your Rails log)
-
-  every 2.hours do
-    runner "MyModel.some_process"       # runners are the script/runners you know and love
-    rake "my:rake:task"                 # conveniently run rake tasks
-    command "/usr/bin/my_great_command" # commands are any unix command
+  every 3.hours do
+    runner "MyModel.some_process"       
+    rake "my:rake:task"                 
+    command "/usr/bin/my_great_command"
   end
 
-  every 1.day, :at => '4:30 am' do         # If not :at option is set these jobs will run at midnight
-    runner "DB.Backup", :cron_log => false # You can specify false for no logging or a string with a different log file to override any global logging.
+  every 1.day, :at => '4:30 am' do 
+    runner "DB.Backup"
   end
 
   every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
@@ -64,6 +60,8 @@ This will create an initial "config/schedule.rb" file you.
   every :sunday do # Use any day of the week or :weekend, :weekday 
     runner "Task.do_something_great"
   end
+
+More examples on the wiki: http://wiki.github.com/javan/whenever/instructions-and-examples
   
 == Cron output
 
@@ -89,6 +87,6 @@ By mixing and matching the "--load-file" and "--user" options with your various 
   
 USING THE "--write-crontab" OPTION WILL COMPLETELY OVERWRITE ANY EXISTING CRONTAB ENTRIES!
 
-------------------------------------------------------------
+== Feedback
 
-Better documentation on the way!
+Email me: javan [at] javan (dot) us
