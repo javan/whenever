@@ -14,10 +14,6 @@ require 'activesupport'
 require 'chronic'
 
 # Whenever files
-require 'base'
-require 'version'
-require 'job_list'
-require 'job_types/default'
-require 'job_types/rake_task'
-require 'job_types/runner'
-require 'outputs/cron'
+%w{ base version job_list job_types/default job_types/rake_task job_types/runner outputs/cron }.each do |file|
+  require	File.expand_path(File.dirname(__FILE__) + "/#{file}")
+end

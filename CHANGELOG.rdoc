@@ -1,3 +1,8 @@
+== 0.1.5 / February 19th, 2009
+
+* Fixed load path so Whenever's files don't conflict with anything in Rails. Thanks Ryan Koopmans. [Javan Makhmali]
+
+
 == 0.1.4 / February 17th, 2009
 
 * Added --load-file and --user opts to whenever binary. [Javan Makhmali]
