@@ -91,7 +91,7 @@ USING THE "--write-crontab" OPTION WILL COMPLETELY OVERWRITE ANY EXISTING CRONTA
 
 Whenever was created for use at Inkling (http://inklingmarkets.com) where I work.
 
-While building Whenever, I learned by digging through the source code of Capistrano - http://github.com/jamis/capistrano
+While building Whenever, I learned a lot by digging through the source code of Capistrano - http://github.com/jamis/capistrano
 
 == Feedback
 
