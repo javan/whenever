@@ -1,12 +1,12 @@
 == Introduction
 
-Whenever is a ruby gem that provides a ruby syntax for defining cron jobs. It outputs valid cron syntax and can even write your crontab file for you. It is designed to work well with Rails applications and can be deployed with Capistrano. Whenever works fine independently as well.
+Whenever is a Ruby gem that provides a clear syntax for defining cron jobs. It outputs valid cron syntax and can even write your crontab file for you. It is designed to work well with Rails applications and can be deployed with Capistrano. Whenever works fine independently as well.
 
 == Installation
 
 Regular (non-Rails) install:
   
-  $ gem sources -a http://gems.github.com (you only need to run this once)
+  $ gem sources -a http://gems.github.com  #you only need to run this once
   $ sudo gem install javan-whenever
 
 In a Rails (2.1 or greater) application:
@@ -21,7 +21,7 @@ To install this gem (and all other missing gem dependencies), run rake gems:inst
 
 In older versions of Rails:
 
-  $ gem sources -a http://gems.github.com (you only need to run this once)
+  $ gem sources -a http://gems.github.com  #you only need to run this once
   $ gem install javan-whenever
 
 in your "config/environment.rb" file:
@@ -32,7 +32,7 @@ in your "config/environment.rb" file:
 
   require 'whenever'
   
-NOTE: Requiring the whenever gem inside your Rails application is technically optional. However, if you plan to use something like Capistrano to automatically deploy and write your crontab file, you'll need to have the gem installed on your servers, and requiring it in your app is one to ensure this.
+NOTE: Requiring the whenever gem inside your Rails application is technically optional. However, if you plan to use something like Capistrano to automatically deploy and write your crontab file, you'll need to have the gem installed on your servers, and requiring it in your app is one way to ensure this.
 
 == Getting started
 
@@ -42,7 +42,7 @@ NOTE: Requiring the whenever gem inside your Rails application is technically op
 This will create an initial "config/schedule.rb" file you.
 
 == Example schedule.rb file
-
+  
   every 3.hours do
     runner "MyModel.some_process"       
     rake "my:rake:task"                 
@@ -50,7 +50,7 @@ This will create an initial "config/schedule.rb" file you.
   end
 
   every 1.day, :at => '4:30 am' do 
-    runner "DB.Backup"
+    runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
   end
 
   every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
@@ -89,7 +89,7 @@ USING THE "--write-crontab" OPTION WILL COMPLETELY OVERWRITE ANY EXISTING CRONTA
 
 == Credit
 
-Whenever was created for use at Inkling (http://inklingmarkets.com) where I work.
+Whenever was created for use at Inkling (http://inklingmarkets.com) where I work. Their take on it: http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html
 
 While building Whenever, I learned a lot by digging through the source code of Capistrano - http://github.com/jamis/capistrano
 
