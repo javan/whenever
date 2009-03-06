@@ -14,40 +14,20 @@ OptionParser.new do |opts|
   opts.banner = "Usage: whenever [options]"
   opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION::STRING}"; exit }
   opts.on('-w', '--write-crontab') { options[:write] = true }
-  opts.on('-f', '--load-file [schedule file]', 'default: config/schedule.rb') do |file|
+  opts.on('-i', '--update-crontab [identifier]', 'Default: full path to schedule.rb file') do |identifier|
+    options[:update] = true
+    options[:identifier] = identifier if identifier
+  end
+  opts.on('-f', '--load-file [schedule file]', 'Default: config/schedule.rb') do |file|
     options[:file] = file if file
   end
-  opts.on('-u', '--user [user]', 'default: current user') do |user| 
+  opts.on('-u', '--user [user]', 'Default: current user') do |user| 
     options[:user] = user if user
   end
 end.parse!
 
-options[:file] ||= 'config/schedule.rb'
-
-unless File.exists?(options[:file])
-  warn("[fail] can't find file: #{options[:file]}")
-  exit(1)
-end
-
-if options[:write]
-  cron_output   = Whenever.cron(:file => options[:file])
-  tmp_cron_file = Tempfile.new('whenever_tmp_cron').path
-  File.open(tmp_cron_file, File::WRONLY | File::APPEND) do |file|
-    file << cron_output
-  end
-  
-  command = ['crontab']
-  command << "-u #{options[:user]}" if options[:user]
-  command << tmp_cron_file
-  
-  if system(command.join(' '))
-    puts "[write] crontab file updated"
-    exit
-  else
-    warn "[fail] couldn't write crontab"
-    exit(1)
-  end
-  
+if options[:update] || options[:write]
+  Whenever::CommandLine.execute(options)
 else
   puts Whenever.cron(:file => options[:file])
   exit
