@@ -1,4 +1,4 @@
-== 0.1.6 / March 5th, 2009
+== 0.1.7 / March 5th, 2009
 
 * Added ability to update the crontab file non-destuctively instead of only overwriting it. [Javan Makhmali -- Inspired by code submitted individually from: Tien Dung (tiendung), Tom Lea (cwninja), Kyle Maxwell (fizx), and Andrew Timberlake (andrewtimberlake) on github]
 

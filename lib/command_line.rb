@@ -27,6 +27,9 @@ module Whenever
         write_crontab(updated_crontab)
       elsif @options[:write]
         write_crontab(whenever_cron)
+      else
+        puts Whenever.cron(:file => @options[:file])
+        exit
       end
     end
     

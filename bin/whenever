@@ -26,9 +26,4 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-if options[:update] || options[:write]
-  Whenever::CommandLine.execute(options)
-else
-  puts Whenever.cron(:file => options[:file])
-  exit
-end
+Whenever::CommandLine.execute(options)
