@@ -1,3 +1,7 @@
+== 0.1.6 / March 5th, 2009
+
+* Added ability to update the crontab file non-destuctively instead of only overwriting it. [Javan Makhmali -- Inspired by code submitted individually from: Tien Dung (tiendung), Tom Lea (cwninja), Kyle Maxwell (fizx), and Andrew Timberlake (andrewtimberlake) on github]
+
 == 0.1.5 / February 19th, 2009
 
 * Fixed load path so Whenever's files don't conflict with anything in Rails. Thanks Ryan Koopmans. [Javan Makhmali]
