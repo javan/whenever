@@ -79,15 +79,15 @@ In your "config/deploy.rb" file do something like:
   namespace :deploy do
     desc "Update the crontab file"
     task :update_crontab, :roles => :db do
-      run "cd #{release_path} && whenever --update-crontab"
+      run "cd #{release_path} && whenever --update-crontab #{application}"
     end
   end
 
-This will update your crontab file, leaving any existing entries unharmed. When using the "--update-crontab" option, Whenever will only update the entries in your crontab file related to the current schedule.rb file. This means you can use Whenever to deploy any number of apps to the same server and have them share a single crontab file peacefully.
+This will update your crontab file, leaving any existing entries unharmed. When using the <code>--update-crontab</code> option, Whenever will only update the entries in your crontab file related to the current schedule.rb file. You can replace the <code>#{application}</code> with any identifying string you'd like. You can have any number of apps deploy to the same crontab file peacefully given they each use a different identifier.
 
-If you wish to simply overwrite your crontab file each time you deploy, use the "--write-crontab" option. This is ideal if you are only working with one app and every crontab entry is contained in a single schedule.rb file.
+If you wish to simply overwrite your crontab file each time you deploy, use the <code>--write-crontab</code> option. This is ideal if you are only working with one app and every crontab entry is contained in a single schedule.rb file.
 
-By mixing and matching the "--load-file" and "--user" options with your various :roles in Capistrano it is entirely possible to deploy different crontab schedules under different users to all your various servers. Get creative!
+By mixing and matching the <code>--load-file</code> and <code>--user</code> options with your various :roles in Capistrano it is entirely possible to deploy different crontab schedules under different users to all your various servers. Get creative!
 
 == Credit
 
