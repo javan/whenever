@@ -97,8 +97,6 @@ While building Whenever, I learned a lot by digging through the source code of C
 
 == Feedback
 
-Lighthouse: http://javan.lighthouseapp.com/projects/25781-whenever/overview
-
 Email me: javan [at] javan (dot) us
 
 == License
