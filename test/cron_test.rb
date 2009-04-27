@@ -1,18 +1,18 @@
 require File.expand_path(File.dirname(__FILE__) + "/test_helper")
 
 class CronTest < Test::Unit::TestCase
-  
+
   context "When parsing time in minutes" do
     should "raise if less than 1 minute" do
       assert_raises ArgumentError do
         parse_time(59.seconds)
       end
-      
+
       assert_raises ArgumentError do
         parse_time(0.minutes)
       end
     end
-    
+
     # For santity, do some tests on straight String
     should "parse correctly" do
       assert_equal '* * * * *', parse_time(1.minute)
@@ -22,19 +22,19 @@ class CronTest < Test::Unit::TestCase
       assert_equal '32 * * * *', parse_time(32.minutes)
       assert_not_equal '60 * * * *', parse_time(60.minutes) # 60 minutes bumps up into the hour range
     end
-    
+
     # Test all minutes
     (2..59).each do |num|
       should "parse correctly for #{num} minutes" do
         start = 0
         start += num unless 60.modulo(num).zero?
         minutes = (start..59).step(num).to_a
-        
+
         assert_equal "#{minutes.join(',')} * * * *", parse_time(num.minutes)
       end
     end
   end
-  
+
   context "When parsing time in hours" do
     should "parse correctly" do
       assert_equal '0 * * * *', parse_time(1.hour)
@@ -44,24 +44,24 @@ class CronTest < Test::Unit::TestCase
       assert_equal '0 17 * * *', parse_time(17.hours)
       assert_not_equal '0 24 * * *', parse_time(24.hours) # 24 hours bumps up into the day range
     end
-    
+
     (2..23).each do |num|
       should "parse correctly for #{num} hours" do
         start = 0
         start += num unless 24.modulo(num).zero?
         hours = (start..23).step(num).to_a
-        
+
         assert_equal "0 #{hours.join(',')} * * *", parse_time(num.hours)
       end
     end
-    
+
     should "parse correctly when given an 'at' with minutes as an Integer" do
       assert_minutes_equals "1",  1
       assert_minutes_equals "14", 14
       assert_minutes_equals "27", 27
       assert_minutes_equals "55", 55
     end
-    
+
     should "parse correctly when given an 'at' with minutes as a Time" do
       # Basically just testing that Chronic parses some times and we get the minutes out of it
       assert_minutes_equals "1",  '3:01am'
@@ -70,7 +70,7 @@ class CronTest < Test::Unit::TestCase
       assert_minutes_equals "59", '13:59'
     end
   end
-  
+
   context "When parsing time in days (of month)" do
     should "parse correctly" do
       assert_equal '0 0 * * *', parse_time(1.days)
@@ -82,7 +82,7 @@ class CronTest < Test::Unit::TestCase
       assert_equal '0 0 29 * *', parse_time(29.days)
       assert_not_equal '0 0 30 * *', parse_time(30.days) # 30 days bumps into the month range
     end
-    
+
     should "parse correctly when given an 'at' with hours, minutes as a Time" do
       # first param is an array with [hours, minutes]
       assert_hours_and_minutes_equals %w(3 45),  '3:45am'
@@ -91,7 +91,7 @@ class CronTest < Test::Unit::TestCase
       assert_hours_and_minutes_equals %w(1 23),  '1:23 AM'
       assert_hours_and_minutes_equals %w(23 59), 'March 21 11:59 pM'
     end
-    
+
     should "parse correctly when given an 'at' with hours as an Integer" do
       # first param is an array with [hours, minutes]
       assert_hours_and_minutes_equals %w(1 0),  1
@@ -101,7 +101,7 @@ class CronTest < Test::Unit::TestCase
       assert_hours_and_minutes_equals %w(23 0), 23
     end
   end
-  
+
   context "When parsing time in months" do
     should "parse correctly" do
       assert_equal '0 0 1 * *', parse_time(1.month)
@@ -116,7 +116,7 @@ class CronTest < Test::Unit::TestCase
       assert_equal '0 0 1 11 *', parse_time(11.months)
       assert_equal '0 0 1 12 *', parse_time(12.months)
     end
-    
+
     should "parse correctly when given an 'at' with days, hours, minutes as a Time" do
       # first param is an array with [days, hours, minutes]
       assert_days_and_hours_and_minutes_equals %w(1 3 45),  'January 1st 3:45am'
@@ -124,7 +124,7 @@ class CronTest < Test::Unit::TestCase
       assert_days_and_hours_and_minutes_equals %w(22 1 1), 'march 22nd at 1:01 am'
       assert_days_and_hours_and_minutes_equals %w(23 0 0), 'march 22nd at midnight' # looks like midnight means the next day
     end
-    
+
     should "parse correctly when given an 'at' with days as an Integer" do
       # first param is an array with [days, hours, minutes]
       assert_days_and_hours_and_minutes_equals %w(1 0 0),  1
@@ -132,7 +132,7 @@ class CronTest < Test::Unit::TestCase
       assert_days_and_hours_and_minutes_equals %w(29 0 0), 29
     end
   end
-  
+
   context "When parsing time in days (of week)" do
     should "parse days of the week correctly" do
       {
@@ -142,25 +142,31 @@ class CronTest < Test::Unit::TestCase
         'wed' => %w(wed Wednesday WEDNESDAY WED),
         'thu' => %w(thu thurs thur Thursday THURSDAY THU),
         'fri' => %w(fri Friday FRIDAY FRI),
-        'sat' => %w(sat Saturday SATURDAY SAT) 
+        'sat' => %w(sat Saturday SATURDAY SAT)
       }.each do |day, day_tests|
         day_tests.each do |day_test|
           assert_equal "0 0 * * #{day}", parse_time(day_test)
         end
       end
     end
-    
+
+    should "allow additional directives" do
+      assert_equal '30 13 * * fri', parse_time('friday', nil, "1:30 pm")
+    end
+
     should "parse weekday correctly" do
       assert_equal '0 0 * * mon-fri', parse_time('weekday')
       assert_equal '0 0 * * mon-fri', parse_time('Weekdays')
+      assert_equal '0 1 * * mon-fri', parse_time('Weekdays', nil, "1:00 am")
     end
-    
+
     should "parse weekend correctly" do
       assert_equal '0 0 * * sat,sun', parse_time('weekend')
       assert_equal '0 0 * * sat,sun', parse_time('Weekends')
+      assert_equal '0 7 * * sat,sun', parse_time('Weekends', nil, "7am")
     end
   end
-  
+
 private
 
   def assert_days_and_hours_and_minutes_equals(expected, time)
@@ -183,5 +189,5 @@ private
   def parse_time(time = nil, task = nil, at = nil)
     Whenever::Output::Cron.new(time, task, at).time_in_cron_syntax
   end
-  
+
 end
