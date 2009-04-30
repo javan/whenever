@@ -152,18 +152,22 @@ class CronTest < Test::Unit::TestCase
 
     should "allow additional directives" do
       assert_equal '30 13 * * fri', parse_time('friday', nil, "1:30 pm")
+      assert_equal '22 2 * * mon', parse_time('Monday', nil, "2:22am")
+      assert_equal '55 17 * * thu', parse_time('THU', nil, "5:55PM")
     end
 
     should "parse weekday correctly" do
       assert_equal '0 0 * * mon-fri', parse_time('weekday')
       assert_equal '0 0 * * mon-fri', parse_time('Weekdays')
       assert_equal '0 1 * * mon-fri', parse_time('Weekdays', nil, "1:00 am")
+      assert_equal '59 5 * * mon-fri', parse_time('Weekdays', nil, "5:59 am")
     end
 
     should "parse weekend correctly" do
       assert_equal '0 0 * * sat,sun', parse_time('weekend')
       assert_equal '0 0 * * sat,sun', parse_time('Weekends')
       assert_equal '0 7 * * sat,sun', parse_time('Weekends', nil, "7am")
+      assert_equal '2 18 * * sat,sun', parse_time('Weekends', nil, "6:02PM")
     end
   end
   
