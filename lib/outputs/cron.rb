@@ -27,7 +27,7 @@ module Whenever
     protected
 
       def parse_symbol
-        case @time
+        shortcut = case @time
           when :reboot          then '@reboot'
           when :year, :yearly   then '@annually'
           when :day, :daily     then '@daily'
@@ -35,7 +35,16 @@ module Whenever
           when :month, :monthly then '@monthly'
           when :week, :weekly   then '@weekly'
           when :hour, :hourly   then '@hourly'
-          else parse_as_string
+        end
+        
+        if shortcut
+          if @at > 0
+            raise ArgumentError, "You cannot specify an ':at' when using the shortcuts for times."
+          else
+            return shortcut
+          end
+        else
+          parse_as_string
         end
       end
 

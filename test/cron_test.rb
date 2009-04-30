@@ -166,6 +166,35 @@ class CronTest < Test::Unit::TestCase
       assert_equal '0 7 * * sat,sun', parse_time('Weekends', nil, "7am")
     end
   end
+  
+  context "When parsing time using the cron shortcuts" do
+    should "parse a :symbol into the correct shortcut" do
+      assert_equal '@reboot',   parse_time(:reboot)
+      assert_equal '@annually', parse_time(:year)
+      assert_equal '@annually', parse_time(:yearly)
+      assert_equal '@daily',    parse_time(:day)
+      assert_equal '@daily',    parse_time(:daily)
+      assert_equal '@midnight', parse_time(:midnight)
+      assert_equal '@monthly',  parse_time(:month)
+      assert_equal '@monthly',  parse_time(:monthly)
+      assert_equal '@hourly',   parse_time(:hour)
+      assert_equal '@hourly',   parse_time(:hourly)
+    end
+    
+    should "raise an exception if a valid shortcut is given but also an :at" do
+      assert_raises ArgumentError do
+        parse_time(:hour, nil, "1:00 am")
+      end
+      
+      assert_raises ArgumentError do
+        parse_time(:reboot, nil, 5)
+      end
+      
+      assert_raises ArgumentError do
+        parse_time(:day, nil, '4:20pm')
+      end
+    end
+  end
 
 private
 
