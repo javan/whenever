@@ -4,6 +4,7 @@ class CommandLineTest < Test::Unit::TestCase
   
   context "A command line write" do
     setup do
+      File.expects(:exists?).with('config/schedule.rb').returns(true)
       @command = Whenever::CommandLine.new(:write => true, :identifier => 'My identifier')
       @task = "#{two_hours} /my/command"
       Whenever.expects(:cron).returns(@task)
@@ -27,6 +28,7 @@ class CommandLineTest < Test::Unit::TestCase
   
   context "A command line update" do
     setup do
+      File.expects(:exists?).with('config/schedule.rb').returns(true)
       @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
       @task = "#{two_hours} /my/command"
       Whenever.expects(:cron).returns(@task)
@@ -85,6 +87,7 @@ class CommandLineTest < Test::Unit::TestCase
   
   context "A command line update with no identifier" do
     setup do
+      File.expects(:exists?).with('config/schedule.rb').returns(true)
       Whenever::CommandLine.any_instance.expects(:default_identifier).returns('DEFAULT')
       @command = Whenever::CommandLine.new(:update => true, :file => @file)
     end
