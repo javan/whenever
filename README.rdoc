@@ -14,7 +14,7 @@ In a Rails (2.1 or greater) application:
 in your "config/environment.rb" file:
 
   Rails::Initializer.run do |config|
-    config.gem 'javan-whenever', :lib => false, :version => '>= 0.1.7', :source => 'http://gems.github.com'
+    config.gem 'javan-whenever', :lib => false, :source => 'http://gems.github.com'
   end
   
 To install this gem (and all other missing gem dependencies), run rake gems:install (use sudo if necessary).
@@ -57,7 +57,7 @@ This will create an initial "config/schedule.rb" file you.
     runner "SomeModel.ladeeda"
   end
 
-  every :sunday do # Use any day of the week or :weekend, :weekday 
+  every :sunday, :at => '12pm' do # Use any day of the week or :weekend, :weekday 
     runner "Task.do_something_great"
   end
 

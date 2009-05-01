@@ -1,6 +1,16 @@
+== 0.2.0 / April 30th, 2009
+
+* Days of week jobs can now accept an :at directive (ex: every :monday, :at => '5pm'). [David Eisinger]
+
+* Fixed command line test so it runs without a config/schedule.rb present. [Javan Makhmali]
+
+* Raising an exception if someone tries to specify an :at with a cron shortcut (:day, :reboot, etc) so there are no false hopes. [Javan Makhmali]
+
+
 == 0.1.7 / March 5th, 2009
 
 * Added ability to update the crontab file non-destuctively instead of only overwriting it. [Javan Makhmali -- Inspired by code submitted individually from: Tien Dung (tiendung), Tom Lea (cwninja), Kyle Maxwell (fizx), and Andrew Timberlake (andrewtimberlake) on github]
+
 
 == 0.1.5 / February 19th, 2009
 
