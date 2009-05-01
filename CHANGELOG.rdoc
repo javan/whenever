@@ -1,4 +1,4 @@
-== 0.2.0 / April 30th, 2009
+== 0.2.2 / April 30th, 2009
 
 * Days of week jobs can now accept an :at directive (ex: every :monday, :at => '5pm'). [David Eisinger]
 
