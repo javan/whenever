@@ -2,6 +2,8 @@
 
 Whenever is a Ruby gem that provides a clear syntax for defining cron jobs. It outputs valid cron syntax and can even write your crontab file for you. It is designed to work well with Rails applications and can be deployed with Capistrano. Whenever works fine independently as well.
 
+Ryan Bates created a great Railscast about Whenever: http://railscasts.com/episodes/164-cron-in-ruby
+
 == Installation
 
 Regular (non-Rails) install:
