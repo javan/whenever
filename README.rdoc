@@ -91,6 +91,8 @@ If you wish to simply overwrite your crontab file each time you deploy, use the 
 
 By mixing and matching the <code>--load-file</code> and <code>--user</code> options with your various :roles in Capistrano it is entirely possible to deploy different crontab schedules under different users to all your various servers. Get creative!
 
+If you want to override a variable (like your environment) at the time of deployment you can do so with the <code>--set</code> option: http://wiki.github.com/javan/whenever/setting-variables-on-the-fly
+
 == Credit
 
 Whenever was created for use at Inkling (http://inklingmarkets.com) where I work. Their take on it: http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html
