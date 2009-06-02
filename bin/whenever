@@ -24,6 +24,9 @@ OptionParser.new do |opts|
   opts.on('-u', '--user [user]', 'Default: current user') do |user| 
     options[:user] = user if user
   end
+  opts.on('-s', '--set [variables]', 'Example: --set environment=staging&path=/my/sweet/path') do |set|
+    options[:set] = set if set
+  end
 end.parse!
 
 Whenever::CommandLine.execute(options)

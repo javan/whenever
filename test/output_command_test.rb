@@ -67,4 +67,21 @@ class OutputCommandTest < Test::Unit::TestCase
     end
   end
   
+  context "A command when the cron_log is set and is overridden by the :set option" do
+    setup do
+      @output = Whenever.cron :set => 'cron_log=otherlog.log', :string => \
+      <<-file
+        set :cron_log, 'logfile.log'
+        every 2.hours do
+          command "blahblah"
+        end
+      file
+    end
+
+    should "output the otherlog.log as the log file" do
+      assert_no_match /.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, @output
+      assert_match /^.+ .+ .+ .+ blahblah >> otherlog.log 2>&1/, @output
+    end
+  end
+  
 end

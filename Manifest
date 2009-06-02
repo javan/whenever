@@ -10,6 +10,7 @@ lib/job_types/runner.rb
 lib/outputs/cron.rb
 lib/version.rb
 lib/whenever.rb
+Manifest
 Rakefile
 README.rdoc
 test/command_line_test.rb
@@ -20,4 +21,3 @@ test/output_rake_test.rb
 test/output_runner_test.rb
 test/test_helper.rb
 whenever.gemspec
-Manifest

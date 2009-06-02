@@ -5,20 +5,24 @@ module Whenever
       @jobs = Hash.new
       @env  = Hash.new
       
-      config = case options
-        when String then options
+      case options
+        when String
+          config = options
         when Hash
-          if options[:string]
+          config = if options[:string]
             options[:string]
           elsif options[:file]
             File.read(options[:file])
           end
+          pre_set(options[:set])
       end
 
       eval(config)
     end
     
     def set(variable, value)
+      return if instance_variable_defined?("@#{variable}".to_sym)
+      
       instance_variable_set("@#{variable}".to_sym, value)
       self.class.send(:attr_reader, variable.to_sym)
     end
@@ -57,6 +61,20 @@ module Whenever
     end
     
   private
+    
+    # Takes a string like: "variable1=something&variable2=somethingelse"
+    # and breaks it into variable/value pairs. Used for setting variables at runtime from the command line.
+    # Only works for setting values as strings.
+    def pre_set(variable_string = nil)
+      return if variable_string.blank?
+      
+      pairs = variable_string.split('&')
+      pairs.each do |pair|
+        next unless pair.index('=')
+        variable, value = *pair.split('=')
+        set(variable.strip, value.strip) unless variable.blank? || value.blank?
+      end
+    end
   
     def environment_variables
       return if @env.empty?

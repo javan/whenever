@@ -28,7 +28,7 @@ module Whenever
       elsif @options[:write]
         write_crontab(whenever_cron)
       else
-        puts Whenever.cron(:file => @options[:file])
+        puts Whenever.cron(@options)
         exit
       end
     end
@@ -40,7 +40,7 @@ module Whenever
     end
   
     def whenever_cron
-      @whenever_cron ||= [comment_open, Whenever.cron(:file => @options[:file]), comment_close].join("\n")
+      @whenever_cron ||= [comment_open, Whenever.cron(@options), comment_close].join("\n")
     end
     
     def read_crontab
