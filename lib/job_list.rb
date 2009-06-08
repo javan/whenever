@@ -88,6 +88,26 @@ module Whenever
       output.join
     end
     
+    def combine entries
+      entries.map! {|entry| entry.split(/ +/,6)}
+      0.upto(5) do |f|
+        (entries.length-1).downto(1) do |i|
+          next if entries[i][f] == '*'
+          comparison = entries[i][0...f] + entries[i][f+1..-1]
+          (i-1).downto(0) do |j|
+            next if entries[j][f] == '*'
+            if comparison == entries[j][0...f] + entries[j][f+1..-1]
+              entries[j][f] += ',' + entries[i][f]
+              entries.delete_at(i)
+              break
+            end
+          end
+        end
+      end
+
+      entries.map {|entry| entry.join(' ')}
+    end
+
     def cron_jobs
       return if @jobs.empty?
       
@@ -102,7 +122,7 @@ module Whenever
         end
       end
       
-      output.join
+      combine(output).join
     end
     
   end

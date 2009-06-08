@@ -17,7 +17,23 @@ class OutputAtTest < Test::Unit::TestCase
     end
   end
   
-  context "weekday at a multiple diverse times" do
+  context "weekday at a multiple diverse times, via an array" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every "weekday", :at=>%w(5:02am 3:52pm) do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the runner using that path" do
+      assert_match '2 5 * * mon-fri blahblah', @output
+      assert_match '52 15 * * mon-fri blahblah', @output
+    end
+  end
+  
+  context "weekday at a multiple diverse times, comma separated" do
     setup do
       @output = Whenever.cron \
       <<-file
@@ -30,6 +46,36 @@ class OutputAtTest < Test::Unit::TestCase
     should "output the runner using that path" do
       assert_match '2 5 * * mon-fri blahblah', @output
       assert_match '52 15 * * mon-fri blahblah', @output
+    end
+  end
+  
+  context "weekday at a multiple aligned times" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every "weekday", :at=>'5:02am, 3:02pm' do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the runner using that path" do
+      assert_match '2 5,15 * * mon-fri blahblah', @output
+    end
+  end
+  
+  context "various days at a various aligned times" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every "mon,wed,fri", :at=>'5:02am, 3:02pm' do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the runner using that path" do
+      assert_match '2 5,15 * * mon,wed,fri blahblah', @output
     end
   end
   

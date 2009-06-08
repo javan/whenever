@@ -11,16 +11,22 @@ module Whenever
         @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
       end
 
-      def self.output(time, job)
-        if job.at and job.at.is_a?(String) and !job.at.empty?
-          ats = job.at.split(',')
+      def self.enumerate(item)
+        if item and item.is_a?(String)
+          items = item.split(',')
         else
-          ats = [job.at]
+          items = item
+          items = [items] unless items and items.respond_to?(:each)
         end
+        items
+      end
 
-        ats.each do |at|
-          out = new(time, job.output, at)
-          yield "#{out.time_in_cron_syntax} #{out.task}"
+      def self.output(times, job)
+        enumerate(times).each do |time|
+          enumerate(job.at).each do |at|
+            out = new(time, job.output, at)
+            yield "#{out.time_in_cron_syntax} #{out.task}"
+          end
         end
       end
 
