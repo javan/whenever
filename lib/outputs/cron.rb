@@ -12,8 +12,16 @@ module Whenever
       end
 
       def self.output(time, job)
-        out = new(time, job.output, job.at)
-        "#{out.time_in_cron_syntax} #{out.task}"
+        if job.at and job.at.is_a?(String) and !job.at.empty?
+          ats = job.at.split(',')
+        else
+          ats = [job.at]
+        end
+
+        ats.each do |at|
+          out = new(time, job.output, at)
+          yield "#{out.time_in_cron_syntax} #{out.task}"
+        end
       end
 
       def time_in_cron_syntax

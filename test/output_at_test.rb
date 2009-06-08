@@ -1,0 +1,36 @@
+require File.expand_path(File.dirname(__FILE__) + "/test_helper")
+
+class OutputAtTest < Test::Unit::TestCase
+  
+  context "weekday at a (single) given time" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every "weekday", :at=>'5:02am' do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the runner using that path" do
+      assert_match '2 5 * * mon-fri blahblah', @output
+    end
+  end
+  
+  context "weekday at a multiple diverse times" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every "weekday", :at=>'5:02am, 3:52pm' do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the runner using that path" do
+      assert_match '2 5 * * mon-fri blahblah', @output
+      assert_match '52 15 * * mon-fri blahblah', @output
+    end
+  end
+  
+end

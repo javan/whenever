@@ -94,10 +94,11 @@ module Whenever
       output = []
       @jobs.each do |time, jobs|
         jobs.each do |job|
-          cron = Whenever::Output::Cron.output(time, job)
-          cron << " >> #{job.cron_log} 2>&1" if job.cron_log 
-          cron << "\n\n"
-          output << cron
+          Whenever::Output::Cron.output(time, job) do |cron|
+            cron << " >> #{job.cron_log} 2>&1" if job.cron_log 
+            cron << "\n\n"
+            output << cron
+          end
         end
       end
       
