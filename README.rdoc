@@ -4,6 +4,8 @@ Whenever is a Ruby gem that provides a clear syntax for defining cron jobs. It o
 
 Ryan Bates created a great Railscast about Whenever: http://railscasts.com/episodes/164-cron-in-ruby
 
+Discussion: http://groups.google.com/group/whenever-gem
+
 == Installation
 
 Regular (non-Rails) install:
@@ -99,9 +101,11 @@ Whenever was created for use at Inkling (http://inklingmarkets.com) where I work
 
 While building Whenever, I learned a lot by digging through the source code of Capistrano - http://github.com/jamis/capistrano
 
-== Feedback
+== Discussion / Feedback / Issues / Bugs
 
-Email me: javan [at] javan (dot) us
+For general discussion and questions, please use the google group: http://groups.google.com/group/whenever-gem
+
+If you've found a genuine bug or issue, please use the Issues section on github: http://github.com/javan/whenever/issues
 
 == License
 
