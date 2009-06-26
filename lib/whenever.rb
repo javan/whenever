@@ -9,9 +9,19 @@ unless defined?(Whenever)
   end
 end
 
-# Dependencies
-require 'activesupport'
 require 'chronic'
+
+# If Rails' rakefile was loaded than so was activesupport, but
+# if this is being used in a non-rails enviroment we need to require it.
+# It was previously defined as a dependency of this gem, but that became
+# problematic. See: http://github.com/javan/whenever/issues#issue/1
+begin
+  require 'activesupport'
+rescue LoadError => e
+  warn 'To user Whenever you need the activesupport gem:'
+  warn '$ sudo gem install activesupport'
+  exit(1)
+end
 
 # Whenever files
 %w{ 

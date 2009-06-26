@@ -9,5 +9,5 @@ Echoe.new('whenever', Whenever::VERSION::STRING) do |p|
   p.url            = "http://github.com/javan/whenever"
   p.author         = "Javan Makhmali"
   p.email          = "javan@javan.us"
-  p.dependencies   = ["chronic >=0.2.3", "activesupport >=1.3.0"]
+  p.dependencies   = ["chronic >=0.2.3"]
 end
