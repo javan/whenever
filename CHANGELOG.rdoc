@@ -1,6 +1,14 @@
+== 0.3.1 / June 25th, 2009
+
+* Removed activesupport gem dependency. #1 [Javan Makhmali]
+
+* Switched to numeric days of the week for Solaris support (and probably others). #8 [Roger Ertesvåg]
+
+
 == 0.3.0 / June 2nd, 2009
 
 * Added ability to set variables on the fly from the command line (ex: whenever --set environment=staging). [Javan Makhmali]
+
 
 == 0.2.2 / April 30th, 2009
 
