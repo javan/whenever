@@ -136,13 +136,13 @@ class CronTest < Test::Unit::TestCase
   context "When parsing time in days (of week)" do
     should "parse days of the week correctly" do
       {
-        'sun' => %w(sun Sunday SUNDAY SUN),
-        'mon' => %w(mon Monday MONDAY MON),
-        'tue' => %w(tue tues Tuesday TUESDAY TUE),
-        'wed' => %w(wed Wednesday WEDNESDAY WED),
-        'thu' => %w(thu thurs thur Thursday THURSDAY THU),
-        'fri' => %w(fri Friday FRIDAY FRI),
-        'sat' => %w(sat Saturday SATURDAY SAT)
+        '0' => %w(sun Sunday SUNDAY SUN),
+        '1' => %w(mon Monday MONDAY MON),
+        '2' => %w(tue tues Tuesday TUESDAY TUE),
+        '3' => %w(wed Wednesday WEDNESDAY WED),
+        '4' => %w(thu thurs thur Thursday THURSDAY THU),
+        '5' => %w(fri Friday FRIDAY FRI),
+        '6' => %w(sat Saturday SATURDAY SAT)
       }.each do |day, day_tests|
         day_tests.each do |day_test|
           assert_equal "0 0 * * #{day}", parse_time(day_test)
@@ -151,23 +151,23 @@ class CronTest < Test::Unit::TestCase
     end
 
     should "allow additional directives" do
-      assert_equal '30 13 * * fri', parse_time('friday', nil, "1:30 pm")
-      assert_equal '22 2 * * mon', parse_time('Monday', nil, "2:22am")
-      assert_equal '55 17 * * thu', parse_time('THU', nil, "5:55PM")
+      assert_equal '30 13 * * 5', parse_time('friday', nil, "1:30 pm")
+      assert_equal '22 2 * * 1', parse_time('Monday', nil, "2:22am")
+      assert_equal '55 17 * * 4', parse_time('THU', nil, "5:55PM")
     end
 
     should "parse weekday correctly" do
-      assert_equal '0 0 * * mon-fri', parse_time('weekday')
-      assert_equal '0 0 * * mon-fri', parse_time('Weekdays')
-      assert_equal '0 1 * * mon-fri', parse_time('Weekdays', nil, "1:00 am")
-      assert_equal '59 5 * * mon-fri', parse_time('Weekdays', nil, "5:59 am")
+      assert_equal '0 0 * * 1-5', parse_time('weekday')
+      assert_equal '0 0 * * 1-5', parse_time('Weekdays')
+      assert_equal '0 1 * * 1-5', parse_time('Weekdays', nil, "1:00 am")
+      assert_equal '59 5 * * 1-5', parse_time('Weekdays', nil, "5:59 am")
     end
 
     should "parse weekend correctly" do
-      assert_equal '0 0 * * sat,sun', parse_time('weekend')
-      assert_equal '0 0 * * sat,sun', parse_time('Weekends')
-      assert_equal '0 7 * * sat,sun', parse_time('Weekends', nil, "7am")
-      assert_equal '2 18 * * sat,sun', parse_time('Weekends', nil, "6:02PM")
+      assert_equal '0 0 * * 6,0', parse_time('weekend')
+      assert_equal '0 0 * * 6,0', parse_time('Weekends')
+      assert_equal '0 7 * * 6,0', parse_time('Weekends', nil, "7am")
+      assert_equal '2 18 * * 6,0', parse_time('Weekends', nil, "6:02PM")
     end
   end
   

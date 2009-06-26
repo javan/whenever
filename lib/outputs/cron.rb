@@ -85,11 +85,11 @@ module Whenever
         timing[0] = @at.is_a?(Time) ? @at.min  : 0
         timing[1] = @at.is_a?(Time) ? @at.hour : 0
 
-        return (timing << 'mon-fri') * " " if string.downcase.index('weekday')
-        return (timing << 'sat,sun') * " " if string.downcase.index('weekend')
+        return (timing << '1-5') * " " if string.downcase.index('weekday')
+        return (timing << '6,0') * " " if string.downcase.index('weekend')
 
-        %w(sun mon tue wed thu fri sat).each do |day|
-          return (timing << day) * " " if string.downcase.index(day)
+        %w(sun mon tue wed thu fri sat).each_with_index do |day, i|
+          return (timing << i) * " " if string.downcase.index(day)
         end
 
         raise ArgumentError, "Couldn't parse: #{@time}"
