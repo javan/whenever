@@ -13,7 +13,7 @@ class OutputAtTest < Test::Unit::TestCase
     end
     
     should "output the runner using that path" do
-      assert_match '2 5 * * mon-fri blahblah', @output
+      assert_match '2 5 * * 1-5 blahblah', @output
     end
   end
   
@@ -28,8 +28,8 @@ class OutputAtTest < Test::Unit::TestCase
     end
     
     should "output the runner using that path" do
-      assert_match '2 5 * * mon-fri blahblah', @output
-      assert_match '52 15 * * mon-fri blahblah', @output
+      assert_match '2 5 * * 1-5 blahblah', @output
+      assert_match '52 15 * * 1-5 blahblah', @output
     end
   end
   
@@ -44,8 +44,8 @@ class OutputAtTest < Test::Unit::TestCase
     end
     
     should "output the runner using that path" do
-      assert_match '2 5 * * mon-fri blahblah', @output
-      assert_match '52 15 * * mon-fri blahblah', @output
+      assert_match '2 5 * * 1-5 blahblah', @output
+      assert_match '52 15 * * 1-5 blahblah', @output
     end
   end
   
@@ -60,7 +60,7 @@ class OutputAtTest < Test::Unit::TestCase
     end
     
     should "output the runner using that path" do
-      assert_match '2 5,15 * * mon-fri blahblah', @output
+      assert_match '2 5,15 * * 1-5 blahblah', @output
     end
   end
   
@@ -75,7 +75,7 @@ class OutputAtTest < Test::Unit::TestCase
     end
     
     should "output the runner using that path" do
-      assert_match '2 5,15 * * mon,wed,fri blahblah', @output
+      assert_match '2 5,15 * * 1,3,5 blahblah', @output
     end
   end
   
