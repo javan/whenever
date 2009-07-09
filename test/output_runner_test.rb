@@ -190,4 +190,20 @@ class OutputRunnerTest < Test::Unit::TestCase
     end
   end
   
+  context "A runner which makes use of double quotes" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :path, '/my/path'
+        every 2.hours do
+          runner 'Product.import("http://example.com/product.xml")'
+        end
+      file
+    end
+    
+    should "output the runner using the original environmnet" do
+      assert_match two_hours + ' /my/path/script/runner -e production "Product.import(\"http://example.com/product.xml\")"', @output
+    end
+  end
+  
 end

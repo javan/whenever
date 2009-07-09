@@ -4,7 +4,7 @@ module Whenever
 
       def output
         path_required
-        %Q(#{File.join(@path, 'script', 'runner')} -e #{@environment} "#{task}")
+        %Q(#{File.join(@path, 'script', 'runner')} -e #{@environment} #{task.inspect})
       end
       
     end
