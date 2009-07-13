@@ -62,9 +62,11 @@ module Whenever
     
   private
     
+    #
     # Takes a string like: "variable1=something&variable2=somethingelse"
     # and breaks it into variable/value pairs. Used for setting variables at runtime from the command line.
     # Only works for setting values as strings.
+    #
     def pre_set(variable_string = nil)
       return if variable_string.blank?
       
@@ -88,8 +90,14 @@ module Whenever
       output.join
     end
     
-    def combine entries
-      entries.map! {|entry| entry.split(/ +/,6)}
+    #
+    # Takes the standard cron output that Whenever generates and finds
+    # similar entries that can be combined. For example: If a job should run
+    # at 3:02am and 4:02am, instead of creating two jobs this method combines
+    # them into one that runs on the 2nd minute at the 3rd and 4th hour.
+    #
+    def combine(entries)
+      entries.map! { |entry| entry.split(/ +/,6 )}
       0.upto(5) do |f|
         (entries.length-1).downto(1) do |i|
           next if entries[i][f] == '*'
@@ -105,7 +113,7 @@ module Whenever
         end
       end
 
-      entries.map {|entry| entry.join(' ')}
+      entries.map { |entry| entry.join(' ') }
     end
 
     def cron_jobs
