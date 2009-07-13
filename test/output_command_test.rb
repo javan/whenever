@@ -84,4 +84,21 @@ class OutputCommandTest < Test::Unit::TestCase
     end
   end
   
+  context "An every statement with two commands in it" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every 1.hour do
+          command "first"
+          command "second"
+        end
+      file
+    end
+
+    should "output both commands" do
+      assert_match "0 * * * * first", @output
+      assert_match "0 * * * * second", @output
+    end
+  end
+  
 end
