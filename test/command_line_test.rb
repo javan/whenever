@@ -11,13 +11,13 @@ class CommandLineTest < Test::Unit::TestCase
     end
 
     should "output the cron job with identifier blocks" do
-      output = <<-expected
-      # Begin Whenever generated tasks for: My identifier
-      #{@task}
-      # End Whenever generated tasks for: My identifier
-      expected
+      output = <<-EXPECTED
+# Begin Whenever generated tasks for: My identifier
+#{@task}
+# End Whenever generated tasks for: My identifier
+EXPECTED
       
-      assert_equal unindent(output).chomp, @command.send(:whenever_cron).chomp
+      assert_equal output, @command.send(:whenever_cron)
     end
     
     should "write the crontab when run" do
@@ -38,49 +38,50 @@ class CommandLineTest < Test::Unit::TestCase
       existing = '# Existing crontab'
       @command.expects(:read_crontab).at_least_once.returns(existing)
       
-      new_cron = <<-expected
-      #{existing}
+      new_cron = <<-EXPECTED
+#{existing}
+
+# Begin Whenever generated tasks for: My identifier
+#{@task}
+# End Whenever generated tasks for: My identifier
+EXPECTED
       
-      # Begin Whenever generated tasks for: My identifier
-      #{@task}
-      # End Whenever generated tasks for: My identifier
-      expected
+      assert_equal new_cron, @command.send(:updated_crontab)
       
-      assert_equal unindent(new_cron).chomp, @command.send(:updated_crontab).chomp
-      
-      @command.expects(:write_crontab).with(unindent(new_cron)).returns(true)
+      @command.expects(:write_crontab).with(new_cron).returns(true)
       assert @command.run
     end
     
     should "replace an existing block if the identifier matches" do
-      existing = <<-existing
-      # Something
+      existing = <<-EXISTING_CRON
+# Something
+
+# Begin Whenever generated tasks for: My identifier
+My whenever job that was already here
+# End Whenever generated tasks for: My identifier
+
+# Begin Whenever generated tasks for: Other identifier
+This shouldn't get replaced
+# End Whenever generated tasks for: Other identifier
+EXISTING_CRON
+
+      @command.expects(:read_crontab).at_least_once.returns(existing)
       
-      # Begin Whenever generated tasks for: My identifier
-      My whenever job that was already here
-      # End Whenever generated tasks for: My identifier
+      new_cron = <<-NEW_CRON
+# Something
+
+# Begin Whenever generated tasks for: My identifier
+#{@task}
+# End Whenever generated tasks for: My identifier
+
+# Begin Whenever generated tasks for: Other identifier
+This shouldn't get replaced
+# End Whenever generated tasks for: Other identifier
+NEW_CRON
       
-      # Begin Whenever generated tasks for: Other identifier
-      This shouldn't get replaced
-      # End Whenever generated tasks for: Other identifier
-      existing
-      @command.expects(:read_crontab).at_least_once.returns(unindent(existing))
+      assert_equal new_cron, @command.send(:updated_crontab)
       
-      new_cron = <<-new_cron
-      # Something
-      
-      # Begin Whenever generated tasks for: My identifier
-      #{@task}
-      # End Whenever generated tasks for: My identifier
-      
-      # Begin Whenever generated tasks for: Other identifier
-      This shouldn't get replaced
-      # End Whenever generated tasks for: Other identifier
-      new_cron
-      
-      assert_equal unindent(new_cron).chomp, @command.send(:updated_crontab).chomp
-      
-      @command.expects(:write_crontab).with(unindent(new_cron)).returns(true)
+      @command.expects(:write_crontab).with(new_cron).returns(true)
       assert @command.run
     end
   end
@@ -95,13 +96,6 @@ class CommandLineTest < Test::Unit::TestCase
     should "use the default identifier" do
       assert_equal "Whenever generated tasks for: DEFAULT", @command.send(:comment_base)
     end
-  end
-  
-private
-  
-  def unindent(string)
-    indentation = string[/\A\s*/]
-    string.strip.gsub(/^#{indentation}/, "")
   end
   
 end
