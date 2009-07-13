@@ -6,13 +6,13 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
-        every "weekday", :at=>'5:02am' do
+        every "weekday", :at => '5:02am' do
           command "blahblah"
         end
       file
     end
     
-    should "output the runner using that path" do
+    should "output the command using that time" do
       assert_match '2 5 * * 1-5 blahblah', @output
     end
   end
@@ -21,13 +21,13 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
-        every "weekday", :at=>%w(5:02am 3:52pm) do
+        every "weekday", :at => %w(5:02am 3:52pm) do
           command "blahblah"
         end
       file
     end
     
-    should "output the runner using that path" do
+    should "output the commands for both times given" do
       assert_match '2 5 * * 1-5 blahblah', @output
       assert_match '52 15 * * 1-5 blahblah', @output
     end
@@ -37,13 +37,13 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
-        every "weekday", :at=>'5:02am, 3:52pm' do
+        every "weekday", :at => '5:02am, 3:52pm' do
           command "blahblah"
         end
       file
     end
     
-    should "output the runner using that path" do
+    should "output the commands for both times given" do
       assert_match '2 5 * * 1-5 blahblah', @output
       assert_match '52 15 * * 1-5 blahblah', @output
     end
@@ -53,13 +53,13 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
-        every "weekday", :at=>'5:02am, 3:02pm' do
+        every "weekday", :at => '5:02am, 3:02pm' do
           command "blahblah"
         end
       file
     end
     
-    should "output the runner using that path" do
+    should "output the command using one entry because the times are aligned" do
       assert_match '2 5,15 * * 1-5 blahblah', @output
     end
   end
@@ -68,13 +68,13 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
-        every "mon,wed,fri", :at=>'5:02am, 3:02pm' do
+        every "mon,wed,fri", :at => '5:02am, 3:02pm' do
           command "blahblah"
         end
       file
     end
     
-    should "output the runner using that path" do
+    should "output the command using one entry because the times are aligned" do
       assert_match '2 5,15 * * 1,3,5 blahblah', @output
     end
   end
