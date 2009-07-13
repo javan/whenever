@@ -79,4 +79,27 @@ class OutputAtTest < Test::Unit::TestCase
     end
   end
   
+  context "A command every 1.month at very diverse times" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every [1.month, 1.day], :at => 'beginning of the month at 5:02am, june 17th at 2:22pm, june 3rd at 3:33am' do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output 6 commands since none align" do
+      # The 1.month commands
+      assert_match '2 5 1 * * blahblah', @output
+      assert_match '22 14 17 * * blahblah', @output
+      assert_match '33 3 3 * * blahblah', @output
+      
+      # The 1.day commands
+      assert_match '2 5 * * * blahblah', @output
+      assert_match '22 14 * * * blahblah', @output
+      assert_match '33 3 * * * blahblah', @output
+    end
+  end
+  
 end
