@@ -40,7 +40,7 @@ module Whenever
     end
   
     def whenever_cron
-      @whenever_cron ||= [comment_open, Whenever.cron(@options), comment_close].join("\n")
+      @whenever_cron ||= [comment_open, Whenever.cron(@options), comment_close].join("\n") + "\n"
     end
     
     def read_crontab
@@ -86,7 +86,7 @@ module Whenever
       
       # If an existing identier block is found, replace it with the new cron entries
       if read_crontab.index(comment_open) && read_crontab.index(comment_close)
-        read_crontab.gsub(Regexp.new("#{comment_open}.+#{comment_close}", Regexp::MULTILINE), whenever_cron)
+        read_crontab.gsub(Regexp.new("#{comment_open}.+#{comment_close}", Regexp::MULTILINE), whenever_cron.chomp)
       else # Otherwise, append the new cron entries after any existing ones
         [read_crontab, whenever_cron].join("\n\n")
       end
