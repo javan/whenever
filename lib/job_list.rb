@@ -98,7 +98,7 @@ module Whenever
     #
     def combine(entries)
       entries.map! { |entry| entry.split(/ +/,6 )}
-      0.upto(5) do |f|
+      0.upto(4) do |f|
         (entries.length-1).downto(1) do |i|
           next if entries[i][f] == '*'
           comparison = entries[i][0...f] + entries[i][f+1..-1]
