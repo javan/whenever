@@ -1,3 +1,9 @@
+== 0.3.5 / June 13th, 2009
+
+* Added ability to accept lists of every's and at's and intelligently group them. (ex: every 'monday, wednesday', :at => ['3pm, 6am']). [Sam Ruby]
+
+* Fixed issue with new lines. #18 [Javan Makhmali]
+
 == 0.3.1 / June 25th, 2009
 
 * Removed activesupport gem dependency. #1 [Javan Makhmali]
