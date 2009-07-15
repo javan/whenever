@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{whenever}
-  s.version = "0.3.5"
+  s.version = "0.3.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Javan Makhmali"]
-  s.date = %q{2009-07-13}
+  s.date = %q{2009-07-15}
   s.description = %q{Provides clean ruby syntax for defining messy cron jobs and running them Whenever.}
   s.email = %q{javan@javan.us}
   s.executables = ["whenever", "wheneverize"]

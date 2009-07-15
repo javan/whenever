@@ -1,6 +1,11 @@
+== 0.3.6 / June 15th, 2009
+
+* Setting a PATH in the crontab automatically based on the user's PATH. [Javan Makhmali]
+
+
 == 0.3.5 / June 13th, 2009
 
-* Added ability to accept lists of every's and at's and intelligently group them. (ex: every 'monday, wednesday', :at => ['3pm, 6am']). [Sam Ruby]
+* Added ability to accept lists of every's and at's and intelligently group them. (ex: every 'monday, wednesday', :at => ['3pm', '6am']). [Sam Ruby]
 
 * Fixed issue with new lines. #18 [Javan Makhmali]
 

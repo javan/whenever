@@ -57,6 +57,8 @@ module Whenever
     end
   
     def generate_cron_output
+      set_path_environment_variable
+      
       [environment_variables, cron_jobs].compact.join
     end
     
@@ -76,6 +78,19 @@ module Whenever
         variable, value = *pair.split('=')
         set(variable.strip, value.strip) unless variable.blank? || value.blank?
       end
+    end
+    
+    def set_path_environment_variable
+      return if path_should_not_be_set_automatically?
+      @env[:PATH] = read_path unless read_path.blank?
+    end
+    
+    def read_path
+      ENV['PATH'] if ENV
+    end
+    
+    def path_should_not_be_set_automatically?
+      @set_path_automatically === false || @env[:PATH] || @env["PATH"]
     end
   
     def environment_variables
