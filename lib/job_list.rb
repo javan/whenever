@@ -112,7 +112,7 @@ module Whenever
     # them into one that runs on the 2nd minute at the 3rd and 4th hour.
     #
     def combine(entries)
-      entries.map! { |entry| entry.split(/ +/,6 )}
+      entries.map! { |entry| entry.split(/ +/, 6) }
       0.upto(4) do |f|
         (entries.length-1).downto(1) do |i|
           next if entries[i][f] == '*'
@@ -134,18 +134,25 @@ module Whenever
     def cron_jobs
       return if @jobs.empty?
       
-      output = []
+      shortcut_jobs = []
+      regular_jobs = []
+      
       @jobs.each do |time, jobs|
         jobs.each do |job|
           Whenever::Output::Cron.output(time, job) do |cron|
             cron << " >> #{job.cron_log} 2>&1" if job.cron_log 
             cron << "\n\n"
-            output << cron
+            
+            if cron.starts_with?("@")
+              shortcut_jobs << cron
+            else
+              regular_jobs << cron
+            end
           end
         end
       end
-      
-      combine(output).join
+
+      shortcut_jobs.join + combine(regular_jobs).join
     end
     
   end

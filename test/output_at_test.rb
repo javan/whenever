@@ -134,4 +134,45 @@ class OutputAtTest < Test::Unit::TestCase
     end
   end
   
+  context "Multiple commands output every :reboot" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every :reboot do
+          command "command_1"
+          command "command_2"
+        end
+      file
+    end
+    
+    should "output both commands @reboot" do
+      assert_match "@reboot command_1", @output
+      assert_match "@reboot command_2", @output
+    end
+  end
+  
+  context "Many different job types output every :day" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :path, '/your/path'
+        every :day do
+          rake "blah:blah"
+          runner "runner_1"
+          command "command_1"
+          runner "runner_2"
+          command "command_2"
+        end
+      file
+    end
+    
+    should "output all of the commands @daily" do
+      assert_match '@daily cd /your/path && RAILS_ENV=production /usr/bin/env rake blah:blah', @output
+      assert_match '@daily /your/path/script/runner -e production "runner_1"', @output
+      assert_match '@daily command_1', @output
+      assert_match '@daily /your/path/script/runner -e production "runner_2"', @output
+      assert_match '@daily command_2', @output
+    end
+  end
+  
 end
