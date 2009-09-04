@@ -1,3 +1,8 @@
+== 0.3.7 / September 4th, 2009
+
+* No longer tries (and fails) to combine @shortcut jobs. #20 [Javan Makhmali]
+
+
 == 0.3.6 / June 15th, 2009
 
 * Setting a PATH in the crontab automatically based on the user's PATH. [Javan Makhmali]
