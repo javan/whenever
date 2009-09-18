@@ -66,7 +66,46 @@ This will create an initial "config/schedule.rb" file you.
   end
 
 More examples on the wiki: http://wiki.github.com/javan/whenever/instructions-and-examples
+
+== Output redirection
+
+In your schedule.rb file you can specify the redirection options for your commands at a global or command level by setting the 'output' variable.
+
+  # adds ">> /path/to/file.log 2>&1" to all commands
+  set :output => '/path/to/file.log'
+
+Or you can STDOUT and STDERR separately,
+
+  # adds ">> cron.log 2> error.log" to all commands
+  set :output => {:error => 'error.log', :standard => 'cron.log'}
   
+  # adds ">> cron.log" to all commands
+  set :output => {:standard => 'cron.log'}
+  
+  # adds "2> error.log" to all commands
+  set :output => {:error => 'error.log'}
+
+Additionally you can set these values at the command level,
+
+  every 3.hours do
+    runner "MyModel.some_process", :output => 'cron.log'     
+    rake "my:rake:task", :output => {:error => 'error.log', :standard => 'cron.log'}
+    command "/usr/bin/cmd"
+  end  
+
+In all cases you can if you explicitly set the value of any output to 'nil' it will add a redirect to /dev/null
+
+  # adds ">> /dev/null 2>&1" to all commands
+  set :output => nil
+  set :output => {:error => nil, :standard => nil}
+
+  # adds ">> /dev/null" to all commands
+  set :output => {:standard => nil}
+
+  # adds "2> /dev/null" to all commands
+  set :output => {:error => nil}
+
+
 == Cron output
 
   $ cd /my/rails/app

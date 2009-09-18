@@ -38,7 +38,8 @@ module Whenever
     end
     
     def command(task, options = {})
-      options[:cron_log] ||= @cron_log unless options[:cron_log] === false
+      @output = :unset unless defined?(@output)
+      options[:output]   ||= options.has_key?(:output) ? options[:output] : @output
       options[:class]    ||= Whenever::Job::Default
       @jobs[@current_time_scope] ||= []
       @jobs[@current_time_scope] << options[:class].new(@options.merge(:task => task).merge(options))
@@ -140,7 +141,7 @@ module Whenever
       @jobs.each do |time, jobs|
         jobs.each do |job|
           Whenever::Output::Cron.output(time, job) do |cron|
-            cron << " >> #{job.cron_log} 2>&1" if job.cron_log 
+            cron << job.redirect_output 
             cron << "\n\n"
             
             if cron.starts_with?("@")
