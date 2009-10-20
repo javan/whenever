@@ -11,5 +11,5 @@ module Whenever
       ::RAILS_ROOT
     end
   end
-  
+
 end

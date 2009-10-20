@@ -1,3 +1,10 @@
+== 0.4.0 / October 20th, 2009
+
+* New output option replaces the old cron_log option for output redirection and is much more flexible. #31 [Peer Allan]
+
+* Reorganized the lib files (http://weblog.rubyonrails.org/2009/9/1/gem-packaging-best-practices) and switched to Jeweler from Echoe.
+
+
 == 0.3.7 / September 4th, 2009
 
 * No longer tries (and fails) to combine @shortcut jobs. #20 [Javan Makhmali]

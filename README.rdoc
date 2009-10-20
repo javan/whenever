@@ -8,35 +8,17 @@ Discussion: http://groups.google.com/group/whenever-gem
 
 == Installation
 
-Regular (non-Rails) install:
+If you haven't already, get set up with http://gemcutter.org
   
-  $ gem sources -a http://gems.github.com  #you only need to run this once
-  $ sudo gem install javan-whenever
+  $ sudo gem install whenever
 
 In a Rails (2.1 or greater) application:
   
 in your "config/environment.rb" file:
 
   Rails::Initializer.run do |config|
-    config.gem 'javan-whenever', :lib => false, :source => 'http://gems.github.com'
+    config.gem 'whenever', :lib => false, :source => 'http://gemcutter.org/'
   end
-  
-To install this gem (and all other missing gem dependencies), run rake gems:install (use sudo if necessary).
-
-In older versions of Rails:
-
-  $ gem sources -a http://gems.github.com  #you only need to run this once
-  $ gem install javan-whenever
-
-in your "config/environment.rb" file:
-
-  Rails::Initializer.run do |config|
-    ...
-  end
-
-  require 'whenever'
-  
-NOTE: Requiring the whenever gem inside your Rails application is technically optional. However, if you plan to use something like Capistrano to automatically deploy and write your crontab file, you'll need to have the gem installed on your servers, and requiring it in your app is one way to ensure this.
 
 == Getting started
 
@@ -67,51 +49,12 @@ This will create an initial "config/schedule.rb" file you.
 
 More examples on the wiki: http://wiki.github.com/javan/whenever/instructions-and-examples
 
-== Output redirection
-
-In your schedule.rb file you can specify the redirection options for your commands at a global or command level by setting the 'output' variable.
-
-  # adds ">> /path/to/file.log 2>&1" to all commands
-  set :output => '/path/to/file.log'
-
-Or you can STDOUT and STDERR separately,
-
-  # adds ">> cron.log 2> error.log" to all commands
-  set :output => {:error => 'error.log', :standard => 'cron.log'}
-  
-  # adds ">> cron.log" to all commands
-  set :output => {:standard => 'cron.log'}
-  
-  # adds "2> error.log" to all commands
-  set :output => {:error => 'error.log'}
-
-Additionally you can set these values at the command level,
-
-  every 3.hours do
-    runner "MyModel.some_process", :output => 'cron.log'     
-    rake "my:rake:task", :output => {:error => 'error.log', :standard => 'cron.log'}
-    command "/usr/bin/cmd"
-  end  
-
-In all cases you can if you explicitly set the value of any output to 'nil' it will add a redirect to /dev/null
-
-  # adds ">> /dev/null 2>&1" to all commands
-  set :output => nil
-  set :output => {:error => nil, :standard => nil}
-
-  # adds ">> /dev/null" to all commands
-  set :output => {:standard => nil}
-
-  # adds "2> /dev/null" to all commands
-  set :output => {:error => nil}
-
-
 == Cron output
 
   $ cd /my/rails/app
   $ whenever
 
-And you'll see your schedule.rb converted to cron sytax
+And you'll see your schedule.rb converted to cron sytax. Note: running `whenever' with no options does not display your current crontab file, it simply shows you the output of converting your schedule.rb file.
 
 == Capistrano integration
 

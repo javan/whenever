@@ -37,8 +37,6 @@ content = <<-FILE
 # Example:
 #
 # set :output, "/path/to/my/cron_log.log"
-# set :output, {:error => '/path/to/error.log', :standard => '/path/to/cron.log'}
-# set :output, {:error => '/path/to/error.log', :standard => nil}
 #
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
