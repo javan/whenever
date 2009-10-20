@@ -32,5 +32,6 @@ job_types/default
 job_types/rake_task 
 job_types/runner 
 outputs/cron
+outputs/cron/output_redirection
 command_line 
 }.each { |file| require	File.expand_path(File.dirname(__FILE__) + "/#{file}") }

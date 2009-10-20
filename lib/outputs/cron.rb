@@ -5,10 +5,11 @@ module Whenever
 
       attr_accessor :time, :task
 
-      def initialize(time = nil, task = nil, at = nil)
+      def initialize(time = nil, task = nil, at = nil, output_redirection = nil)
         @time = time
         @task = task
         @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
+        @output_redirection = output_redirection
       end
 
       def self.enumerate(item)
@@ -24,10 +25,13 @@ module Whenever
       def self.output(times, job)
         enumerate(times).each do |time|
           enumerate(job.at).each do |at|
-            out = new(time, job.output, at)
-            yield "#{out.time_in_cron_syntax} #{out.task}"
+            yield new(time, job.output, at, job.output_redirection).output
           end
         end
+      end
+      
+      def output
+        [time_in_cron_syntax, task, output_redirection].compact.join(' ').strip
       end
 
       def time_in_cron_syntax
@@ -36,6 +40,10 @@ module Whenever
           when String then parse_as_string
           else parse_time
         end
+      end
+      
+      def output_redirection
+        OutputRedirection.new(@output_redirection).to_s unless @output_redirection == :not_set
       end
 
     protected
