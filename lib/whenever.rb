@@ -1,15 +1,11 @@
-unless defined?(Whenever)
-  $:.unshift(File.dirname(__FILE__))
-   
-  # Hoping to load Rails' Rakefile
-  begin
-    load 'Rakefile'
-  rescue LoadError => e
-    nil
-  end
-end
-
 require 'chronic'
+
+# Hoping to load Rails' Rakefile
+begin
+  load 'Rakefile'
+rescue LoadError
+  nil
+end
 
 # If Rails' rakefile was loaded than so was activesupport, but
 # if this is being used in a non-rails enviroment we need to require it.
@@ -17,21 +13,19 @@ require 'chronic'
 # problematic. See: http://github.com/javan/whenever/issues#issue/1
 begin
   require 'activesupport'
-rescue LoadError => e
+rescue LoadError
   warn 'To user Whenever you need the activesupport gem:'
   warn '$ sudo gem install activesupport'
   exit(1)
 end
 
 # Whenever files
-%w{ 
-base 
-version 
-job_list 
-job_types/default 
-job_types/rake_task 
-job_types/runner 
-outputs/cron
-outputs/cron/output_redirection
-command_line 
-}.each { |file| require	File.expand_path(File.dirname(__FILE__) + "/#{file}") }
+require 'whenever/base'
+require 'whenever/version'
+require 'whenever/job_list'
+require 'whenever/job_types/default'
+require 'whenever/job_types/rake_task'
+require 'whenever/job_types/runner'
+require 'whenever/outputs/cron'
+require 'whenever/outputs/cron/output_redirection'
+require 'whenever/command_line'
