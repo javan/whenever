@@ -29,7 +29,7 @@ module Whenever
         write_crontab(whenever_cron)
       else
         puts Whenever.cron(@options)
-        exit
+        exit(0)
       end
     end
     
@@ -67,7 +67,7 @@ module Whenever
         action = 'written' if @options[:write]
         action = 'updated' if @options[:update]
         puts "[write] crontab file #{action}"
-        exit
+        exit(0)
       else
         warn "[fail] Couldn't write crontab; try running `whenever' with no options to ensure your schedule file is valid."
         exit(1)

@@ -10,7 +10,7 @@ options = Hash.new
 
 OptionParser.new do |opts|
   opts.banner = "Usage: whenever [options]"
-  opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit }
+  opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
   opts.on('-w', '--write-crontab') { options[:write] = true }
   opts.on('-i', '--update-crontab [identifier]', 'Default: full path to schedule.rb file') do |identifier|
     options[:update] = true
