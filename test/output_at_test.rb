@@ -115,7 +115,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
-        every [1.month, 1.day], :at => 'beginning of the month at 5:02am, june 17th at 2:22pm, june 3rd at 3:33am' do
+        every [1.month, 1.day], :at => 'january 5:02am, june 17th at 2:22pm, june 3rd at 3:33am' do
           command "blahblah"
         end
       file
