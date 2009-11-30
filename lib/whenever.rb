@@ -7,15 +7,15 @@ rescue LoadError
   nil
 end
 
-# If Rails' rakefile was loaded than so was activesupport, but
+# If Rails' rakefile was loaded than so was active_support, but
 # if this is being used in a non-rails enviroment we need to require it.
 # It was previously defined as a dependency of this gem, but that became
 # problematic. See: http://github.com/javan/whenever/issues#issue/1
 begin
   require 'active_support'
 rescue LoadError
-  warn 'To user Whenever you need the activesupport gem:'
-  warn '$ sudo gem install activesupport'
+  warn 'To user Whenever you need the active_support gem:'
+  warn '$ sudo gem install active_support'
   exit(1)
 end
 

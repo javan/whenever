@@ -1,3 +1,10 @@
+== 0.4.1 / November 30th, 2009
+
+* exit(0) instead of just exit to make JRuby happy. [Elan Meng]
+
+* Fixed activesupport deprecation warning by requiring active_support. #37 [Andrew Nesbitt]
+
+
 == 0.4.0 / October 20th, 2009
 
 * New output option replaces the old cron_log option for output redirection and is much more flexible. #31 [Peer Allan]
