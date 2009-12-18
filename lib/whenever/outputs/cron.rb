@@ -60,7 +60,7 @@ module Whenever
         end
         
         if shortcut
-          if @at > 0
+          if @at.is_a?(Time) || (@at.is_a?(Numeric) && @at>0)
             raise ArgumentError, "You cannot specify an ':at' when using the shortcuts for times."
           else
             return shortcut
