@@ -32,11 +32,17 @@ module Whenever
         def redirect_from_hash
           case
             when stdout == '/dev/null' && stderr == '/dev/null'
-              ">> /dev/null 2>&1"
+              "> /dev/null 2>&1"
+            when stdout && stderr == '/dev/null'
+              ">> #{stdout} 2> /dev/null"
             when stdout && stderr
-              ">> #{stdout} 2> #{stderr}"
+              ">> #{stdout} 2>> #{stderr}"
+            when stderr == '/dev/null'
+              "2> /dev/null"
             when stderr
-              "2> #{stderr}"
+              "2>> #{stderr}"
+            when stdout == '/dev/null'
+              "> /dev/null"
             when stdout
               ">> #{stdout}"
             else
