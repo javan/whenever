@@ -3,7 +3,6 @@
 require 'rubygems'
 require 'optparse'
 require 'fileutils'
-require 'tempfile'
 require 'whenever'
 
 options = Hash.new
