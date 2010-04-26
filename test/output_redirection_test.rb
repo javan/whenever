@@ -46,7 +46,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     end
 
     should "output the command without the log syntax appended" do
-      assert_match /^.+ .+ .+ .+ blahblah >> dev_null 2> dev_err$/, @output
+      assert_match /^.+ .+ .+ .+ blahblah >> dev_null 2>> dev_err$/, @output
     end
   end
 
@@ -80,7 +80,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
   
     should "output the command with the overridden redirection syntax appended" do
       assert_no_match /.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, @output
-      assert_match /^.+ .+ .+ .+ blahblah >> dev_null 2> dev_err$/, @output
+      assert_match /^.+ .+ .+ .+ blahblah >> dev_null 2>> dev_err$/, @output
     end
   end
 
@@ -130,7 +130,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     end
 
     should "output the command without the redirection syntax appended" do
-      assert_match /^.+ .+ .+ .+ blahblah >> dev_null 2> dev_err$/, @output
+      assert_match /^.+ .+ .+ .+ blahblah >> dev_null 2>> dev_err$/, @output
     end
   end
 
@@ -145,8 +145,8 @@ class OutputRedirectionTest < Test::Unit::TestCase
       file
     end
 
-    should "output the command without the standard errror syntax appended" do
-      assert_match /^.+ .+ .+ .+ blahblah 2> dev_null$/, @output
+    should "output the command without the standard error syntax appended" do
+      assert_match /^.+ .+ .+ .+ blahblah 2>> dev_null$/, @output
     end
   end
 
@@ -177,7 +177,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     end
 
     should "output the command without the log syntax appended" do
-      assert_match /^.+ .+ .+ .+ blahblah 2> dev_err$/, @output
+      assert_match /^.+ .+ .+ .+ blahblah 2>> dev_err$/, @output
     end
   end
 
@@ -207,7 +207,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     end
 
     should "output the command with stdout directed to /dev/null" do
-      assert_match /^.+ .+ .+ .+ blahblah >> \/dev\/null$/, @output
+      assert_match /^.+ .+ .+ .+ blahblah > \/dev\/null$/, @output
     end
   end
 
@@ -237,7 +237,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     end
 
     should "output the command with stderr directed to /dev/null" do
-      assert_match /^.+ .+ .+ .+ blahblah >> \/dev\/null 2>&1$/, @output
+      assert_match /^.+ .+ .+ .+ blahblah > \/dev\/null 2>&1$/, @output
     end
   end
 
@@ -267,7 +267,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     end
 
     should "output the command with stderr directed to /dev/null" do
-      assert_match /^.+ .+ .+ .+ blahblah >> \/dev\/null 2> my_error.log$/, @output
+      assert_match /^.+ .+ .+ .+ blahblah >> \/dev\/null 2>> my_error.log$/, @output
     end
   end
 
