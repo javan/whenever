@@ -1,3 +1,5 @@
+require 'tempfile'
+
 module Whenever
   class CommandLine
     
