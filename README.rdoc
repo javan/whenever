@@ -7,18 +7,8 @@ Ryan Bates created a great Railscast about Whenever: http://railscasts.com/episo
 Discussion: http://groups.google.com/group/whenever-gem
 
 == Installation
-
-If you haven't already, get set up with http://gemcutter.org
   
-  $ sudo gem install whenever
-
-In a Rails (2.1 or greater) application:
-  
-in your "config/environment.rb" file:
-
-  Rails::Initializer.run do |config|
-    config.gem 'whenever', :lib => false, :source => 'http://gemcutter.org/'
-  end
+$ sudo gem install whenever
 
 == Getting started
 
@@ -91,7 +81,7 @@ If you've found a genuine bug or issue, please use the Issues section on github:
 
 == License
 
-Copyright (c) 2009 Javan Makhmali
+Copyright (c) 2009+ Javan Makhmali
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
