@@ -2,7 +2,6 @@
 
 require 'rubygems'
 require 'optparse'
-require 'fileutils'
 require 'whenever'
 
 options = Hash.new

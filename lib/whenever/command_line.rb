@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'tempfile'
 
 module Whenever
