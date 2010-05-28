@@ -85,6 +85,63 @@ NEW_CRON
       assert @command.run
     end
   end
+
+  context "A command line delete" do
+    setup do
+      File.expects(:exists?).with('config/schedule.rb').returns(true)
+      @command = Whenever::CommandLine.new(:clear => true, :identifier => 'My identifier')
+      @task = "#{two_hours} /my/command"
+    end
+
+    should "add an empty identifier block if there is no existing one" do
+      existing = '# Existing crontab'
+      @command.expects(:read_crontab).at_least_once.returns(existing)
+      
+      new_cron = <<-EXPECTED
+#{existing}
+
+# Begin Whenever generated tasks for: My identifier
+# End Whenever generated tasks for: My identifier
+EXPECTED
+      
+      assert_equal new_cron, @command.send(:updated_crontab)
+      
+      @command.expects(:write_crontab).with(new_cron).returns(true)
+      assert @command.run
+    end
+    
+    should "delete an existing block if the identifier matches" do
+      existing = <<-EXISTING_CRON
+# Something
+
+# Begin Whenever generated tasks for: My identifier
+My whenever job that was already here
+# End Whenever generated tasks for: My identifier
+
+# Begin Whenever generated tasks for: Other identifier
+This shouldn't get replaced
+# End Whenever generated tasks for: Other identifier
+EXISTING_CRON
+
+      @command.expects(:read_crontab).at_least_once.returns(existing)
+      
+      new_cron = <<-NEW_CRON
+# Something
+
+# Begin Whenever generated tasks for: My identifier
+# End Whenever generated tasks for: My identifier
+
+# Begin Whenever generated tasks for: Other identifier
+This shouldn't get replaced
+# End Whenever generated tasks for: Other identifier
+NEW_CRON
+      
+      assert_equal new_cron, @command.send(:updated_crontab)
+      
+      @command.expects(:write_crontab).with(new_cron).returns(true)
+      assert @command.run
+    end
+  end
   
   context "A command line update with no identifier" do
     setup do
@@ -97,5 +154,24 @@ NEW_CRON
       assert_equal "Whenever generated tasks for: DEFAULT", @command.send(:comment_base)
     end
   end
-  
+
+  context "combined params" do
+    setup do
+      Whenever::CommandLine.any_instance.expects(:exit)
+      Whenever::CommandLine.any_instance.expects(:warn)
+      File.expects(:exists?).with('config/schedule.rb').returns(true)
+    end
+
+    should "exit with write and clear" do
+      @command = Whenever::CommandLine.new(:write => true, :clear => true)
+    end
+    
+    should "exit with write and update" do
+      @command = Whenever::CommandLine.new(:write => true, :update => true)
+    end
+
+    should "exit with update and clear" do
+      @command = Whenever::CommandLine.new(:update => true, :clear => true)
+    end
+  end
 end

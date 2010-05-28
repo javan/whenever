@@ -19,14 +19,14 @@ module Whenever
         exit(1)
       end
 
-      if @options[:update] && @options[:write]
-        warn("[fail] Can't update AND write. choose one.")
+      if [@options[:update], @options[:write], @options[:clear]].compact.length > 1
+        warn("[fail] Can only update, write or delete. choose one.")
         exit(1)
       end
     end
     
     def run
-      if @options[:update]
+      if @options[:update] || @options[:clear]
         write_crontab(updated_crontab)
       elsif @options[:write]
         write_crontab(whenever_cron)
@@ -43,7 +43,7 @@ module Whenever
     end
   
     def whenever_cron
-      @whenever_cron ||= [comment_open, Whenever.cron(@options), comment_close].join("\n") + "\n"
+      @whenever_cron ||= [comment_open, (Whenever.cron(@options) unless @options[:clear]), comment_close].compact.join("\n") + "\n"
     end
     
     def read_crontab

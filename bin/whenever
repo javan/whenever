@@ -14,6 +14,10 @@ OptionParser.new do |opts|
     options[:update] = true
     options[:identifier] = identifier if identifier
   end
+  opts.on('-c', '--clear-crontab [identifier]') do |identifier|
+    options[:clear] = true
+    options[:identifier] = identifier if identifier
+  end
   opts.on('-f', '--load-file [schedule file]', 'Default: config/schedule.rb') do |file|
     options[:file] = file if file
   end
