@@ -67,6 +67,30 @@ By mixing and matching the <code>--load-file</code> and <code>--user</code> opti
 
 If you want to override a variable (like your environment) at the time of deployment you can do so with the <code>--set</code> option: http://wiki.github.com/javan/whenever/setting-variables-on-the-fly
 
+== Defining custom job types
+
+You can define custom job types in your schedule file:
+
+  job_type :rails3_runner do |job|
+    job.command = "rails runner"
+    job.uses_bundler = true
+  end
+  
+  every 1.day, :at => "2am" do
+    rails3_runner "MyModel.do_something_amazing"
+  end
+  
+This would create a job with the command "bundle exec rails runner". By defining jobs like this, you can also make reusable system commands such as:
+
+  job_type :my_great_command do |job|
+    job.environment = false # this stops whenever appending '-e production' to the task
+    job.command = "/usr/bin/my_great_command"
+  end
+  
+  every 3.days do
+    my_great_command "arg1 arg2 arg3"
+  end
+
 == Credit
 
 Whenever was created for use at Inkling (http://inklingmarkets.com) where I work. Their take on it: http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html
