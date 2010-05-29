@@ -80,7 +80,9 @@ You can define custom job types in your schedule file:
     rails3_runner "MyModel.do_something_amazing"
   end
   
-This would create a job with the command "bundle exec rails runner". By defining jobs like this, you can also make reusable system commands such as:
+This would create a job with the command "bundle exec rails runner". 
+
+By defining jobs like this, you can also make reusable system commands such as:
 
   job_type :my_great_command do |job|
     job.environment = false # this stops whenever appending '-e production' to the task
