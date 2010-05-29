@@ -49,10 +49,11 @@ module Whenever
     
     def job_type(name, options = {}, &block)
       (class << self; self; end).class_eval do
-        define_method(name) do |task|
+        define_method(name) do |task,*args|
           new_job = Whenever::Job::UserDefined.new
           block.call(new_job)
           options = new_job.to_options
+          options.merge!(args[0]) if args[0].is_a?(Hash)
           options.reverse_merge!(:environment => @environment, :path => @path)
           options[:class] = Whenever::Job::UserDefined
           command(task, options)

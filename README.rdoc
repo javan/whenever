@@ -85,7 +85,7 @@ This would create a job with the command "bundle exec rails runner".
 By defining jobs like this, you can also make reusable system commands such as:
 
   job_type :my_great_command do |job|
-    job.environment = false # this stops whenever appending '-e production' to the task
+    job.no_environment = true # this stops whenever appending '-e production' to the task
     job.command = "/usr/bin/my_great_command"
   end
   
