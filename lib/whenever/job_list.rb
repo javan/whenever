@@ -47,6 +47,19 @@ module Whenever
       @jobs[@current_time_scope] << options[:class].new(@options.merge(:task => task).merge(options))
     end
     
+    def job_type(name, options = {}, &block)
+      (class << self; self; end).class_eval do
+        define_method(name) do |task|
+          new_job = Whenever::Job::UserDefined.new
+          block.call(new_job)
+          options = new_job.to_options
+          options.reverse_merge!(:environment => @environment, :path => @path)
+          options[:class] = Whenever::Job::UserDefined
+          command(task, options)
+        end
+      end
+    end
+    
     def runner(task, options = {})
       options.reverse_merge!(:environment => @environment, :path => @path)
       options[:class] = Whenever::Job::Runner

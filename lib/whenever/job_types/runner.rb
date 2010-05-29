@@ -4,7 +4,7 @@ module Whenever
 
       def output
         path_required
-        %Q(cd #{File.join(@path)} && bundle exec rails runner -e #{@environment} #{task.inspect})
+        %Q(cd #{File.join(@path)} && script/runner -e #{@environment} #{task.inspect})
       end
       
     end
