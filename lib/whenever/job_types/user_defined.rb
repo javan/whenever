@@ -1,28 +1,47 @@
 module Whenever
   module Job
     class UserDefined < Whenever::Job::Default
-      attr_accessor :uses_bundler, :command, :no_environment
+      attr_accessor :command, :settings
       
-      def initialize(options={})
+      def initialize(opts={})
         super
-        @uses_bundler = options[:uses_bundler]
-        @command      = options[:command]
-        @no_environment = options[:no_environment]
+        @command = opts[:command]
+        @settings = opts[:settings] ||= {}
       end
       
       def to_options
-        { :uses_bundler => uses_bundler, :command => command, :no_environment => no_environment }
+        { :command => command, :settings => settings }
       end
 
       def output
-        out = []
-        out << "cd #{File.join(@path)} &&"
-        out << "bundle exec" if uses_bundler
-        out << command
-        out << "-e #{@environment}" unless no_environment
-        out << task.inspect
-        out.join(" ")
+        [ cd_path, bundler, command, app_environment, quoted_task ].compact.join(" ")
       end
+      
+      private
+      
+        def cd_path
+          parse_setting :path, "cd #{settings[:path]} &&", "cd #{File.join(@path)} &&"
+        end
+        
+        def app_environment
+          parse_setting :environment, "-e #{settings[:environment]}", "-e #{@environment}"
+        end
+        
+        def bundler
+          "bundle exec" if settings[:use_bundler]
+        end
+        
+        def parse_setting(name, with_option, without_option)
+          if settings.has_key? name
+            with_option if settings[name]
+          else
+            without_option
+          end
+        end
+        
+        def quoted_task
+          settings[:quote_task] == false ? task : task.inspect
+        end
       
     end
   end
