@@ -77,7 +77,7 @@ module Whenever
             raise ArgumentError, "Time must be in minutes or higher"
           when 1.minute...1.hour
             minute_frequency = @time / 60
-            timing[0] = comma_separated_timing(minute_frequency, 59)
+            timing[0] = comma_separated_timing(minute_frequency, 59, @at || 0)
           when 1.hour...1.day
             hour_frequency = (@time / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min : @at

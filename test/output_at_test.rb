@@ -175,4 +175,63 @@ class OutputAtTest < Test::Unit::TestCase
     end
   end
   
+  context "every 5 minutes but but starting at 1" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every 5.minutes, :at => 1 do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the command using that time" do
+      assert_match '1,6,11,16,21,26,31,36,41,46,51,56 * * * * blahblah', @output
+    end
+  end
+
+  context "every 4 minutes but starting at 2" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every 4.minutes, :at => 2 do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the command using that time" do
+      assert_match '2,6,10,14,18,22,26,30,34,38,42,46,50,54,58 * * * * blahblah', @output
+    end
+  end
+
+  context "every 3 minutes but starting at 7" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every 3.minutes, :at => 7 do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the command using that time" do
+      assert_match '7,10,13,16,19,22,25,28,31,34,37,40,43,46,49,52,55,58 * * * * blahblah', @output
+    end
+  end
+
+  context "every 2 minutes but starting at 27" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every 2.minutes, :at => 27 do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the command using that time" do
+      assert_match '27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59 * * * * blahblah', @output
+    end
+  end
 end
