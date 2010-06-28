@@ -20,7 +20,7 @@ module Whenever
       end
 
       if [@options[:update], @options[:write], @options[:clear]].compact.length > 1
-        warn("[fail] Can only update, write or delete. choose one.")
+        warn("[fail] Can only update, write or clear. Choose one.")
         exit(1)
       end
     end

@@ -39,6 +39,28 @@ This will create an initial "config/schedule.rb" file you.
 
 More examples on the wiki: http://wiki.github.com/javan/whenever/instructions-and-examples
 
+== Define your own job types
+
+Whenever ships with three pre-defined job types: command, runner, and rake. You can define your own with <code>job_type</code>.
+
+For example:
+
+  job_type :awesome, '/usr/local/bin/awesome :task :fun_level'
+  
+  every 2.hours do
+    awesome "party", :fun_level => "extreme"
+  end
+  
+Would run <code>/usr/local/bin/awesome party extreme</code> every two hours. <code>:task</code> is always replaced with the first argument, and any additional <code>:whatevers</code> are replaced with the options passed in or by variables that have been defined with <code>set</code>.
+
+The default job types that ship with Whenever are defined like so:
+
+  job_type :command, ':task'
+  job_type :runner,  'cd :path && script/runner -e :environment ":task"'
+  job_type :rake,    'cd :path && RAILS_ENV=:environment /usr/bin/env rake :task'
+
+If a <code>:path</code> is not set it will default to the directory in which <code>whenever</code> was executed. <code>:environment</code> will default to 'production'.
+
 == Cron output
 
   $ cd /my/rails/app
