@@ -2,8 +2,7 @@ module Whenever
   class JobList
   
     def initialize(options)
-      @jobs = Hash.new
-      @env  = Hash.new
+      @jobs, @env, @set_variables = {}, {}, {}
       
       case options
         when String
@@ -16,7 +15,12 @@ module Whenever
           end
           pre_set(options[:set])
       end
-
+      
+      # Load all job type files.
+      Dir["#{File.expand_path(File.dirname(__FILE__))}/job_types/*.rb"].each do |file|
+        eval(File.read(file))
+      end
+      
       eval(config)
     end
     
@@ -25,6 +29,7 @@ module Whenever
       
       instance_variable_set("@#{variable}".to_sym, value)
       self.class.send(:attr_reader, variable.to_sym)
+      @set_variables[variable] = value
     end
     
     def env(variable, value)
@@ -37,40 +42,21 @@ module Whenever
       yield
     end
     
-    def command(task, options = {})
-      # :cron_log was an old option for output redirection, it remains for backwards compatibility
-      options[:output] = (options[:cron_log] || @cron_log) if defined?(@cron_log) || options.has_key?(:cron_log)
-      # :output is the newer, more flexible option.
-      options[:output] = @output if defined?(@output) && !options.has_key?(:output)
-      options[:class] ||= Whenever::Job::Default
-      @jobs[@current_time_scope] ||= []
-      @jobs[@current_time_scope] << options[:class].new(@options.merge(:task => task).merge(options))
-    end
-    
-    def job_type(name, options = {}, &block)
-      (class << self; self; end).class_eval do
-        define_method(name) do |task,*args|
-          new_job = Whenever::Job::UserDefined.new
-          block.call(new_job)
-          options = new_job.to_options
-          options.merge!(args[0]) if args[0].is_a?(Hash)
-          options.reverse_merge!(:environment => @environment, :path => @path)
-          options[:class] = Whenever::Job::UserDefined
-          command(task, options)
+    def job_type(name, template)
+      class_eval do
+        define_method(name) do |task, *args|
+          options = { :task => task, :template => template }
+          options.merge!(args[0]) if args[0].is_a? Hash
+          
+          # :cron_log was an old option for output redirection, it remains for backwards compatibility
+          options[:output] = (options[:cron_log] || @cron_log) if defined?(@cron_log) || options.has_key?(:cron_log)
+          # :output is the newer, more flexible option.
+          options[:output] = @output if defined?(@output) && !options.has_key?(:output)
+          
+          @jobs[@current_time_scope] ||= []
+          @jobs[@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options))
         end
       end
-    end
-    
-    def runner(task, options = {})
-      options.reverse_merge!(:environment => @environment, :path => @path)
-      options[:class] = Whenever::Job::Runner
-      command(task, options)
-    end
-    
-    def rake(task, options = {})
-      options.reverse_merge!(:environment => @environment, :path => @path)
-      options[:class] = Whenever::Job::RakeTask
-      command(task, options)
     end
   
     def generate_cron_output
@@ -93,7 +79,7 @@ module Whenever
       pairs.each do |pair|
         next unless pair.index('=')
         variable, value = *pair.split('=')
-        set(variable.strip, value.strip) unless variable.blank? || value.blank?
+        set(variable.strip.to_sym, value.strip) unless variable.blank? || value.blank?
       end
     end
     

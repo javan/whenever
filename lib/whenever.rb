@@ -13,10 +13,7 @@ end
 # Whenever files
 require 'whenever/base'
 require 'whenever/job_list'
-require 'whenever/job_types/default'
-require 'whenever/job_types/user_defined'
-require 'whenever/job_types/rake_task'
-require 'whenever/job_types/runner'
+require 'whenever/job'
 require 'whenever/outputs/cron'
 require 'whenever/outputs/cron/output_redirection'
 require 'whenever/command_line'
