@@ -89,41 +89,6 @@ By mixing and matching the <code>--load-file</code> and <code>--user</code> opti
 
 If you want to override a variable (like your environment) at the time of deployment you can do so with the <code>--set</code> option: http://wiki.github.com/javan/whenever/setting-variables-on-the-fly
 
-== Defining custom job types
-
-You can define custom job types in your schedule file:
-
-  job_type :rails3_runner do |job|
-    job.command = "rails runner"
-    job.settings = { :use_bundler => true }
-  end
-  
-  every 1.day, :at => "2am" do
-    rails3_runner "MyModel.do_something_amazing"
-  end
-  
-This would create a job like: <tt>cd /path/to/app && bundle exec rails runner "MyModel.do_something_amazing"</tt>
-
-By defining jobs like this, you can also make reusable system commands such as:
-
-  job_type :my_great_command do |job|
-    job.command = "/usr/bin/my_great_command"
-    job.settings = { :environment => false, :path => false, :quote_task => false }
-  end
-  
-  every 3.days do
-    my_great_command "arg1 arg2 'arg3'"
-  end
-  
-This would create a job like: <tt>/usr/bin/my_great_command arg1 arg2 'arg3'</tt>
-
-The settings available when creating job types include:
-
-<tt>environment</tt>:: Set to <tt>false</tt> to stop the command trying to specify the environment at all. Set to a string or symbol to set the environment to that.
-<tt>path</tt>:: Set to <tt>false</tt> to stop the command running cd before the task. Set to a string or symbol to set the path the cd to.
-<tt>use_bundler</tt>:: If set to <tt>true</tt>, the task will be prefixed by <tt>bundle exec</tt>
-<tt>quote_task</tt>:: If set to <tt>false</tt>, whenever will not print the arguments passed to the job in quote marks
-
 == Credit
 
 Whenever was created for use at Inkling (http://inklingmarkets.com) where I work. Their take on it: http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html
