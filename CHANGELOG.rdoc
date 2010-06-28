@@ -1,3 +1,12 @@
+== 0.5.0 / June 28th, 2010
+
+* New job_type API for writing custom jobs. Internals use this to define command, runner, and rake. [Javan Makhmali - inspired by idlefingers (Damien)]
+
+* Jobs < 1.hour can specify an :at. [gorenje]
+
+* --clear option to remove crontab entries for a specific [identifier]. [mraidel (Michael Raidel)]
+
+
 == 0.4.2 / April 26th, 2010
 
 * runners now cd into the app's directory and then execute. [Michael Guterl]

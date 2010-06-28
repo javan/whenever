@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{whenever}
-  s.version = "0.4.2"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Javan Makhmali"]
-  s.date = %q{2010-04-26}
+  s.date = %q{2010-06-28}
   s.description = %q{Clean ruby syntax for defining and deploying messy cron jobs.}
   s.email = %q{javan@javan.us}
   s.executables = ["whenever", "wheneverize"]
@@ -26,10 +26,9 @@ Gem::Specification.new do |s|
      "lib/whenever.rb",
      "lib/whenever/base.rb",
      "lib/whenever/command_line.rb",
+     "lib/whenever/job.rb",
      "lib/whenever/job_list.rb",
      "lib/whenever/job_types/default.rb",
-     "lib/whenever/job_types/rake_task.rb",
-     "lib/whenever/job_types/runner.rb",
      "lib/whenever/outputs/cron.rb",
      "lib/whenever/outputs/cron/output_redirection.rb",
      "lib/whenever/version.rb",
@@ -37,6 +36,7 @@ Gem::Specification.new do |s|
      "test/cron_test.rb",
      "test/output_at_test.rb",
      "test/output_command_test.rb",
+     "test/output_defined_job_test.rb",
      "test/output_env_test.rb",
      "test/output_rake_test.rb",
      "test/output_redirection_test.rb",
@@ -54,6 +54,7 @@ Gem::Specification.new do |s|
      "test/cron_test.rb",
      "test/output_at_test.rb",
      "test/output_command_test.rb",
+     "test/output_defined_job_test.rb",
      "test/output_env_test.rb",
      "test/output_rake_test.rb",
      "test/output_redirection_test.rb",
