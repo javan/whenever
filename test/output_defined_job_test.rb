@@ -84,4 +84,35 @@ class OutputDefinedJobTest < Test::Unit::TestCase
     end
   end
   
+  context "A defined job with a task in single quotes" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        job_type :some_job, "happy ':task'"
+        every 2.hours do
+          some_job "first 'birthday'"
+        end
+      file
+    end
+    
+    should "output the defined job with the single quotes escaped" do
+      assert_match two_hours + %Q( happy 'first '\''birthday'\''), @output
+    end
+  end
+  
+  context "A defined job with a task in double quotes" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        job_type :some_job, 'happy ":task"'
+        every 2.hours do
+          some_job 'first "birthday"'
+        end
+      file
+    end
+    
+    should "output the defined job with the single quotes escaped" do
+      assert_match two_hours + ' happy "first \"birthday\""', @output
+    end
+  end
 end

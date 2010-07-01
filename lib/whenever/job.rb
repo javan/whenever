@@ -13,7 +13,14 @@ module Whenever
     end
   
     def output
-      @options[:template].gsub(/:\w+/) do |key|
+      template = @options[:template].dup
+      
+      unless @options[:escape_quotes] === false
+        template.sub!("':task'", %Q('#{@options[:task].gsub(/'/) { "'\''" }}'))
+        template.sub!('":task"', %Q("#{@options[:task].gsub(/"/) { '\"' }}"))
+      end
+      
+      template.gsub(/:\w+/) do |key|
         @options[key.sub(':', '').to_sym]
       end
     end
