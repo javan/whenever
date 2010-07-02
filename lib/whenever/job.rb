@@ -15,14 +15,25 @@ module Whenever
     def output
       template = @options[:template].dup
       
-      unless @options[:escape_quotes] === false
-        template.sub!("':task'", %Q('#{@options[:task].gsub(/'/) { "'\''" }}'))
-        template.sub!('":task"', %Q("#{@options[:task].gsub(/"/) { '\"' }}"))
-      end
-      
       template.gsub(/:\w+/) do |key|
-        @options[key.sub(':', '').to_sym]
+        if key == ':task' && template.index("':task'")
+          escape_single_quotes(@options[:task])
+        elsif key == ':task' && template.index('":task"')
+          escape_double_quotes(@options[:task])
+        else
+          @options[key.sub(':', '').to_sym]
+        end
       end
+    end
+    
+  protected
+  
+    def escape_single_quotes(str)
+      str.gsub(/'/, %q('\''))
+    end
+    
+    def escape_double_quotes(str)
+      str.gsub(/"/, %q(\"))
     end
     
   end
