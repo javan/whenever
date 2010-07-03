@@ -18,14 +18,20 @@ class JobTest < Test::Unit::TestCase
       assert_equal %q("abc123"), job.output
     end
     
-    should "output escaped single quotes in :task when it's wrapped in them" do
-      job = new_job(:template => "outside ':task' outside", :task => "'inside'")
-      assert_equal %q(outside ''\''inside'\''' outside), job.output
+    should "output escaped single quotes in when it's wrapped in them" do
+      job = new_job(
+        :template => "before ':foo' after",
+        :foo => "quote -> ' <- quote"
+      )
+      assert_equal %q(before 'quote -> '\'' <- quote' after), job.output
     end
     
-    should "output escaped double quotes in :task when it's wrapped in them" do
-      job = new_job(:template => 'outside ":task" outside', :task => '"inside"')
-      assert_equal %q(outside "\"inside"\" outside), job.output
+    should "output escaped double quotes when it's wrapped in them" do
+      job = new_job(
+        :template => 'before ":foo" after',
+        :foo => 'quote -> " <- quote'
+      )
+      assert_equal %q(before "quote -> \" <- quote" after), job.output
     end
   end
 

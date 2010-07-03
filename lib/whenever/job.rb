@@ -16,24 +16,33 @@ module Whenever
       template = @options[:template].dup
       
       template.gsub(/:\w+/) do |key|
-        if key == ':task' && template.index("':task'")
-          escape_single_quotes(@options[:task])
-        elsif key == ':task' && template.index('":task"')
-          escape_double_quotes(@options[:task])
+
+        single_quote = "'"
+        double_quote = '"'
+
+        char_before = $`[-1..-1]
+        char_after = $'[0..0]
+
+        option = @options[key.sub(':', '').to_sym]
+
+        if char_before == single_quote && char_after == single_quote
+          escape_single_quotes(option)
+        elsif char_after == double_quote && char_after == double_quote
+          escape_double_quotes(option)
         else
-          @options[key.sub(':', '').to_sym]
+          option
         end
       end
     end
     
   protected
-  
+
     def escape_single_quotes(str)
-      str.gsub(/'/, %q('\''))
+      str.gsub(/'/) { "'\\''" }
     end
     
     def escape_double_quotes(str)
-      str.gsub(/"/, %q(\"))
+      str.gsub(/"/) { '\"' }
     end
     
   end
