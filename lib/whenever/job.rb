@@ -13,21 +13,13 @@ module Whenever
     end
   
     def output
-      template = @options[:template].dup
-      
-      template.gsub(/:\w+/) do |key|
-
-        single_quote = "'"
-        double_quote = '"'
-
-        char_before = $`[-1..-1]
-        char_after = $'[0..0]
-
+      @options[:template].dup.gsub(/:\w+/) do |key|
+        before_and_after = [$`[-1..-1], $'[0..0]]
         option = @options[key.sub(':', '').to_sym]
 
-        if char_before == single_quote && char_after == single_quote
+        if before_and_after.all? { |c| c == "'" }
           escape_single_quotes(option)
-        elsif char_after == double_quote && char_after == double_quote
+        elsif before_and_after.all? { |c| c == '"' }
           escape_double_quotes(option)
         else
           option
