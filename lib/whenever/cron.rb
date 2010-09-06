@@ -1,6 +1,5 @@
 module Whenever
   module Output
-
     class Cron
 
       attr_accessor :time, :task
@@ -43,7 +42,7 @@ module Whenever
       end
       
       def output_redirection
-        OutputRedirection.new(@output_redirection).to_s unless @output_redirection == :not_set
+        Whenever::Output::Cron::OutputRedirection.new(@output_redirection).to_s unless @output_redirection == :not_set
       end
 
     protected
@@ -60,7 +59,7 @@ module Whenever
         end
         
         if shortcut
-          if @at.is_a?(Time) || (@at.is_a?(Numeric) && @at>0)
+          if @at.is_a?(Time) || (@at.is_a?(Numeric) && @at > 0)
             raise ArgumentError, "You cannot specify an ':at' when using the shortcuts for times."
           else
             return shortcut
@@ -134,6 +133,5 @@ module Whenever
       end
 
     end
-
   end
 end

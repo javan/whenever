@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'rake'
 
-require 'lib/whenever/version.rb'
+require File.expand_path(File.dirname(__FILE__) + "/lib/whenever/version")
 
 begin
   require 'jeweler'
@@ -13,7 +13,10 @@ begin
     gemspec.email       = "javan@javan.us"
     gemspec.homepage    = "http://github.com/javan/whenever"
     gemspec.authors     = ["Javan Makhmali"]
-    gemspec.add_dependency("chronic", '>= 0.2.3')
+    gemspec.add_dependency 'chronic', '>= 0.2.3'
+    gemspec.add_dependency 'activesupport', '>= 2.3.4'
+    gemspec.add_development_dependency 'shoulda', '>= 2.1.1'
+    gemspec.add_development_dependency 'mocha', '>= 0.9.5'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -22,10 +25,10 @@ end
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/*.rb'
-  test.verbose = true
-end
+    test.libs      << 'lib' << 'test'
+    test.pattern   = 'test/{functional,unit}/**/*_test.rb'
+    test.verbose   = true
+  end
 
 task :test => :check_dependencies
 

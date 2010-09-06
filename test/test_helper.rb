@@ -1,24 +1,11 @@
 require 'rubygems'
-require 'test/unit'
 
-require File.expand_path(File.dirname(__FILE__) + "/../lib/whenever")
+# Want to test the files here, in lib, not in an installed version of the gem.
+$:.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+require 'whenever'
 
-begin
-  require 'shoulda'
-rescue LoadError
-  warn 'To test Whenever you need the shoulda gem:'
-  warn '$ sudo gem install thoughtbot-shoulda'
-  exit(1)
-end
-
-begin
-  require 'mocha'
-rescue LoadError
-  warn 'To test Whenever you need the mocha gem:'
-  warn '$ sudo gem install mocha'
-  exit(1)
-end
-
+require 'shoulda'
+require 'mocha'
 
 module TestExtensions
   
