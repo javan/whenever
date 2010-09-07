@@ -1,7 +1,7 @@
 module Whenever
   class Job
     
-    attr_accessor :at, :output_redirection
+    attr_reader :at, :output_redirection
   
     def initialize(options = {})
       @options = options

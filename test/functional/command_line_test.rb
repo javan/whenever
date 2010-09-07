@@ -174,4 +174,73 @@ NEW_CRON
       @command = Whenever::CommandLine.new(:update => true, :clear => true)
     end
   end
+  
+  context "A runner where the environment is overridden using the :set option" do
+    setup do
+      @output = Whenever.cron :set => 'environment=serious', :string => \
+      <<-file
+        set :environment, :silly
+        set :path, '/my/path'
+        every 2.hours do
+          runner "blahblah"
+        end
+      file
+    end
+    
+    should "output the runner using the override environment" do
+      assert_match two_hours + %( cd /my/path && script/runner -e serious 'blahblah'), @output
+    end
+  end
+  
+  context "A runner where the environment and path are overridden using the :set option" do
+    setup do
+      @output = Whenever.cron :set => 'environment=serious&path=/serious/path', :string => \
+      <<-file
+        set :environment, :silly
+        set :path, '/silly/path'
+        every 2.hours do
+          runner "blahblah"
+        end
+      file
+    end
+    
+    should "output the runner using the overridden path and environment" do
+      assert_match two_hours + %( cd /serious/path && script/runner -e serious 'blahblah'), @output
+    end
+  end
+  
+  context "A runner where the environment and path are overridden using the :set option with spaces in the string" do
+    setup do
+      @output = Whenever.cron :set => ' environment = serious&  path =/serious/path', :string => \
+      <<-file
+        set :environment, :silly
+        set :path, '/silly/path'
+        every 2.hours do
+          runner "blahblah"
+        end
+      file
+    end
+    
+    should "output the runner using the overridden path and environment" do
+      assert_match two_hours + %( cd /serious/path && script/runner -e serious 'blahblah'), @output
+    end
+  end
+  
+  context "A runner where the environment is overridden using the :set option but no value is given" do
+    setup do
+      @output = Whenever.cron :set => ' environment=', :string => \
+      <<-file
+        set :environment, :silly
+        set :path, '/silly/path'
+        every 2.hours do
+          runner "blahblah"
+        end
+      file
+    end
+    
+    should "output the runner using the original environmnet" do
+      assert_match two_hours + %( cd /silly/path && script/runner -e silly 'blahblah'), @output
+    end
+  end
+  
 end
