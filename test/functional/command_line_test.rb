@@ -242,5 +242,47 @@ NEW_CRON
       assert_match two_hours + %( cd /silly/path && script/runner -e silly 'blahblah'), @output
     end
   end
-  
+
+  context "prepare-ing the output" do
+    setup do
+      File.expects(:exists?).with('config/schedule.rb').returns(true)
+    end
+
+    should "not trim off the top lines of the file" do
+      @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier', :cut => 0)
+      existing = <<-EXISTING_CRON
+# Useless Comments
+# at the top of the file
+
+# Begin Whenever generated tasks for: My identifier
+My whenever job that was already here
+# End Whenever generated tasks for: My identifier
+EXISTING_CRON
+
+      # here-doc adds an extra newline we need removed
+      assert_equal existing.strip, @command.send(:prepare, existing)
+    end
+    
+    should "trim off the top lines of the file" do
+      @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier', :cut => '3')
+      existing = <<-EXISTING_CRON
+# Useless Comments
+# at the top of the file
+
+# Begin Whenever generated tasks for: My identifier
+My whenever job that was already here
+# End Whenever generated tasks for: My identifier
+EXISTING_CRON
+
+      new_cron = <<-NEW_CRON
+# Begin Whenever generated tasks for: My identifier
+My whenever job that was already here
+# End Whenever generated tasks for: My identifier
+NEW_CRON
+
+      # here-doc adds an extra newline we need removed
+      assert_equal new_cron.strip, @command.send(:prepare, existing)
+    end
+  end
+
 end

@@ -10,6 +10,9 @@ OptionParser.new do |opts|
   opts.banner = "Usage: whenever [options]"
   opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
   opts.on('-w', '--write-crontab') { options[:write] = true }
+  opts.on('-c', '--cut [lines]', 'Cut lines from the top of the cronfile') do |lines|
+    options[:cut] = lines.to_i if lines
+  end
   opts.on('-i', '--update-crontab [identifier]', 'Default: full path to schedule.rb file') do |identifier|
     options[:update] = true
     options[:identifier] = identifier if identifier
