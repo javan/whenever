@@ -55,9 +55,9 @@ Would run <code>/usr/local/bin/awesome party extreme</code> every two hours. <co
 
 The default job types that ship with Whenever are defined like so:
 
-  job_type :command, ':task'
-  job_type :runner,  'cd :path && script/runner -e :environment ":task"'
-  job_type :rake,    'cd :path && RAILS_ENV=:environment /usr/bin/env rake :task'
+  job_type :command, ":task"
+  job_type :runner,  "cd :path && script/runner -e :environment ':task'"
+  job_type :rake,    "cd :path && RAILS_ENV=:environment /usr/bin/env rake :task"
 
 If a <code>:path</code> is not set it will default to the directory in which <code>whenever</code> was executed. <code>:environment</code> will default to 'production'.
 

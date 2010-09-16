@@ -1,3 +1,14 @@
+== 0.5.2 / September 15th, 2010
+
+* Quotes automatically escaped in jobs. [Jay Adkisson]
+
+* Added --cut option to the command line to allow pruning of the crontab. [Peer Allan]
+
+* Switched to aaronh-chronic which is ruby 1.9.2 compatible. [Aaron Hurley, Javan Makhmali]
+
+* Lots of internal reorganizing; tests broken into unit and functional. [Javan Makhmali]
+
+
 == 0.5.0 / June 28th, 2010
 
 * New job_type API for writing custom jobs. Internals use this to define command, runner, and rake. [Javan Makhmali - inspired by idlefingers (Damien)]
