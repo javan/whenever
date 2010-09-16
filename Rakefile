@@ -13,7 +13,7 @@ begin
     gemspec.email       = "javan@javan.us"
     gemspec.homepage    = "http://github.com/javan/whenever"
     gemspec.authors     = ["Javan Makhmali"]
-    gemspec.add_dependency 'chronic', '>= 0.2.3'
+    gemspec.add_dependency 'aaronh-chronic', '>= 0.3.9'
     gemspec.add_dependency 'activesupport', '>= 2.3.4'
     gemspec.add_development_dependency 'shoulda', '>= 2.1.1'
     gemspec.add_development_dependency 'mocha', '>= 0.9.5'
