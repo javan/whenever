@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + "/test_helper")
+require File.expand_path(File.dirname(__FILE__) + "/../test_helper")
 
 class OutputDefinedJobTest < Test::Unit::TestCase
   
@@ -84,4 +84,22 @@ class OutputDefinedJobTest < Test::Unit::TestCase
     end
   end
   
+  context "A defined job that uses a :path where none is explicitly set" do
+    setup do
+      Whenever.expects(:path).returns('/my/path')
+      
+      @output = Whenever.cron \
+      <<-file
+        job_type :some_job, "cd :path && :task"
+        every 2.hours do
+          some_job 'blahblah'
+        end
+      file
+    end
+    
+    should "default to using the Whenever.path" do
+      assert_match two_hours + %( cd /my/path && blahblah), @output
+    end
+  end
+
 end
