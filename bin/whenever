@@ -4,22 +4,24 @@ require 'rubygems'
 require 'optparse'
 require 'whenever'
 
-options = Hash.new
+options = {}
 
 OptionParser.new do |opts|
   opts.banner = "Usage: whenever [options]"
-  opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
-  opts.on('-w', '--write-crontab') { options[:write] = true }
-  opts.on('-c', '--cut [lines]', 'Cut lines from the top of the cronfile') do |lines|
-    options[:cut] = lines.to_i if lines
-  end
   opts.on('-i', '--update-crontab [identifier]', 'Default: full path to schedule.rb file') do |identifier|
     options[:update] = true
     options[:identifier] = identifier if identifier
   end
+  opts.on('-w', '--write-crontab [identifier]', 'Default: full path to schedule.rb file') do |identifier|
+     options[:write] = true
+     options[:identifier] = identifier if identifier
+  end
   opts.on('-c', '--clear-crontab [identifier]') do |identifier|
     options[:clear] = true
     options[:identifier] = identifier if identifier
+  end
+  opts.on('-s', '--set [variables]', 'Example: --set environment=staging&path=/my/sweet/path') do |set|
+    options[:set] = set if set
   end
   opts.on('-f', '--load-file [schedule file]', 'Default: config/schedule.rb') do |file|
     options[:file] = file if file
@@ -27,9 +29,10 @@ OptionParser.new do |opts|
   opts.on('-u', '--user [user]', 'Default: current user') do |user| 
     options[:user] = user if user
   end
-  opts.on('-s', '--set [variables]', 'Example: --set environment=staging&path=/my/sweet/path') do |set|
-    options[:set] = set if set
+  opts.on('-k', '--cut [lines]', 'Cut lines from the top of the cronfile') do |lines|
+    options[:cut] = lines.to_i if lines
   end
+  opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
 end.parse!
 
 Whenever::CommandLine.execute(options)
