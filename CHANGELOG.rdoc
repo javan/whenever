@@ -1,3 +1,9 @@
+== 0.5.3 / September 24th, 2010
+
+* Better regexes for replacing Whenever blocks in the crontab. #45 [Javan Makhmali]
+
+* Preserving backslashes when updating existing crontab. #82 [Javan Makhmali]
+
 == 0.5.2 / September 15th, 2010
 
 * Quotes automatically escaped in jobs. [Jay Adkisson]

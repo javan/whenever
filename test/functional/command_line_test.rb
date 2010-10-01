@@ -65,8 +65,6 @@ This shouldn't get replaced
 # End Whenever generated tasks for: Other identifier
 EXISTING_CRON
 
-      @command.expects(:read_crontab).at_least_once.returns(existing)
-      
       new_cron = <<-NEW_CRON
 # Something
 
@@ -79,10 +77,50 @@ This shouldn't get replaced
 # End Whenever generated tasks for: Other identifier
 NEW_CRON
       
+      @command.expects(:read_crontab).at_least_once.returns(existing)
       assert_equal new_cron, @command.send(:updated_crontab)
       
       @command.expects(:write_crontab).with(new_cron).returns(true)
       assert @command.run
+    end
+  end
+  
+  context "A command line update that contains backslashes" do
+    setup do
+      @existing = <<-EXISTING_CRON
+# Begin Whenever generated tasks for: My identifier
+script/runner -e production 'puts '\\''hello'\\'''
+# End Whenever generated tasks for: My identifier
+EXISTING_CRON
+      File.expects(:exists?).with('config/schedule.rb').returns(true)
+      @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
+      @command.expects(:read_crontab).at_least_once.returns(@existing)
+      @command.expects(:whenever_cron).returns(@existing)
+    end
+    
+    should "replace the existing block with the backslashes in tact" do
+      assert_equal @existing, @command.send(:updated_crontab)
+    end
+  end
+  
+  context "A command line update with an identifier similar to an existing one in the crontab already" do
+    setup do
+      @existing = <<-EXISTING_CRON
+# Begin Whenever generated tasks for: WheneverExisting
+# End Whenever generated tasks for: WheneverExisting
+EXISTING_CRON
+      @new = <<-NEW_CRON
+# Begin Whenever generated tasks for: Whenever
+# End Whenever generated tasks for: Whenever
+NEW_CRON
+      File.expects(:exists?).with('config/schedule.rb').returns(true)
+      @command = Whenever::CommandLine.new(:update => true, :identifier => 'Whenever')
+      @command.expects(:read_crontab).at_least_once.returns(@existing)
+      @command.expects(:whenever_cron).returns(@new)
+    end
+    
+    should "append the similarly named command" do
+      assert_equal @existing + "\n\n" + @new, @command.send(:updated_crontab)
     end
   end
 
