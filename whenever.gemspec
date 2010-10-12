@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{whenever}
-  s.version = "0.5.3"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Javan Makhmali"]
-  s.date = %q{2010-09-24}
+  s.date = %q{2010-10-12}
   s.description = %q{Clean ruby syntax for defining and deploying messy cron jobs.}
   s.email = %q{javan@javan.us}
   s.executables = ["whenever", "wheneverize"]
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
      "lib/whenever/job.rb",
      "lib/whenever/job_list.rb",
      "lib/whenever/job_types/default.rb",
+     "lib/whenever/job_types/rails3.rb",
      "lib/whenever/output_redirection.rb",
      "lib/whenever/version.rb",
      "test/functional/command_line_test.rb",
@@ -37,6 +38,7 @@ Gem::Specification.new do |s|
      "test/functional/output_default_defined_jobs_test.rb",
      "test/functional/output_defined_job_test.rb",
      "test/functional/output_env_test.rb",
+     "test/functional/output_rails3_jobs_test.rb",
      "test/functional/output_redirection_test.rb",
      "test/test_helper.rb",
      "test/unit/cron_test.rb",
@@ -54,6 +56,7 @@ Gem::Specification.new do |s|
      "test/functional/output_default_defined_jobs_test.rb",
      "test/functional/output_defined_job_test.rb",
      "test/functional/output_env_test.rb",
+     "test/functional/output_rails3_jobs_test.rb",
      "test/functional/output_redirection_test.rb",
      "test/test_helper.rb",
      "test/unit/cron_test.rb",
@@ -64,11 +67,7 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-<<<<<<< HEAD
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-=======
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
->>>>>>> javan
       s.add_runtime_dependency(%q<aaronh-chronic>, [">= 0.3.9"])
       s.add_runtime_dependency(%q<activesupport>, [">= 2.3.4"])
       s.add_development_dependency(%q<shoulda>, [">= 2.1.1"])
