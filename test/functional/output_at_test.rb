@@ -107,7 +107,7 @@ class OutputAtTest < Test::Unit::TestCase
     end
     
     should "output the rake task using one entry because the times are aligned" do
-      assert_match '2 5,15 * * 1,3,5 cd /your/path && RAILS_ENV=production /usr/bin/env rake blah:blah', @output
+      assert_match '2 5,15 * * 1,3,5 cd /your/path && RAILS_ENV=production rake blah:blah --silent', @output
     end
   end
   
@@ -167,7 +167,7 @@ class OutputAtTest < Test::Unit::TestCase
     end
     
     should "output all of the commands @daily" do
-      assert_match '@daily cd /your/path && RAILS_ENV=production /usr/bin/env rake blah:blah', @output
+      assert_match '@daily cd /your/path && RAILS_ENV=production rake blah:blah --silent', @output
       assert_match %(@daily cd /your/path && script/runner -e production 'runner_1'), @output
       assert_match '@daily command_1', @output
       assert_match %(@daily cd /your/path && script/runner -e production 'runner_2'), @output

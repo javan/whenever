@@ -67,7 +67,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
     
     should "output the rake command using that path" do
-      assert_match two_hours + ' cd /my/path && RAILS_ENV=production /usr/bin/env rake blahblah', @output
+      assert_match two_hours + ' cd /my/path && RAILS_ENV=production rake blahblah --silent', @output
     end
   end
   
@@ -83,7 +83,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
     
     should "output the rake command using that path" do
-      assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production /usr/bin/env rake blahblah', @output
+      assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production rake blahblah --silent', @output
     end
   end
   
