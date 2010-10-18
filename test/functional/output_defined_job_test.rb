@@ -86,7 +86,7 @@ class OutputDefinedJobTest < Test::Unit::TestCase
   
   context "A defined job that uses a :path where none is explicitly set" do
     setup do
-      Whenever.expects(:path).returns('/my/path')
+      Whenever.stubs(:path).returns('/my/path')
       
       @output = Whenever.cron \
       <<-file

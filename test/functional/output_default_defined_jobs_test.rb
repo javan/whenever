@@ -53,6 +53,28 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
   end
   
+  context "A runner for a Rails 3 app" do
+    setup do
+      Whenever.stubs(:path).returns('/my/path')
+      File.expects(:exists?).with('/my/path/script/rails').returns(true)
+      @output = Whenever.cron \
+      <<-file
+        every 2.hours do
+          runner 'blahblah'
+          rails2_runner 'blahblah'
+        end
+      file
+    end
+    
+    should "use the Rails 3 runner job by default" do
+      assert_match two_hours + %( cd /my/path && script/rails runner -e production 'blahblah'), @output
+    end
+    
+    should "have the Rails 2 runner job redefined as rails2_runner" do
+      assert_match two_hours + %( cd /my/path && script/runner -e production 'blahblah'), @output
+    end
+  end
+  
   # rake
   
   context "A rake command with path set" do
