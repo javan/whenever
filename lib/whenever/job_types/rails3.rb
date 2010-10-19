@@ -7,5 +7,5 @@ if File.exists?(File.join(Whenever.path, 'script', 'rails'))
     alias_method(:rails2_runner, :runner) if defined?(:runner)
   end
   
-  job_type :runner,  "cd :path && script/rails runner -e :environment ':task'"
+  job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
 end

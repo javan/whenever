@@ -1,13 +1,13 @@
 module Whenever
   class Job
     
-    attr_reader :at, :output_redirection
+    attr_reader :at
   
     def initialize(options = {})
       @options = options
       
       @at                      = options[:at]
-      @output_redirection      = options.has_key?(:output) ? options[:output] : :not_set
+      @options[:output]        = Whenever::Output::Redirection.new(options[:output]).to_s if options.has_key?(:output)
       @options[:environment] ||= :production
       @options[:path]        ||= Whenever.path
     end

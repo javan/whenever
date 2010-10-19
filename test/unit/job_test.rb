@@ -7,14 +7,6 @@ class JobTest < Test::Unit::TestCase
       assert_equal 'foo', new_job(:at => 'foo').at
     end
     
-    should "return :output when #output_redirection is called" do
-      assert_equal 'foo', new_job(:output => 'foo').output_redirection
-    end
-    
-    should "return :not_set when #output_redirection is called and no :output is set" do
-      assert_equal :not_set, new_job.output_redirection
-    end
-    
     should "substitute the :task when #output is called" do
       job = new_job(:template => ":task", :task => 'abc123')
       assert_equal 'abc123', job.output
