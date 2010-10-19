@@ -1,3 +1,8 @@
 job_type :command, ":task"
-job_type :runner,  "cd :path && script/runner -e :environment ':task'"
 job_type :rake,    "cd :path && RAILS_ENV=:environment rake :task --silent"
+
+if File.exists?(File.join(Whenever.path, 'script', 'rails'))
+  job_type :runner, "cd :path && script/rails runner -e :environment ':task'"
+else
+  job_type :runner, "cd :path && script/runner -e :environment ':task'"
+end
