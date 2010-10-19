@@ -3,6 +3,9 @@
 # define a new job for Rails 3 as the default runner.
 
 if File.exists?(File.join(Whenever.path, 'script', 'rails'))
-  class_eval { alias_method :rails2_runner, :runner }
+  class_eval do
+    alias_method(:rails2_runner, :runner) if defined?(:runner)
+  end
+  
   job_type :runner,  "cd :path && script/rails runner -e :environment ':task'"
 end
