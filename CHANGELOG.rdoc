@@ -1,3 +1,12 @@
+== 0.6.0 / October 20th, 2010
+
+* Detect script/rails file and change runner to Rails 3 style if found. [Javan Makhmali]
+
+* Created a new :job_template system that can be applied to all commands. Wraps all in bash -l -c 'command..' by default now for better RVM support. Stopped automatically setting the PATH too. [Javan Makhmali]
+
+* Added a built-in Capistrano recipe. [Javan Makhmali]
+
+
 == 0.5.3 / September 24th, 2010
 
 * Better regexes for replacing Whenever blocks in the crontab. #45 [Javan Makhmali]
