@@ -1,4 +1,4 @@
-== 0.6.0 / October 20th, 2010
+== 0.6.1 / October 20th, 2010
 
 * Detect script/rails file and change runner to Rails 3 style if found. [Javan Makhmali]
 
