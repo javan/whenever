@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{whenever}
-  s.version = "0.5.3"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Javan Makhmali"]
-  s.date = %q{2010-09-24}
-  s.description = %q{Clean ruby syntax for defining and deploying messy cron jobs.}
+  s.date = %q{2010-10-20}
+  s.description = %q{http://www.allyrics.net/Kid-Cudi/lyrics/Whenever/}
   s.email = %q{javan@javan.us}
   s.executables = ["whenever", "wheneverize"]
   s.extra_rdoc_files = [
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
      "bin/wheneverize",
      "lib/whenever.rb",
      "lib/whenever/base.rb",
+     "lib/whenever/capistrano.rb",
      "lib/whenever/command_line.rb",
      "lib/whenever/cron.rb",
      "lib/whenever/job.rb",
@@ -47,7 +48,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Clean ruby syntax for defining and deploying messy cron jobs.}
+  s.summary = %q{Clean ruby syntax for writing and deploying cron jobs.}
   s.test_files = [
     "test/functional/command_line_test.rb",
      "test/functional/output_at_test.rb",
