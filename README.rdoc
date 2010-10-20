@@ -113,10 +113,6 @@ If you've found a genuine bug or issue, please use the Issues section on github:
 Ryan Bates created a great Railscast about Whenever: http://railscasts.com/episodes/164-cron-in-ruby
 It's a little bit dated now, but remains a good introduction.
 
-== Credit
-
-Whenever was created for use at Inkling (http://inklingmarkets.com) where I work. Their take on it: http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html
-
 == License
 
 Copyright (c) 2009+ Javan Makhmali
