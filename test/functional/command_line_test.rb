@@ -217,6 +217,7 @@ NEW_CRON
     setup do
       @output = Whenever.cron :set => 'environment=serious', :string => \
       <<-file
+        set :job_template, nil
         set :environment, :silly
         set :path, '/my/path'
         every 2.hours do
@@ -234,6 +235,7 @@ NEW_CRON
     setup do
       @output = Whenever.cron :set => 'environment=serious&path=/serious/path', :string => \
       <<-file
+        set :job_template, nil
         set :environment, :silly
         set :path, '/silly/path'
         every 2.hours do
@@ -251,6 +253,7 @@ NEW_CRON
     setup do
       @output = Whenever.cron :set => ' environment = serious&  path =/serious/path', :string => \
       <<-file
+        set :job_template, nil
         set :environment, :silly
         set :path, '/silly/path'
         every 2.hours do
@@ -268,6 +271,7 @@ NEW_CRON
     setup do
       @output = Whenever.cron :set => ' environment=', :string => \
       <<-file
+        set :job_template, nil
         set :environment, :silly
         set :path, '/silly/path'
         every 2.hours do

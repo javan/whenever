@@ -5,17 +5,25 @@ module Whenever
   
     def initialize(options = {})
       @options = options
-      
-      @at                      = options[:at]
+      @at                      = options.delete(:at)
+      @template                = options.delete(:template)
+      @job_template            = options.delete(:job_template) || ":job"
       @options[:output]        = Whenever::Output::Redirection.new(options[:output]).to_s if options.has_key?(:output)
       @options[:environment] ||= :production
       @options[:path]        ||= Whenever.path
     end
   
     def output
-      @options[:template].dup.gsub(/:\w+/) do |key|
+      job = process_template(@template, @options).strip
+      process_template(@job_template, { :job => job }).strip
+    end
+    
+  protected
+  
+    def process_template(template, options)
+      template.gsub(/:\w+/) do |key|
         before_and_after = [$`[-1..-1], $'[0..0]]
-        option = @options[key.sub(':', '').to_sym]
+        option = options[key.sub(':', '').to_sym]
 
         if before_and_after.all? { |c| c == "'" }
           escape_single_quotes(option)
@@ -26,8 +34,6 @@ module Whenever
         end
       end
     end
-    
-  protected
 
     def escape_single_quotes(str)
       str.gsub(/'/) { "'\\''" }

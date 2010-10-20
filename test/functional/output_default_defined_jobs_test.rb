@@ -4,10 +4,11 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
   
   # command
   
-  context "A plain command" do
+  context "A plain command with the job template set to nil" do
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           command "blahblah"
         end
@@ -19,12 +20,45 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
   end
   
+  context "A plain command with no job template set" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        every 2.hours do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the command with the default job template" do
+      assert_match /^.+ .+ .+ .+ \/bin\/bash -l -c 'blahblah'$/, @output
+    end
+  end
+  
+  context "A plain command that overrides the job_template set" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, "/bin/bash -l -c ':job'"
+        every 2.hours do
+          command "blahblah", :job_template => "/bin/sh -l -c ':job'"
+        end
+      file
+    end
+    
+    should "output the command using that job_template" do
+      assert_match /^.+ .+ .+ .+ \/bin\/sh -l -c 'blahblah'$/, @output
+      assert_no_match /bash/, @output
+    end
+  end
+
   # runner
   
   context "A runner with path set" do
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :path, '/my/path'
         every 2.hours do
           runner 'blahblah'
@@ -41,6 +75,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :path, '/my/path'
         every 2.hours do
           runner "blahblah", :path => '/some/other/path'
@@ -59,6 +94,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       File.expects(:exists?).with('/my/path/script/rails').returns(true)
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           runner 'blahblah'
         end
@@ -76,6 +112,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :path, '/my/path'
         every 2.hours do
           rake "blahblah"
@@ -92,6 +129,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :path, '/my/path'
         every 2.hours do
           rake "blahblah", :path => '/some/other/path'

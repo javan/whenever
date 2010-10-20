@@ -24,7 +24,6 @@ class JobTest < Test::Unit::TestCase
 
   
   context "A Job with quotes" do
-    
     should "output the :task if it's in single quotes" do
       job = new_job(:template => "':task'", :task => 'abc123')
       assert_equal %q('abc123'), job.output
@@ -49,6 +48,23 @@ class JobTest < Test::Unit::TestCase
         :foo => 'quote -> " <- quote'
       )
       assert_equal %q(before "quote -> \" <- quote" after), job.output
+    end
+  end
+  
+  context "A Job with a job_template" do
+    should "use the job template" do
+      job = new_job(:template => ':task', :task => 'abc123', :job_template => 'left :job right')
+      assert_equal 'left abc123 right', job.output
+    end
+    
+    should "escape single quotes" do
+      job = new_job(:template => "before ':task' after", :task => "quote -> ' <- quote", :job_template => "left ':job' right")
+      assert_equal %q(left 'before '\''quote -> '\\''\\'\\'''\\'' <- quote'\'' after' right), job.output
+    end
+    
+    should "escape double quotes" do
+      job = new_job(:template => 'before ":task" after', :task => 'quote -> " <- quote', :job_template => 'left ":job" right')
+      assert_equal %q(left "before \"quote -> \\\" <- quote\" after" right), job.output
     end
   end
 

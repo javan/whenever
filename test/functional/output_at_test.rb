@@ -6,6 +6,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every "weekday", :at => '5:02am' do
           command "blahblah"
         end
@@ -21,6 +22,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every "weekday", :at => %w(5:02am 3:52pm) do
           command "blahblah"
         end
@@ -37,6 +39,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every "weekday", :at => '5:02am, 3:52pm' do
           command "blahblah"
         end
@@ -53,6 +56,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every "weekday", :at => '5:02am, 3:02pm' do
           command "blahblah"
         end
@@ -68,6 +72,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every "mon,wed,fri", :at => '5:02am, 3:02pm' do
           command "blahblah"
         end
@@ -83,6 +88,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :path, '/your/path'
         every "mon,wed,fri", :at => '5:02am, 3:02pm' do
           runner "blahblah"
@@ -99,6 +105,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :path, '/your/path'
         every "mon,wed,fri", :at => '5:02am, 3:02pm' do
           rake "blah:blah"
@@ -115,6 +122,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every [1.month, 1.day], :at => 'january 5:02am, june 17th at 2:22pm, june 3rd at 3:33am' do
           command "blahblah"
         end
@@ -138,6 +146,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every :reboot do
           command "command_1"
           command "command_2"
@@ -155,6 +164,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :path, '/your/path'
         every :day do
           rake "blah:blah"
@@ -179,6 +189,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 5.minutes, :at => 1 do
           command "blahblah"
         end
@@ -194,6 +205,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 4.minutes, :at => 2 do
           command "blahblah"
         end
@@ -209,6 +221,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 3.minutes, :at => 7 do
           command "blahblah"
         end
@@ -224,6 +237,7 @@ class OutputAtTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.minutes, :at => 27 do
           command "blahblah"
         end

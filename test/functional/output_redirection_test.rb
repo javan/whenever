@@ -6,6 +6,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :output, nil
         every 2.hours do
           command "blahblah"
@@ -23,6 +24,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :output, 'logfile.log'
         every 2.hours do
           command "blahblah"
@@ -39,6 +41,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           command "blahblah", :output => {:standard => 'dev_null', :error => 'dev_err'}
         end
@@ -54,6 +57,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :output, 'logfile.log'
         every 2.hours do
           command "blahblah", :output => 'otherlog.log'
@@ -71,6 +75,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :output, 'logfile.log'
         every 2.hours do
           command "blahblah", :output => {:error => 'dev_err', :standard => 'dev_null' }
@@ -88,6 +93,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :output, 'logfile.log'
         every 2.hours do
           command "blahblah", :output => false
@@ -105,6 +111,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron :set => 'output=otherlog.log', :string => \
       <<-file
+        set :job_template, nil
         set :output, 'logfile.log'
         every 2.hours do
           command "blahblah"
@@ -122,6 +129,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :output, {:error => 'dev_err', :standard => 'dev_null' }
         every 2.hours do
           command "blahblah"
@@ -138,6 +146,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :output, {:error => 'dev_null'}
         every 2.hours do
           command "blahblah"
@@ -154,6 +163,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :output, {:standard => 'dev_out'}
         every 2.hours do
           command "blahblah"
@@ -170,6 +180,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           command "blahblah", :output => {:error => 'dev_err'}
         end
@@ -185,6 +196,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           command "blahblah", :output => {:standard => 'dev_out'}
         end
@@ -200,6 +212,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           command "blahblah", :output => {:standard => nil}
         end
@@ -215,6 +228,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           command "blahblah", :output => {:error => nil}
         end
@@ -230,6 +244,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           command "blahblah", :output => {:error => nil, :standard => nil}
         end
@@ -245,6 +260,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           command "blahblah", :output => {:error => nil, :standard => 'my.log'}
         end
@@ -260,6 +276,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         every 2.hours do
           command "blahblah", :output => {:error => 'my_error.log', :standard => nil}
         end
@@ -275,6 +292,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
+        set :job_template, nil
         set :cron_log, "cron.log"
         every 2.hours do
           command "blahblah"

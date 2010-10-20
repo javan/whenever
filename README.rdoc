@@ -1,15 +1,15 @@
 == Introduction
 
-Whenever is a Ruby gem that provides a clear syntax for defining cron jobs. It outputs valid cron syntax and can even write your crontab file for you. It is designed to work well with Rails applications and can be deployed with Capistrano. Whenever works fine independently as well.
-
-Ryan Bates created a great Railscast about Whenever: http://railscasts.com/episodes/164-cron-in-ruby
-
-Discussion: http://groups.google.com/group/whenever-gem
+Whenever is a Ruby gem that provides a clear syntax for writing and deploying cron jobs.
 
 == Installation
   
-$ sudo gem install whenever
+  $ gem install whenever
 
+Or with Bundler in your Gemfile.
+
+  gem 'whenever', :require => false
+ 
 == Getting started
 
   $ cd /my/rails/app
@@ -41,7 +41,7 @@ More examples on the wiki: http://wiki.github.com/javan/whenever/instructions-an
 
 == Define your own job types
 
-Whenever ships with three pre-defined job types: command, runner, and rake. You can define your own with <code>job_type</code>.
+Whenever ships with three pre-defined job types: command, runner, and rake. You can define your own with `job_type`.
 
 For example:
 
@@ -51,15 +51,29 @@ For example:
     awesome "party", :fun_level => "extreme"
   end
   
-Would run <code>/usr/local/bin/awesome party extreme</code> every two hours. <code>:task</code> is always replaced with the first argument, and any additional <code>:whatevers</code> are replaced with the options passed in or by variables that have been defined with <code>set</code>.
+Would run `/usr/local/bin/awesome party extreme` every two hours. `:task` is always replaced with the first argument, and any additional `:whatevers` are replaced with the options passed in or by variables that have been defined with `set`.
 
 The default job types that ship with Whenever are defined like so:
 
-  job_type :command, ":task"
-  job_type :runner,  "cd :path && script/runner -e :environment ':task'"
-  job_type :rake,    "cd :path && RAILS_ENV=:environment /usr/bin/env rake :task"
+  job_type :command, ":task :output"
+  job_type :rake,    "cd :path && RAILS_ENV=:environment rake :task :output"
+  job_type :runner,  "cd :path && script/runner -e :environment ':task' :output"
+  
+If a script/rails file is detected (like in a Rails 3 app), runner will be defined to fit:
 
-If a <code>:path</code> is not set it will default to the directory in which <code>whenever</code> was executed. <code>:environment</code> will default to 'production'.
+  job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
+
+If a `:path` is not set it will default to the directory in which `whenever` was executed. `:environment` will default to 'production'. `:output` will be replaced with your output redirection settings which you can read more about here: http://github.com/javan/whenever/wiki/Output-redirection-(logging-your-cron-jobs)
+
+All jobs are by default run with `bash -l -c 'command...'`. Among other things, this allows your cron jobs to play nice with RVM by loading the entire environment instead of cron's somewhat limited environment. Read more: http://blog.scoutapp.com/articles/2010/09/07/rvm-and-cron-in-production
+
+You can change this by setting your own job_template.
+
+  set :job_template, "bash -l -c ':job'"
+  
+Or set the job_template to nil to have your jobs execute normally.
+
+  set :job_template, nil
 
 == Cron output
 
@@ -81,25 +95,26 @@ In your "config/deploy.rb" file do something like:
     end
   end
 
-This will update your crontab file, leaving any existing entries unharmed. When using the <code>--update-crontab</code> option, Whenever will only update the entries in your crontab file related to the current schedule.rb file. You can replace the <code>#{application}</code> with any identifying string you'd like. You can have any number of apps deploy to the same crontab file peacefully given they each use a different identifier.
+This will update your crontab file, leaving any existing entries unharmed. When using the `--update-crontab` option, Whenever will only update the entries in your crontab file related to the current schedule.rb file. You can replace the `#{application}` with any identifying string you'd like. You can have any number of apps deploy to the same crontab file peacefully given they each use a different identifier.
 
-If you wish to simply overwrite your crontab file each time you deploy, use the <code>--write-crontab</code> option. This is ideal if you are only working with one app and every crontab entry is contained in a single schedule.rb file.
+If you wish to simply overwrite your crontab file each time you deploy, use the `--write-crontab` option. This is ideal if you are only working with one app and every crontab entry is contained in a single schedule.rb file.
 
-By mixing and matching the <code>--load-file</code> and <code>--user</code> options with your various :roles in Capistrano it is entirely possible to deploy different crontab schedules under different users to all your various servers. Get creative!
+By mixing and matching the `--load-file` and `--user` options with your various :roles in Capistrano it is entirely possible to deploy different crontab schedules under different users to all your various servers. Get creative!
 
-If you want to override a variable (like your environment) at the time of deployment you can do so with the <code>--set</code> option: http://wiki.github.com/javan/whenever/setting-variables-on-the-fly
-
-== Credit
-
-Whenever was created for use at Inkling (http://inklingmarkets.com) where I work. Their take on it: http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html
-
-While building Whenever, I learned a lot by digging through the source code of Capistrano - http://github.com/jamis/capistrano
+If you want to override a variable (like your environment) at the time of deployment you can do so with the `--set` option: http://wiki.github.com/javan/whenever/setting-variables-on-the-fly
 
 == Discussion / Feedback / Issues / Bugs
 
 For general discussion and questions, please use the google group: http://groups.google.com/group/whenever-gem
 
 If you've found a genuine bug or issue, please use the Issues section on github: http://github.com/javan/whenever/issues
+
+Ryan Bates created a great Railscast about Whenever: http://railscasts.com/episodes/164-cron-in-ruby
+It's a little bit dated now, but remains a good introduction.
+
+== Credit
+
+Whenever was created for use at Inkling (http://inklingmarkets.com) where I work. Their take on it: http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html
 
 == License
 
