@@ -91,6 +91,29 @@ For example, if you're using bundler do this:
   set :whenever_command, "bundle exec whenever"
   require "whenever/capistrano"
 
+By default, whenever runs jobs in the production environment.  You can specify an environment to use in your deploy.rb file using:
+
+  set :whenever_environment, "dev"
+
+If you are using capistrano multi-stage, and you have a rails environment for each stage, you might consider using:
+
+  set :whenever_environment, stage
+
+To configure jobs that should only run in one of your environments, you can add them in your schedule.rb like so:
+
+  case environment
+  when "production"
+    every 15.minutes do
+      runner "Session.expire"
+    end
+  when "staging"
+    every 30.minutes do
+      runner "Session.expire"
+    end
+  when "qa"
+  end
+
+
 == The `whenever` command
 
   $ cd /my/rails/app
