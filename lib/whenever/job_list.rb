@@ -72,7 +72,7 @@ module Whenever
     # Only works for setting values as strings.
     #
     def pre_set(variable_string = nil)
-      return if variable_string.blank?
+      variable_string = "environment=production" if variable_string.blank?
       
       pairs = variable_string.split('&')
       pairs.each do |pair|
