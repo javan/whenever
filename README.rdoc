@@ -97,7 +97,9 @@ By default, whenever runs jobs in the production environment.  You can specify a
 
 If you are using capistrano multi-stage, and you have a rails environment for each stage, you might consider using:
 
-  set :whenever_environment, stage
+  set :whenever_environment do
+    stage
+  end
 
 To configure jobs that should only run in one of your environments, you can add them in your schedule.rb like so:
 
