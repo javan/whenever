@@ -120,35 +120,18 @@ NEW_CRON
     end
     
     should "append the similarly named command" do
-      assert_equal @existing + "\n\n" + @new, @command.send(:updated_crontab)
+      assert_equal @existing + "\n" + @new, @command.send(:updated_crontab)
     end
   end
 
-  context "A command line delete" do
+  context "A command line clear" do
     setup do
       File.expects(:exists?).with('config/schedule.rb').returns(true)
       @command = Whenever::CommandLine.new(:clear => true, :identifier => 'My identifier')
       @task = "#{two_hours} /my/command"
     end
 
-    should "add an empty identifier block if there is no existing one" do
-      existing = '# Existing crontab'
-      @command.expects(:read_crontab).at_least_once.returns(existing)
-      
-      new_cron = <<-EXPECTED
-#{existing}
-
-# Begin Whenever generated tasks for: My identifier
-# End Whenever generated tasks for: My identifier
-EXPECTED
-      
-      assert_equal new_cron, @command.send(:updated_crontab)
-      
-      @command.expects(:write_crontab).with(new_cron).returns(true)
-      assert @command.run
-    end
-    
-    should "delete an existing block if the identifier matches" do
+    should "clear an existing block if the identifier matches" do
       existing = <<-EXISTING_CRON
 # Something
 
@@ -162,20 +145,17 @@ This shouldn't get replaced
 EXISTING_CRON
 
       @command.expects(:read_crontab).at_least_once.returns(existing)
-      
+
       new_cron = <<-NEW_CRON
 # Something
-
-# Begin Whenever generated tasks for: My identifier
-# End Whenever generated tasks for: My identifier
 
 # Begin Whenever generated tasks for: Other identifier
 This shouldn't get replaced
 # End Whenever generated tasks for: Other identifier
 NEW_CRON
-      
+
       assert_equal new_cron, @command.send(:updated_crontab)
-      
+
       @command.expects(:write_crontab).with(new_cron).returns(true)
       assert @command.run
     end

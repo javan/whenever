@@ -30,7 +30,6 @@ module Whenever
         exit(1)
       end
       @options[:cut] = @options[:cut].to_i
-      
     end
     
     def run
@@ -51,7 +50,8 @@ module Whenever
     end
   
     def whenever_cron
-      @whenever_cron ||= [comment_open, (Whenever.cron(@options) unless @options[:clear]), comment_close].compact.join("\n") + "\n"
+      return '' if @options[:clear]
+      @whenever_cron ||= [comment_open, Whenever.cron(@options), comment_close].compact.join("\n") + "\n"
     end
     
     def read_crontab
@@ -102,7 +102,7 @@ module Whenever
         read_crontab.gsub(Regexp.new("^#{comment_open}$.+^#{comment_close}$", Regexp::MULTILINE), whenever_cron.chomp.gsub('\\', '\\\\\\'))
       else # Otherwise, append the new cron entries after any existing ones
         [read_crontab, whenever_cron].join("\n\n")
-      end
+      end.gsub(/\n{3,}/, "\n\n") # More than two newlines becomes just two.
     end
     
     def prepare(contents)
