@@ -51,6 +51,25 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       assert_no_match /bash/, @output
     end
   end
+  
+  context "A plain command that is conditional on default environent and path" do
+    setup do
+      Whenever.expects(:path).at_least_once.returns('/what/you/want')
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        if environment == 'production' && path == '/what/you/want'
+          every 2.hours do
+            command "blahblah"
+          end
+        end
+      file
+    end
+    
+    should "output the command" do
+      assert_match /blahblah/, @output
+    end
+  end
 
   # runner
   
