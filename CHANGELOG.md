@@ -1,3 +1,12 @@
+### 0.6.2 / October 26th, 2010
+
+* --clear-crontab option completely removes entries. #63 [Javan Makhmali]
+
+* Set default :environment and :path earlier in the new setup.rb (formerly job_types/default.rb). [Javan Makhmali]
+
+* Converted README and CHANGELOG to markdown. [Javan Makhmali]
+
+
 ### 0.6.1 / October 20th, 2010
 
 * Detect script/rails file and change runner to Rails 3 style if found. [Javan Makhmali]

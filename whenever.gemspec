@@ -5,33 +5,32 @@
 
 Gem::Specification.new do |s|
   s.name = %q{whenever}
-  s.version = "0.6.1"
+  s.version = "0.6.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Javan Makhmali"]
-  s.date = %q{2010-10-20}
-  s.description = %q{http://www.allyrics.net/Kid-Cudi/lyrics/Whenever/}
+  s.date = %q{2010-10-26}
+  s.description = %q{Clean ruby syntax for writing and deploying cron jobs.}
   s.email = %q{javan@javan.us}
   s.executables = ["whenever", "wheneverize"]
   s.extra_rdoc_files = [
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".gitignore",
-     "CHANGELOG.rdoc",
-     "README.rdoc",
+     "CHANGELOG.md",
+     "README.md",
      "Rakefile",
      "bin/whenever",
      "bin/wheneverize",
      "lib/whenever.rb",
-     "lib/whenever/base.rb",
      "lib/whenever/capistrano.rb",
      "lib/whenever/command_line.rb",
      "lib/whenever/cron.rb",
      "lib/whenever/job.rb",
      "lib/whenever/job_list.rb",
-     "lib/whenever/job_types/default.rb",
      "lib/whenever/output_redirection.rb",
+     "lib/whenever/setup.rb",
      "lib/whenever/version.rb",
      "test/functional/command_line_test.rb",
      "test/functional/output_at_test.rb",
@@ -48,7 +47,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Clean ruby syntax for writing and deploying cron jobs.}
+  s.summary = %q{Write your cron jobs in ruby.}
   s.test_files = [
     "test/functional/command_line_test.rb",
      "test/functional/output_at_test.rb",

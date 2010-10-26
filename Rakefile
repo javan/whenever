@@ -8,8 +8,8 @@ begin
   Jeweler::Tasks.new do |gemspec|
     gemspec.name        = "whenever"
     gemspec.version     = Whenever::VERSION
-    gemspec.summary     = "Clean ruby syntax for writing and deploying cron jobs."
-    gemspec.description = "http://www.allyrics.net/Kid-Cudi/lyrics/Whenever/"
+    gemspec.summary     = "Write your cron jobs in ruby."
+    gemspec.description = "Clean ruby syntax for writing and deploying cron jobs."
     gemspec.email       = "javan@javan.us"
     gemspec.homepage    = "http://github.com/javan/whenever"
     gemspec.authors     = ["Javan Makhmali"]
