@@ -16,12 +16,9 @@ module Whenever
           pre_set(options[:set])
       end
       
-      # Load all job type files.
-      Dir["#{File.expand_path(File.dirname(__FILE__))}/job_types/*.rb"].each do |file|
-        eval(File.read(file))
-      end
+      setup = File.read("#{File.expand_path(File.dirname(__FILE__))}/setup.rb")
       
-      eval(config)
+      eval(setup + config)
     end
     
     def set(variable, value)
