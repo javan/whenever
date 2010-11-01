@@ -106,7 +106,11 @@ module Whenever
     end
     
     def prepare(contents)
-      contents.split("\n")[@options[:cut]..-1].join("\n")
+      # Some cron implementations require all non-comment lines to be newline-terminated.
+      # Preserve any whitespace at the end of contents. (issue #95)
+      stripped_contents = contents.strip
+      tail = contents[stripped_contents.length..-1]
+      stripped_contents.split("\n")[@options[:cut]..-1].join("\n") + tail
     end
     
     def comment_base

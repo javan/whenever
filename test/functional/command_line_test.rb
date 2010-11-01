@@ -281,8 +281,7 @@ My whenever job that was already here
 # End Whenever generated tasks for: My identifier
 EXISTING_CRON
 
-      # here-doc adds an extra newline we need removed
-      assert_equal existing.strip, @command.send(:prepare, existing)
+      assert_equal existing, @command.send(:prepare, existing)
     end
     
     should "trim off the top lines of the file" do
@@ -302,8 +301,7 @@ My whenever job that was already here
 # End Whenever generated tasks for: My identifier
 NEW_CRON
 
-      # here-doc adds an extra newline we need removed
-      assert_equal new_cron.strip, @command.send(:prepare, existing)
+      assert_equal new_cron, @command.send(:prepare, existing)
     end
   end
 
