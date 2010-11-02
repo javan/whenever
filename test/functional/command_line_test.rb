@@ -303,6 +303,20 @@ NEW_CRON
 
       assert_equal new_cron, @command.send(:prepare, existing)
     end
+    
+    should "preserve terminating newlines in files" do
+      @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
+      existing = <<-EXISTING_CRON
+# Begin Whenever generated tasks for: My identifier
+My whenever job that was already here
+# End Whenever generated tasks for: My identifier
+
+# A non-Whenever task
+My non-whenever job that was already here
+EXISTING_CRON
+
+      assert_equal existing, @command.send(:prepare, existing)
+    end
   end
 
 end
