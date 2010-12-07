@@ -88,7 +88,7 @@ module Whenever
       
       output = []
       @env.each do |key, val|
-        output << "#{key}=#{val}\n"
+        output << "#{key}=#{val.blank? ? '""' : val}\n"
       end
       output << "\n"
       
