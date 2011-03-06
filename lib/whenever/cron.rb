@@ -34,6 +34,7 @@ module Whenever
 
       def time_in_cron_syntax
         case @time
+          when /^.+ .+ .+ .+ .+.?$/ then @time # raw cron sytax given
           when Symbol then parse_symbol
           when String then parse_as_string
           else parse_time

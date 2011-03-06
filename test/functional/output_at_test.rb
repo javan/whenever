@@ -248,4 +248,21 @@ class OutputAtTest < Test::Unit::TestCase
       assert_match '27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59 * * * * blahblah', @output
     end
   end
+  
+  context "using raw cron syntax" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        every '0 0 27-31 * *' do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the command using the same cron syntax" do
+      assert_match '0 0 27-31 * * blahblah', @output
+    end
+  end
+  
 end

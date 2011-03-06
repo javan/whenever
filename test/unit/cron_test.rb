@@ -199,6 +199,15 @@ class CronTest < Test::Unit::TestCase
       end
     end
   end
+  
+  context "When given raw cron sytax" do
+    should "return the same cron sytax" do
+      crons = ['0 0 27-31 * *', '* * * * *', '2/3 1,9,22 11-26 1-6 *']
+      crons.each do |cron|
+        assert_equal cron, parse_time(cron)
+      end
+    end
+  end
 
 private
 
