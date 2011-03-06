@@ -3,7 +3,8 @@ Capistrano::Configuration.instance(:must_exist).load do
   _cset(:whenever_roles)        { :db }
   _cset(:whenever_command)      { "whenever" }
   _cset(:whenever_identifier)   { application }
-  _cset(:whenever_update_flags) { "--update-crontab #{whenever_identifier}" }
+  _cset(:whenever_environment)  { "production" }
+  _cset(:whenever_update_flags) { "--update-crontab #{whenever_identifier} --set environment=#{whenever_environment}" }
   _cset(:whenever_clear_flags)  { "--clear-crontab #{whenever_identifier}" }
   
   # Disable cron jobs at the begining of a deploy.
