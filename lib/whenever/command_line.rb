@@ -39,7 +39,7 @@ module Whenever
         write_crontab(whenever_cron)
       else
         puts Whenever.cron(@options)
-        puts "[message] Above your schedule file converted to cron syntax; your crontab file was not updated."
+        puts "[message] Above is your schedule file converted to cron syntax; your crontab file was not updated."
         puts "[message] Run `whenever --help' for more options."
         exit(0)
       end
