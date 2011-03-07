@@ -104,7 +104,7 @@ This will simply show you your schedule.rb file converted to cron syntax. It doe
 
 ### Credit
 
-Whenever was created for use at Inkling (<http://inklingmarkets.com>) where I work. Their take on it: <http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html>
+Whenever was created for use at Inkling (<http://inklingmarkets.com>). Their take on it: <http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html>
 
 Thanks to all the contributors who have made it even better: <http://github.com/javan/whenever/contributors>
 
