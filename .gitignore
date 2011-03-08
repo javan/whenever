@@ -2,3 +2,4 @@
 pkg
 doc
 .*.sw[a-z]
+Gemfile.lock

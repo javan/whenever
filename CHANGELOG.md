@@ -1,3 +1,12 @@
+### 0.6.5 / March 8th, 2011
+
+* Preserve whitespace at the end of crontab file. #95 [Rich Meyers]
+
+* Setting nil or blank environment variables now properly formats output. [T.J. VanSlyke]
+
+* Allow raw cron sytax, added -i to bash job template, general cleanup. [Javan Makhmali]
+
+
 ### 0.6.2 / October 26th, 2010
 
 * --clear-crontab option completely removes entries. #63 [Javan Makhmali]
