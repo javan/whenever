@@ -37,9 +37,9 @@ This will create an initial "config/schedule.rb" file you.
       runner "Task.do_something_great"
     end
 
-		every '0 0 27-31 * *' do
-			command "echo 'you can use raw cron sytax too'"
-		end
+    every '0 0 27-31 * *' do
+    	command "echo 'you can use raw cron sytax too'"
+    end
 
 More examples on the wiki: <http://wiki.github.com/javan/whenever/instructions-and-examples>
 
