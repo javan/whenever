@@ -9,6 +9,7 @@ set :job_template, "/bin/bash -i -l -c ':job'"
 
 job_type :command, ":task :output"
 job_type :rake,    "cd :path && RAILS_ENV=:environment rake :task --silent :output"
+job_type :flock_rake, "cd :path && flock -xn tmp/:task.lock -c \"RAILS_ENV=:environment rake :task\" :output"
 
 # Create a runner job that's appropriate for the Rails version,
 if File.exists?(File.join(path, 'script', 'rails'))
