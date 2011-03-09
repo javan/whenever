@@ -1,3 +1,8 @@
+### 0.6.6 / March 8th, 2011
+
+* Fix unclosed identifier bug. #119 [Javan Makhmali]
+
+
 ### 0.6.5 / March 8th, 2011
 
 * Preserve whitespace at the end of crontab file. #95 [Rich Meyers]

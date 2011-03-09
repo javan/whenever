@@ -89,10 +89,10 @@ module Whenever
     
     def updated_crontab   
       # Check for unopened or unclosed identifier blocks
-      if read_crontab =~ Regexp.new("^#{comment_open}$") && (read_crontab =~ Regexp.new("^#{comment_close}$")).nil?
+      if read_crontab =~ Regexp.new("^#{comment_open}$") && (read_crontab =~ Regexp.new("^#{comment_close}")).nil?
         warn "[fail] Unclosed indentifier; Your crontab file contains '#{comment_open}', but no '#{comment_close}'"
         exit(1)
-      elsif (read_crontab =~ Regexp.new("^#{comment_open}$")).nil? && read_crontab =~ Regexp.new("^#{comment_close}$")
+      elsif (read_crontab =~ Regexp.new("^#{comment_open}$")).nil? && read_crontab =~ Regexp.new("^#{comment_close}")
         warn "[fail] Unopened indentifier; Your crontab file contains '#{comment_close}', but no '#{comment_open}'"
         exit(1)
       end
