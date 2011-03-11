@@ -89,19 +89,19 @@ module Whenever
     
     def updated_crontab   
       # Check for unopened or unclosed identifier blocks
-      if read_crontab =~ Regexp.new("^#{comment_open}$") && (read_crontab =~ Regexp.new("^#{comment_close}")).nil?
+      if read_crontab =~ Regexp.new("^#{comment_open}") && (read_crontab =~ Regexp.new("^#{comment_close}")).nil?
         warn "[fail] Unclosed indentifier; Your crontab file contains '#{comment_open}', but no '#{comment_close}'"
         exit(1)
-      elsif (read_crontab =~ Regexp.new("^#{comment_open}$")).nil? && read_crontab =~ Regexp.new("^#{comment_close}")
+      elsif (read_crontab =~ Regexp.new("^#{comment_open}")).nil? && read_crontab =~ Regexp.new("^#{comment_close}")
         warn "[fail] Unopened indentifier; Your crontab file contains '#{comment_close}', but no '#{comment_open}'"
         exit(1)
       end
       
       # If an existing identier block is found, replace it with the new cron entries
-      if read_crontab =~ Regexp.new("^#{comment_open}$") && read_crontab =~ Regexp.new("^#{comment_close}$")
+      if read_crontab =~ Regexp.new("^#{comment_open}") && read_crontab =~ Regexp.new("^#{comment_close}")
         # If the existing crontab file contains backslashes they get lost going through gsub.
         # .gsub('\\', '\\\\\\') preserves them. Go figure.
-        read_crontab.gsub(Regexp.new("^#{comment_open}$.+^#{comment_close}$", Regexp::MULTILINE), whenever_cron.chomp.gsub('\\', '\\\\\\'))
+        read_crontab.gsub(Regexp.new("^#{comment_open}.+^#{comment_close}", Regexp::MULTILINE), whenever_cron.chomp.gsub('\\', '\\\\\\'))
       else # Otherwise, append the new cron entries after any existing ones
         [read_crontab, whenever_cron].join("\n\n")
       end.gsub(/\n{3,}/, "\n\n") # More than two newlines becomes just two.
