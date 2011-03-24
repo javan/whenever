@@ -1,3 +1,10 @@
+### 0.6.7 / March 23rd, 2011
+
+* Fix issue with comment block being corrupted during subsequent insertion of duplicate entries to the crontab. #123 [Jeremy (@lingmann)]
+
+* Removed -i from default job template. #118 [Javan Makhmali]
+
+
 ### 0.6.6 / March 8th, 2011
 
 * Fix unclosed identifier bug. #119 [Javan Makhmali]
