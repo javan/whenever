@@ -31,7 +31,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
     
     should "output the command with the default job template" do
-      assert_match /^.+ .+ .+ .+ \/bin\/bash -i -l -c 'blahblah'$/, @output
+      assert_match /^.+ .+ .+ .+ \/bin\/bash -l -c 'blahblah'$/, @output
     end
   end
   
