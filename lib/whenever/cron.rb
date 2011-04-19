@@ -88,6 +88,11 @@ module Whenever
             timing[1] = @at.is_a?(Time) ? @at.hour : 0
             timing[2] = @at.is_a?(Time) ? @at.day  : (@at.zero? ? 1 : @at)
             timing[3] = comma_separated_timing(month_frequency, 12, 1)
+          when Time
+            timing[0] = @time.min
+            timing[1] = @time.hour
+            timing[2] = @time.mday
+            timing[3] = @time.month
           else
             return parse_as_string
         end
