@@ -12,7 +12,7 @@ module Whenever
 
       def self.enumerate(item)
         if item and item.is_a?(String)
-          items = item.split(',')
+          items = item =~ /^.+ .+ .+ .+ .+.?$/ ? [item] : item.split(',')
         else
           items = item
           items = [items] unless items and items.respond_to?(:each)
@@ -34,24 +34,24 @@ module Whenever
 
       def time_in_cron_syntax
         case @time
-          when /^.+ .+ .+ .+ .+.?$/ then @time # raw cron sytax given
-          when Symbol then parse_symbol
-          when String then parse_as_string
-          else parse_time
+        when /^.+ .+ .+ .+ .+.?$/ then @time # raw cron sytax given
+        when Symbol then parse_symbol
+        when String then parse_as_string
+        else parse_time
         end
       end
 
-    protected
+      protected
 
       def parse_symbol
         shortcut = case @time
-          when :reboot          then '@reboot'
-          when :year, :yearly   then '@annually'
-          when :day, :daily     then '@daily'
-          when :midnight        then '@midnight'
-          when :month, :monthly then '@monthly'
-          when :week, :weekly   then '@weekly'
-          when :hour, :hourly   then '@hourly'
+        when :reboot          then '@reboot'
+        when :year, :yearly   then '@annually'
+        when :day, :daily     then '@daily'
+        when :midnight        then '@midnight'
+        when :month, :monthly then '@monthly'
+        when :week, :weekly   then '@weekly'
+        when :hour, :hourly   then '@hourly'
         end
         
         if shortcut
@@ -68,28 +68,28 @@ module Whenever
       def parse_time
         timing = Array.new(5, '*')
         case @time
-          when 0.seconds...1.minute
-            raise ArgumentError, "Time must be in minutes or higher"
-          when 1.minute...1.hour
-            minute_frequency = @time / 60
-            timing[0] = comma_separated_timing(minute_frequency, 59, @at || 0)
-          when 1.hour...1.day
-            hour_frequency = (@time / 60 / 60).round
-            timing[0] = @at.is_a?(Time) ? @at.min : @at
-            timing[1] = comma_separated_timing(hour_frequency, 23)
-          when 1.day...1.month
-            day_frequency = (@time / 24 / 60 / 60).round
-            timing[0] = @at.is_a?(Time) ? @at.min  : 0
-            timing[1] = @at.is_a?(Time) ? @at.hour : @at
-            timing[2] = comma_separated_timing(day_frequency, 31, 1)
-          when 1.month..12.months
-            month_frequency = (@time / 30  / 24 / 60 / 60).round
-            timing[0] = @at.is_a?(Time) ? @at.min  : 0
-            timing[1] = @at.is_a?(Time) ? @at.hour : 0
-            timing[2] = @at.is_a?(Time) ? @at.day  : (@at.zero? ? 1 : @at)
-            timing[3] = comma_separated_timing(month_frequency, 12, 1)
-          else
-            return parse_as_string
+        when 0.seconds...1.minute
+          raise ArgumentError, "Time must be in minutes or higher"
+        when 1.minute...1.hour
+          minute_frequency = @time / 60
+          timing[0] = comma_separated_timing(minute_frequency, 59, @at || 0)
+        when 1.hour...1.day
+          hour_frequency = (@time / 60 / 60).round
+          timing[0] = @at.is_a?(Time) ? @at.min : @at
+          timing[1] = comma_separated_timing(hour_frequency, 23)
+        when 1.day...1.month
+          day_frequency = (@time / 24 / 60 / 60).round
+          timing[0] = @at.is_a?(Time) ? @at.min  : 0
+          timing[1] = @at.is_a?(Time) ? @at.hour : @at
+          timing[2] = comma_separated_timing(day_frequency, 31, 1)
+        when 1.month..12.months
+          month_frequency = (@time / 30  / 24 / 60 / 60).round
+          timing[0] = @at.is_a?(Time) ? @at.min  : 0
+          timing[1] = @at.is_a?(Time) ? @at.hour : 0
+          timing[2] = @at.is_a?(Time) ? @at.day  : (@at.zero? ? 1 : @at)
+          timing[3] = comma_separated_timing(month_frequency, 12, 1)
+        else
+          return parse_as_string
         end
         timing.join(' ')
       end
