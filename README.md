@@ -95,6 +95,13 @@ For example, if you're using bundler do this:
     set :whenever_command, "bundle exec whenever"
     require "whenever/capistrano"
 
+If you are using different environments (such as staging, production), then you may want to do this:
+
+    set :whenever_environment, defer { stage }
+    require "whenever/capistrano"
+
+The capistrano variable `:stage` should be the one holding your environment name. This will make the correct `:environment` available in your schedule.rb.
+
 ### The `whenever` command
 
     $ cd /my/rails/app
