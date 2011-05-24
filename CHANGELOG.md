@@ -1,3 +1,8 @@
+### 0.6.8 / May 23rd, 2011
+
+* Convert most shortcuts to seconds. every :day -> every 1.day. #129 [Javan Makhmali]
+
+
 ### 0.6.7 / March 23rd, 2011
 
 * Fix issue with comment block being corrupted during subsequent insertion of duplicate entries to the crontab. #123 [Jeremy (@lingmann)]

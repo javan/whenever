@@ -174,20 +174,26 @@ class CronTest < Test::Unit::TestCase
   context "When parsing time using the cron shortcuts" do
     should "parse a :symbol into the correct shortcut" do
       assert_equal '@reboot',   parse_time(:reboot)
-      assert_equal '@annually', parse_time(:year)
+      assert_equal '@annually', parse_time(:annually)
       assert_equal '@annually', parse_time(:yearly)
-      assert_equal '@daily',    parse_time(:day)
       assert_equal '@daily',    parse_time(:daily)
       assert_equal '@midnight', parse_time(:midnight)
-      assert_equal '@monthly',  parse_time(:month)
       assert_equal '@monthly',  parse_time(:monthly)
-      assert_equal '@hourly',   parse_time(:hour)
+      assert_equal '@weekly',   parse_time(:weekly)
       assert_equal '@hourly',   parse_time(:hourly)
+    end
+    
+    should "convert time-based shortcuts to times" do
+      assert_equal '0 0 1 * *',  parse_time(:month)
+      assert_equal '0 0 * * *',  parse_time(:day)
+      assert_equal '0 * * * *',  parse_time(:hour)
+      assert_equal '0 0 1 12 *', parse_time(:year)
+      assert_equal '0 0 1,8,15,22 * *', parse_time(:week)
     end
     
     should "raise an exception if a valid shortcut is given but also an :at" do
       assert_raises ArgumentError do
-        parse_time(:hour, nil, "1:00 am")
+        parse_time(:hourly, nil, "1:00 am")
       end
       
       assert_raises ArgumentError do
@@ -195,7 +201,7 @@ class CronTest < Test::Unit::TestCase
       end
       
       assert_raises ArgumentError do
-        parse_time(:day, nil, '4:20pm')
+        parse_time(:daily, nil, '4:20pm')
       end
     end
   end

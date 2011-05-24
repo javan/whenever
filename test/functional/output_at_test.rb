@@ -166,7 +166,7 @@ class OutputAtTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :path, '/your/path'
-        every :day do
+        every :daily do
           rake "blah:blah"
           runner "runner_1"
           command "command_1"
