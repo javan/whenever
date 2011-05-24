@@ -1,6 +1,7 @@
 module Whenever
   module Output
     class Cron
+      REGEX = /^.+ .+ .+ .+ .+.?$/
 
       attr_accessor :time, :task
 
@@ -10,9 +11,14 @@ module Whenever
         @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
       end
 
-      def self.enumerate(item)
+      def self.enumerate(item, detect_cron = true)
         if item and item.is_a?(String)
-          items = item.split(',')
+          items = 
+            if detect_cron && item =~ REGEX
+              [item]
+            else
+              item.split(',')
+            end
         else
           items = item
           items = [items] unless items and items.respond_to?(:each)
@@ -22,7 +28,7 @@ module Whenever
 
       def self.output(times, job)
         enumerate(times).each do |time|
-          enumerate(job.at).each do |at|
+          enumerate(job.at, false).each do |at|
             yield new(time, job.output, at).output
           end
         end
@@ -34,7 +40,7 @@ module Whenever
 
       def time_in_cron_syntax
         case @time
-          when /^.+ .+ .+ .+ .+.?$/ then @time # raw cron sytax given
+          when REGEX  then @time # raw cron sytax given
           when Symbol then parse_symbol
           when String then parse_as_string
           else parse_time
