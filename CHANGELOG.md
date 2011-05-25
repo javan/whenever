@@ -6,6 +6,8 @@
 
 * Output no update message as comments. #135 [Javan Makhmali]
 
+* require 'thread' to support Rubygems >= 1.6.0. #132 [Javan Makhmali]
+
 
 ### 0.6.7 / March 23rd, 2011
 

@@ -1,5 +1,6 @@
 require 'chronic'
 require 'active_support/all'
+require 'thread'
 
 require 'whenever/job_list'
 require 'whenever/job'
