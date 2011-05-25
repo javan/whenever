@@ -2,6 +2,10 @@
 
 * Convert most shortcuts to seconds. every :day -> every 1.day. #129 [Javan Makhmali]
 
+* Allow commas in raw cron syntax. #130 [Marco Bergantin, Javan Makhmali]
+
+* Output no update message as comments. #135 [Javan Makhmali]
+
 
 ### 0.6.7 / March 23rd, 2011
 
