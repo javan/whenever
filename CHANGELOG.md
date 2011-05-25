@@ -1,4 +1,4 @@
-### 0.6.8 / May 23rd, 2011
+### 0.6.8 / May 24th, 2011
 
 * Convert most shortcuts to seconds. every :day -> every 1.day. #129 [Javan Makhmali]
 
