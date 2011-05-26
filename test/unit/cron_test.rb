@@ -169,6 +169,18 @@ class CronTest < Test::Unit::TestCase
       assert_equal '0 7 * * 6,0', parse_time('Weekends', nil, "7am")
       assert_equal '2 18 * * 6,0', parse_time('Weekends', nil, "6:02PM")
     end
+    
+    should "allow configuration of custom weekdays & weekends" do
+      Whenever::Output::Cron.weekdays, Whenever::Output::Cron.weekend = '2-6', '0-1'
+      
+      assert_equal '0 0 * * 2-6', parse_time('weekday')
+      assert_equal '59 5 * * 2-6', parse_time('Weekdays', nil, "5:59 am")
+      assert_equal '0 0 * * 0-1', parse_time('weekend')
+      assert_equal '2 18 * * 0-1', parse_time('Weekends', nil, "6:02PM")
+
+      # Reset weekdays and weekend to default values.
+      Whenever::Output::Cron.weekdays, Whenever::Output::Cron.weekend = '1-5', '6,0'
+    end
   end
   
   context "When parsing time using the cron shortcuts" do

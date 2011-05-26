@@ -30,6 +30,10 @@ module Whenever
       @set_variables[variable] = value
     end
     
+    def set_work_week(weekdays, weekend)
+      Whenever::Output::Cron.weekdays, Whenever::Output::Cron.weekend = weekdays, weekend
+    end
+    
     def env(variable, value)
       @env[variable.to_s] = value
     end
