@@ -18,3 +18,8 @@ end
 class Test::Unit::TestCase
   include TestExtensions
 end
+
+def set_default_work_week
+  # Reset weekdays and weekend to default values.
+  Whenever::Output::Cron.weekdays, Whenever::Output::Cron.weekend = '1-5', '6,0'
+end

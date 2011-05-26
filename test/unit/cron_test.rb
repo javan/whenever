@@ -178,8 +178,7 @@ class CronTest < Test::Unit::TestCase
       assert_equal '0 0 * * 0-1', parse_time('weekend')
       assert_equal '2 18 * * 0-1', parse_time('Weekends', nil, "6:02PM")
 
-      # Reset weekdays and weekend to default values.
-      Whenever::Output::Cron.weekdays, Whenever::Output::Cron.weekend = '1-5', '6,0'
+      set_default_work_week
     end
   end
   
