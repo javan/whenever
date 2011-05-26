@@ -3,12 +3,14 @@ module Whenever
     class Cron
       REGEX = /^.+ .+ .+ .+ .+.?$/
 
-      attr_accessor :time, :task
+      attr_accessor :time, :task, :weekdays, :weekend
 
       def initialize(time = nil, task = nil, at = nil)
         @time = time
         @task = task
         @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
+        weekdays ||= '1-5'
+        weekend  ||= '6,0'
       end
 
       def self.enumerate(item, detect_cron = true)
@@ -117,8 +119,8 @@ module Whenever
         timing[0] = @at.is_a?(Time) ? @at.min  : 0
         timing[1] = @at.is_a?(Time) ? @at.hour : 0
 
-        return (timing << '1-5') * " " if string.downcase.index('weekday')
-        return (timing << '6,0') * " " if string.downcase.index('weekend')
+        return (timing << weekdays) * " " if string.downcase.index('weekday')
+        return (timing << weekend) * " " if string.downcase.index('weekend')
 
         %w(sun mon tue wed thu fri sat).each_with_index do |day, i|
           return (timing << i) * " " if string.downcase.index(day)
