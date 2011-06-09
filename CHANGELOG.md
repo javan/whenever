@@ -1,3 +1,8 @@
+### 0.6.9 / June 8th, 2011
+
+* Use mojombo's chronic, it's active again. [Javan Makhmali]
+
+
 ### 0.6.8 / May 24th, 2011
 
 * Convert most shortcuts to seconds. every :day -> every 1.day. #129 [Javan Makhmali]

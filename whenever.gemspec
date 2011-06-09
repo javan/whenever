@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- test/{functional,unit}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-  s.add_runtime_dependency(%q<aaronh-chronic>, [">= 0.3.9"])
-  s.add_runtime_dependency(%q<activesupport>, [">= 2.3.4"])
-  s.add_development_dependency(%q<shoulda>, [">= 2.1.1"])
-  s.add_development_dependency(%q<mocha>, [">= 0.9.5"])
+  s.add_dependency "chronic", ">= 0.4.3"
+  s.add_dependency "activesupport", ">= 2.3.4"
+  s.add_development_dependency "shoulda", ">= 2.1.1"
+  s.add_development_dependency "mocha", ">= 0.9.5"
 end
