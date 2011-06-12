@@ -20,4 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency(%q<shoulda>, [">= 2.1.1"])
   s.add_development_dependency(%q<mocha>, [">= 0.9.5"])
   s.add_development_dependency(%q<i18n>, [">= 0.6.0"])
+  s.add_development_dependency(%q<rake>, [">= 0.6.0"])
 end
