@@ -102,6 +102,14 @@ If you are using different environments (such as staging, production), then you 
 
 The capistrano variable `:stage` should be the one holding your environment name. This will make the correct `:environment` available in your schedule.rb.
 
+### RVM Integration
+
+If your production environment uses RVM (Ruby Version Manager) you will run into a gotcha that causes your cron jobs to hang.  This is not directly related to Whenever, and can be tricky to debug.  Your .rvmrc files must be trusted or else the cron jobs will hang waiting for the file to be trusted.  A solution is to disable the prompt by adding this line to your user rvm file in `~/.rvmrc`
+
+    rvm_trust_rvmrcs_flag=1
+
+This tells rvm to trust all rvmrc files, which is documented here: http://wayneeseguin.beginrescueend.com/2010/08/22/ruby-environment-version-manager-rvm-1-0-0/
+
 ### The `whenever` command
 
     $ cd /my/rails/app
