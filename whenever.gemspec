@@ -27,5 +27,5 @@ Gem::Specification.new do |s|
   # but for whatever reason running `bundle install` doesn't install
   # i18n so I'm adding it here for now.
   # https://github.com/rails/rails/blob/master/activesupport/activesupport.gemspec#L19 ?
-  s.add_development_dependency "i18"
+  s.add_development_dependency "i18n"
 end
