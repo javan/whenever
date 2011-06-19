@@ -136,6 +136,8 @@ It's a little bit dated now, but remains a good introduction.
 
 [![Build Status](http://travis-ci.org/javan/whenever.png)](http://travis-ci.org/javan/whenever)
 
+Compatible with Ruby 1.8.7-1.9.2, JRuby, and Rubinius.
+
 ----
 
 Copyright (c) 2011 Javan Makhmali
