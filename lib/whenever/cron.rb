@@ -2,6 +2,8 @@ module Whenever
   module Output
     class Cron
       REGEX = /^.+ .+ .+ .+ .+.?$/
+      @weekdays, @weekend = '1-5', '6,0'
+      class << self; attr_accessor :weekdays, :weekend end
 
       attr_accessor :time, :task
 
@@ -117,8 +119,8 @@ module Whenever
         timing[0] = @at.is_a?(Time) ? @at.min  : 0
         timing[1] = @at.is_a?(Time) ? @at.hour : 0
 
-        return (timing << '1-5') * " " if string.downcase.index('weekday')
-        return (timing << '6,0') * " " if string.downcase.index('weekend')
+        return (timing << Cron.weekdays) * " " if string.downcase.index('weekday')
+        return (timing << Cron.weekend)  * " " if string.downcase.index('weekend')
 
         %w(sun mon tue wed thu fri sat).each_with_index do |day, i|
           return (timing << i) * " " if string.downcase.index(day)
