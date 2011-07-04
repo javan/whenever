@@ -38,7 +38,7 @@ This will create an initial "config/schedule.rb" file you.
     end
 
     every '0 0 27-31 * *' do
-      command "echo 'you can use raw cron sytax too'"
+      command "echo 'you can use raw cron syntax too'"
     end
 
 More examples on the wiki: <http://wiki.github.com/javan/whenever/instructions-and-examples>
