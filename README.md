@@ -95,8 +95,6 @@ Or set the job_template to nil to have your jobs execute normally.
 set :job_template, nil
 ```
 
-And you'll see your `schedule.rb` converted to cron sytax. Note: running `whenever` with no options does not display your current crontab file, it simply shows you the output of converting your `schedule.rb` file.
-
 ### Capistrano integration
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys.
