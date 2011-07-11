@@ -17,16 +17,15 @@ OptionParser.new do |opts|
   end
 end
 
-if ARGV.empty?
-  abort "Please specify the directory to wheneverize, e.g. `#{File.basename($0)} .'"
-elsif !File.exists?(ARGV.first)
-  abort "`#{ARGV.first}' does not exist."
-elsif !File.directory?(ARGV.first)
-  abort "`#{ARGV.first}' is not a directory."
-elsif ARGV.length > 1
-  abort "Too many arguments; please specify only the directory to wheneverize."
+unless ARGV.empty?
+  if !File.exists?(ARGV.first)
+    abort "`#{ARGV.first}' does not exist."
+  elsif !File.directory?(ARGV.first)
+    abort "`#{ARGV.first}' is not a directory."
+  elsif ARGV.length > 1
+    abort "Too many arguments; please specify only the directory to wheneverize."
+  end
 end
-
 
 content = <<-FILE
 # Use this file to easily define all of your cron jobs.
@@ -52,7 +51,7 @@ content = <<-FILE
 FILE
 
 file = 'config/schedule.rb'
-base = ARGV.shift
+base = ARGV.empty? ? '.' : ARGV.shift
 
 file = File.join(base, file)
 if File.exists?(file)
