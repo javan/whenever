@@ -110,7 +110,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
   context "A runner for a Rails 3 app" do
     setup do
       Whenever.expects(:path).at_least_once.returns('/my/path')
-      File.expects(:exists?).with('/my/path/script/rails').returns(true)
+      Whenever.expects(:rails3?).returns(true)
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
@@ -140,6 +140,24 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
     
     should "output the rake command using that path" do
+      assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec rake blahblah --silent', @output
+    end
+  end
+
+  context "A rake for a non-bundler app" do
+    setup do
+      Whenever.expects(:path).at_least_once.returns('/my/path')
+      Whenever.expects(:bundler?).returns(false)
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        every 2.hours do
+          rake 'blahblah'
+        end
+      file
+    end
+
+    should "not use invoke through bundler" do
       assert_match two_hours + ' cd /my/path && RAILS_ENV=production rake blahblah --silent', @output
     end
   end
@@ -157,7 +175,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
     
     should "output the rake command using that path" do
-      assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production rake blahblah --silent', @output
+      assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production bundle exec rake blahblah --silent', @output
     end
   end
   
