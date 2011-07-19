@@ -110,7 +110,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
   context "A runner for a Rails 3 app" do
     setup do
       Whenever.expects(:path).at_least_once.returns('/my/path')
-      File.expects(:exists?).with('/my/path/script/rails').returns(true)
+      Whenever.expects(:rails3?).returns(true)
       @output = Whenever.cron \
       <<-file
         set :job_template, nil

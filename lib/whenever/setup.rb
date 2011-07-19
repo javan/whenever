@@ -11,7 +11,7 @@ job_type :command, ":task :output"
 job_type :rake,    "cd :path && RAILS_ENV=:environment rake :task --silent :output"
 
 # Create a runner job that's appropriate for the Rails version,
-if File.exists?(File.join(path, 'script', 'rails'))
+if Whenever.rails3?
   job_type :runner, "cd :path && script/rails runner -e :environment ':task' :output"
 else
   job_type :runner, "cd :path && script/runner -e :environment ':task' :output"
