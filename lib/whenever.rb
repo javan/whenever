@@ -23,4 +23,8 @@ module Whenever
     File.exists?(File.join(path, 'script', 'rails'))
   end
 
+  def self.bundler?
+    File.exists?(File.join(path, 'Gemfile'))
+  end
+
 end
