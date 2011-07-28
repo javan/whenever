@@ -24,6 +24,14 @@ EXPECTED
       @command.expects(:write_crontab).returns(true)
       assert @command.run
     end
+    
+    should "exit with status 0" do
+      begin
+        @command.run
+      rescue SystemExit => e
+        assert_equal 0, e.status
+      end
+    end
   end
   
   context "A command line update" do
