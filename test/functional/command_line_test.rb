@@ -54,35 +54,23 @@ EXPECTED
     
   end
   
-    context "A specific cron user" do
-      setup do
-        File.expects(:exists?).with('config/schedule.rb').returns(true)
-        @command = Whenever::CommandLine.new(:write => true, :identifier => 'My identifier', :user => "cronuser")
-        @task = "#{two_hours} /my/command"
-        Whenever.expects(:cron).returns(@task)
-      end
+  context "A specific cron user" do
+    setup do
+      Whenever.stubs(:cron).returns("#{two_hours} /my/command")
+      File.stubs(:exists?).with('config/schedule.rb').returns(true)
+      @tempfile = Tempfile.new('whenever_cron_test')
 
-      context "system call" do
-        setup do
-          @command.expects(:puts).with("[write] crontab file written")
-          @tempfile = Tempfile.new('whenever_cron_test')
-          @command.expects(:tmp_cron_file).twice.returns(@tempfile.path)
-        end
-
-        context "with succesful exit" do
-          setup do
-            @command.expects(:exit).with(0)
-          end
-
-          should "execute crontab with tempfile path" do
-            @command.expects(:system).with("crontab -u cronuser #{@tempfile.path}").returns(true)
-            @command.run
-          end
-        end
-      end
-
+      @command = Whenever::CommandLine.new(:write => true, :identifier => 'My identifier', :user => "cronuser")
+      @command.stubs(:exit)
+      @command.stubs(:puts)
+      @command.stubs(:tmp_cron_file).returns(@tempfile.path)
     end
-  
+
+    should "execute crontab for that user" do
+      @command.expects(:system).with("crontab -u cronuser #{@tempfile.path}").returns(true)
+      @command.run
+    end
+  end  
   
   context "A command line update" do
     setup do
