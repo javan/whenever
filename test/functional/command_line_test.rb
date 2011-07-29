@@ -40,10 +40,15 @@ EXPECTED
         end
       end
       
-      should "execute crontab with tempfile path" do
-        @command.expects(:exit).with(0)
-        @command.expects(:system).with("crontab #{@tempfile.path}").returns(true)
-        @command.run
+      context "succesful exit" do
+        setup do
+          @command.expects(:exit).with(0)
+        end
+                
+        should "execute crontab with tempfile path" do
+          @command.expects(:system).with("crontab #{@tempfile.path}").returns(true)
+          @command.run
+        end
       end
     end
     
