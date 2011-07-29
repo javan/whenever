@@ -122,6 +122,25 @@ require "whenever/capistrano"
 
 The capistrano variable `:stage` should be the one holding your environment name. This will make the correct `:environment` available in your `schedule.rb`.
 
+### Capistrano options
+
+You can pass more Whenever options using `whenever_options` in your Capistrano recipe.
+
+To write the crontab of a different user than the deploy user:
+
+```ruby
+set :whenever_options, "--user cronuser"
+require "whenever/capistrano"
+```
+
+The system command to execute the crontab is called `crontab` by default. You can override this:
+```
+set :whenever_options, "--command 'sudo -u cronuser crontab'"
+require "whenever/capistrano"
+```
+
+Obviously all these options can be combined.
+
 ### RVM Integration
 
 If your production environment uses RVM (Ruby Version Manager) you will run into a gotcha that causes your cron jobs to hang.  This is not directly related to Whenever, and can be tricky to debug.  Your .rvmrc files must be trusted or else the cron jobs will hang waiting for the file to be trusted.  A solution is to disable the prompt by adding this line to your user rvm file in `~/.rvmrc`
