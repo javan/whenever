@@ -40,7 +40,7 @@ EXPECTED
         end
       end
       
-      context "succesful exit" do
+      context "with succesful exit" do
         setup do
           @command.expects(:exit).with(0)
         end
@@ -53,6 +53,36 @@ EXPECTED
     end
     
   end
+  
+    context "A specific cron user" do
+      setup do
+        File.expects(:exists?).with('config/schedule.rb').returns(true)
+        @command = Whenever::CommandLine.new(:write => true, :identifier => 'My identifier', :user => "cronuser")
+        @task = "#{two_hours} /my/command"
+        Whenever.expects(:cron).returns(@task)
+      end
+
+      context "system call" do
+        setup do
+          @command.expects(:puts).with("[write] crontab file written")
+          @tempfile = Tempfile.new('whenever_cron_test')
+          @command.expects(:tmp_cron_file).twice.returns(@tempfile.path)
+        end
+
+        context "with succesful exit" do
+          setup do
+            @command.expects(:exit).with(0)
+          end
+
+          should "execute crontab with tempfile path" do
+            @command.expects(:system).with("crontab -u cronuser #{@tempfile.path}").returns(true)
+            @command.run
+          end
+        end
+      end
+
+    end
+  
   
   context "A command line update" do
     setup do
