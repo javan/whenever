@@ -75,7 +75,7 @@ module Whenever
         file << contents
       end
 
-      command = ['crontab']
+      command = [@options[:command] || 'crontab']
       command << "-u #{@options[:user]}" if @options[:user]
       command << tmp_cron_file
 
