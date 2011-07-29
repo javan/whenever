@@ -134,12 +134,13 @@ require "whenever/capistrano"
 ```
 
 The system command to execute the crontab is called `crontab` by default. You can override this:
-```
+
+```ruby
 set :whenever_options, "--command 'sudo -u cronuser crontab'"
 require "whenever/capistrano"
 ```
 
-Obviously all these options can be combined.
+Obviously all these options can be combined too. Find out which options are supported by running `whenever` on the command line.
 
 ### RVM Integration
 
