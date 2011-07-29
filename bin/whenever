@@ -29,6 +29,9 @@ OptionParser.new do |opts|
   opts.on('-u', '--user [user]', 'Default: current user') do |user| 
     options[:user] = user if user
   end
+  opts.on('-x', '--command [crontab]', 'Default: crontab') do |command|
+    options[:command] = command if command
+  end
   opts.on('-k', '--cut [lines]', 'Cut lines from the top of the cronfile') do |lines|
     options[:cut] = lines.to_i if lines
   end
