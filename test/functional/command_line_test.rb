@@ -20,18 +20,33 @@ EXPECTED
       assert_equal output, @command.send(:whenever_cron)
     end
     
-    should "write the crontab when run" do
+    should "write the crontab" do
       @command.expects(:write_crontab).returns(true)
       assert @command.run
     end
-    
-    should "exit with status 0" do
-      begin
+
+    context "system call" do
+      setup do
+        @command.expects(:puts).with("[write] crontab file written")
+        @tempfile = Tempfile.new('whenever_cron_test')
+        @command.expects(:tmp_cron_file).twice.returns(@tempfile.path)
+      end
+
+      should "exit with status 0" do
+        begin
+          @command.run
+        rescue SystemExit => e
+          assert_equal 0, e.status
+        end
+      end
+      
+      should "execute crontab with tempfile path" do
+        @command.expects(:exit).with(0)
+        @command.expects(:system).with("crontab #{@tempfile.path}").returns(true)
         @command.run
-      rescue SystemExit => e
-        assert_equal 0, e.status
       end
     end
+    
   end
   
   context "A command line update" do
