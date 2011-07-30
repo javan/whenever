@@ -17,7 +17,7 @@ gem 'whenever', :require => false
 ### Getting started
 
 ```sh
-$ cd /my/rails/app
+$ cd /apps/my-great-project
 $ wheneverize .
 ```
 
