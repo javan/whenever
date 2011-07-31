@@ -2,14 +2,15 @@ require 'chronic'
 require 'active_support/all'
 require 'thread'
 
-require 'whenever/job_list'
-require 'whenever/job'
-require 'whenever/cron'
-require 'whenever/output_redirection'
-require 'whenever/command_line'
-require 'whenever/version'
-
 module Whenever
+  autoload :JobList,     'whenever/job_list'
+  autoload :Job,         'whenever/job'
+  autoload :CommandLine, 'whenever/command_line'
+  
+  module Output
+    autoload :Cron,        'whenever/cron'
+    autoload :Redirection, 'whenever/output_redirection'
+  end
   
   def self.cron(options)
     Whenever::JobList.new(options).generate_cron_output
@@ -26,5 +27,4 @@ module Whenever
   def self.bundler?
     File.exists?(File.join(path, 'Gemfile'))
   end
-
 end
