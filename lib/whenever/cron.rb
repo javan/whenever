@@ -142,7 +142,6 @@ module Whenever
 
         output[0, max_occurances].join(',')
       end
-
     end
   end
 end

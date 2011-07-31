@@ -1,6 +1,5 @@
 module Whenever
   class Job
-    
     attr_reader :at
   
     def initialize(options = {})
@@ -42,6 +41,5 @@ module Whenever
     def escape_double_quotes(str)
       str.gsub(/"/) { '\"' }
     end
-    
   end
 end

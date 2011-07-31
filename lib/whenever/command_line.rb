@@ -3,7 +3,6 @@ require 'tempfile'
 
 module Whenever
   class CommandLine
-    
     def self.execute(options={})
       new(options).run
     end
@@ -130,6 +129,5 @@ module Whenever
     def comment_close
       "# End #{comment_base}"
     end
-    
   end
 end

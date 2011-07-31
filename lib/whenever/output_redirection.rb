@@ -1,7 +1,6 @@
 module Whenever
   module Output
     class Redirection
-      
       def initialize(output)
         @output = output
       end
@@ -52,7 +51,6 @@ module Whenever
       def redirect_from_string
         ">> #{@output} 2>&1"
       end
-      
     end
   end
 end

@@ -1,6 +1,5 @@
 module Whenever
   class JobList
-  
     def initialize(options)
       @jobs, @env, @set_variables, @pre_set_variables = {}, {}, {}, {}
       
@@ -143,6 +142,5 @@ module Whenever
 
       shortcut_jobs.join + combine(regular_jobs).join
     end
-    
   end
 end
