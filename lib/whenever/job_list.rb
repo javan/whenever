@@ -3,21 +3,20 @@ module Whenever
     def initialize(options)
       @jobs, @env, @set_variables, @pre_set_variables = {}, {}, {}, {}
       
-      case options
-        when String
-          config = options
-        when Hash
-          config = if options[:string]
-            options[:string]
-          elsif options[:file]
-            File.read(options[:file])
-          end
-          pre_set(options[:set])
+      if options.is_a? String
+        options = { :string => options }
       end
+
+      pre_set(options[:set])
       
       setup = File.read("#{File.expand_path(File.dirname(__FILE__))}/setup.rb")
+      schedule = if options[:string]
+        options[:string]
+      elsif options[:file]
+        File.read(options[:file])
+      end
       
-      eval(setup + config)
+      instance_eval(setup + schedule, options[:file] || '<eval>')
     end
     
     def set(variable, value)
