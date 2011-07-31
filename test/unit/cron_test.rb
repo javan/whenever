@@ -215,6 +215,14 @@ class CronTest < Test::Unit::TestCase
     end
   end
 
+  context "When given timestamp" do
+    should "parse a timestamp object" do
+      time = Time.parse('2011-05-07 16:32:00')
+      assert_equal '32 16 7 5 *', parse_time(time)
+      assert_equal '32 16 7 5 *', parse_time(time + 1.year) # year independent
+      assert_equal '32 16 7 5 *', parse_time(time + 22.seconds) # second independent
+    end
+  end
 private
 
   def assert_days_and_hours_and_minutes_equals(expected, time)
