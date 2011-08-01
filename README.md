@@ -133,7 +133,7 @@ This tells rvm to trust all rvmrc files, which is documented here: http://waynee
 ### The `whenever` command
 
 ```sh
-$ cd /my/rails/app
+$ cd /apps/my-great-project
 $ whenever
 ```
   
