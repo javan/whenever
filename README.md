@@ -122,6 +122,14 @@ require "whenever/capistrano"
 
 The capistrano variable `:stage` should be the one holding your environment name. This will make the correct `:environment` available in your `schedule.rb`.
 
+If both your environments are on the same server you'll want to namespace them or they'll overwrite each other when you deploy:
+
+```ruby
+set :whenever_environment, defer { stage }
+set :whenever_identifier, defer { "#{application}_#{stage}" }
+require "whenever/capistrano"
+```
+
 ### RVM Integration
 
 If your production environment uses RVM (Ruby Version Manager) you will run into a gotcha that causes your cron jobs to hang.  This is not directly related to Whenever, and can be tricky to debug.  Your .rvmrc files must be trusted or else the cron jobs will hang waiting for the file to be trusted.  A solution is to disable the prompt by adding this line to your user rvm file in `~/.rvmrc`
