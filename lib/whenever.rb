@@ -1,5 +1,5 @@
 require 'chronic'
-require 'active_support/all'
+require 'active_support/time'
 require 'thread'
 
 module Whenever
