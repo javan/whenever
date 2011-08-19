@@ -57,32 +57,51 @@ module Whenever
     
     def read_crontab
       return @current_crontab if @current_crontab
-      
-      command = ['crontab -l']
-      command << "-u #{@options[:user]}" if @options[:user]
-      
-      command_results  = %x[#{command.join(' ')} 2> /dev/null]
-      @current_crontab = $?.exitstatus.zero? ? prepare(command_results) : ''
+
+      command_results = (
+        if @options[:pipe]
+          stdin.read
+        else
+          command = ['crontab -l']
+          command << "-u #{@options[:user]}" if @options[:user]
+          
+          result = %x[#{command.join(' ')} 2> /dev/null]
+
+          $?.exitstatus.zero? ? result : ''
+        end
+      )
+
+      @current_crontab = prepare(command_results)
     end
     
     def write_crontab(contents)
-      tmp_cron_file = Tempfile.new('whenever_tmp_cron').path
-      File.open(tmp_cron_file, File::WRONLY | File::APPEND) do |file|
-        file << contents
-      end
+      target_fh = (
+        if @options[:pipe]
+          stdout
+        else
+          File.open(Tempfile.new('whenever_tmp_cron').path, File::WRONLY | File::APPEND)
+        end
+      )
+      
+      target_fh << contents
+      target_fh.close
 
-      command = ['crontab']
-      command << "-u #{@options[:user]}" if @options[:user]
-      command << tmp_cron_file
-
-      if system(command.join(' '))
-        action = 'written' if @options[:write]
-        action = 'updated' if @options[:update]
-        puts "[write] crontab file #{action}"
+      if @options[:pipe]
         exit(0)
       else
-        warn "[fail] Couldn't write crontab; try running `whenever' with no options to ensure your schedule file is valid."
-        exit(1)
+        command = ['crontab']
+        command << "-u #{@options[:user]}" if @options[:user]
+        command << target_file
+
+        if system(command.join(' '))
+          action = 'written' if @options[:write]
+          action = 'updated' if @options[:update]
+          puts "[write] crontab file #{action}"
+          exit(0)
+        else
+          warn "[fail] Couldn't write crontab; try running `whenever' with no options to ensure your schedule file is valid."
+          exit(1)
+        end
       end
     end
     
@@ -128,6 +147,14 @@ module Whenever
     
     def comment_close
       "# End #{comment_base}"
+    end
+    
+    def stdin
+      $stdin
+    end
+
+    def stdout
+      $stdout
     end
   end
 end

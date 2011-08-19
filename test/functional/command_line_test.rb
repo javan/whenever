@@ -319,4 +319,42 @@ EXISTING_CRON
     end
   end
 
+  context 'A command line update that reads the cron from stdin writes to stdout' do
+    setup do
+      @mock_stdin = StringIO.new(<<-EXISTING_CRON)
+# Something
+
+# Begin Whenever generated tasks for: My identifier
+My whenever job that was already here
+# End Whenever generated tasks for: My identifier
+EXISTING_CRON
+
+      @mock_stdout = StringIO.new
+
+      File.expects(:exists?).with('config/schedule.rb').returns(true)
+      @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier', :pipe => true)
+      @task = "#{two_hours} /my/command"
+      Whenever.expects(:cron).returns(@task)
+
+      @command.stubs(:stdin).returns(@mock_stdin)
+      @command.stubs(:stdout).returns(@mock_stdout)
+    end
+
+    should "update the file and write out a new file correctly" do
+      begin
+        @command.run
+        @mock_stdout.rewind
+        asset_equal @mock_stdout.read, <<-NEW_CRON
+# Something
+
+# Begin Whenever generated tasks for: My identifier
+#{@task}
+# End Whenever generated tasks for: My identifier
+NEW_CRON
+      rescue SystemExit => e
+        assert_equal 0, e.status
+      end
+    end
+  end
+
 end

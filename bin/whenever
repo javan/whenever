@@ -33,6 +33,9 @@ OptionParser.new do |opts|
   opts.on('-k', '--cut [lines]', 'Cut lines from the top of the cronfile') do |lines|
     options[:cut] = lines.to_i if lines
   end
+  opts.on('-p', '--pipe', 'Pipe crontab from stdin, through whenever, and out to stdout') do
+    options[:pipe] = true
+  end
   opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
 end.parse!
 
