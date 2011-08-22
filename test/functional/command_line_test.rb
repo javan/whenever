@@ -20,11 +20,75 @@ EXPECTED
       assert_equal output, @command.send(:whenever_cron)
     end
     
-    should "write the crontab when run" do
+    should "write the crontab" do
       @command.expects(:write_crontab).returns(true)
       assert @command.run
     end
+
+    context "system call" do
+      setup do
+        @command.expects(:puts).with("[write] crontab file written")
+        @tempfile = Tempfile.new('whenever_cron_test')
+        @command.expects(:tmp_cron_file).twice.returns(@tempfile.path)
+      end
+
+      should "exit with status 0" do
+        begin
+          @command.run
+        rescue SystemExit => e
+          assert_equal 0, e.status
+        end
+      end
+      
+      context "with succesful exit" do
+        setup do
+          @command.expects(:exit).with(0)
+        end
+                
+        should "execute crontab with tempfile path" do
+          @command.expects(:system).with("crontab #{@tempfile.path}").returns(true)
+          @command.run
+        end
+      end
+    end
+    
   end
+  
+  context "A specific cron user" do
+    setup do
+      Whenever.stubs(:cron).returns("#{two_hours} /my/command")
+      File.stubs(:exists?).with('config/schedule.rb').returns(true)
+      @tempfile = Tempfile.new('whenever_cron_test')
+
+      @command = Whenever::CommandLine.new(:write => true, :identifier => 'My identifier', :user => "cronuser")
+      @command.stubs(:exit)
+      @command.stubs(:puts)
+      @command.stubs(:tmp_cron_file).returns(@tempfile.path)
+    end
+
+    should "execute crontab for that user" do
+      @command.expects(:system).with("crontab -u cronuser #{@tempfile.path}").returns(true)
+      @command.run
+    end
+  end  
+  
+  context "A specific cron command" do
+    setup do
+      Whenever.stubs(:cron).returns("#{two_hours} /my/command")
+      File.stubs(:exists?).with('config/schedule.rb').returns(true)
+      @tempfile = Tempfile.new('whenever_cron_test')
+
+      @command = Whenever::CommandLine.new(:write => true, :identifier => 'My identifier', :command => "sudo -u admin crontab")
+      @command.stubs(:exit)
+      @command.stubs(:puts)
+      @command.stubs(:tmp_cron_file).returns(@tempfile.path)
+    end
+
+    should "execute crontab for that user" do
+      @command.expects(:system).with("sudo -u admin crontab #{@tempfile.path}").returns(true)
+      @command.run
+    end
+  end  
   
   context "A command line update" do
     setup do

@@ -45,6 +45,10 @@ module Whenever
     end
     
   protected
+  
+    def tmp_cron_file
+      @tmp_cron_file ||= Tempfile.new('whenever_tmp_cron').path
+    end
     
     def default_identifier
       File.expand_path(@options[:file])
@@ -66,12 +70,11 @@ module Whenever
     end
     
     def write_crontab(contents)
-      tmp_cron_file = Tempfile.new('whenever_tmp_cron').path
       File.open(tmp_cron_file, File::WRONLY | File::APPEND) do |file|
         file << contents
       end
 
-      command = ['crontab']
+      command = [@options[:command] || 'crontab']
       command << "-u #{@options[:user]}" if @options[:user]
       command << tmp_cron_file
 
