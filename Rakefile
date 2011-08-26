@@ -1,5 +1,11 @@
-require 'bundler'
-Bundler::GemHelper.install_tasks
+begin
+  require 'bundler'
+rescue LoadError => e
+  warn("warning: Could not load bundler: #{e}")
+  warn("         Some rake tasks will not be defined")
+else
+  Bundler::GemHelper.install_tasks
+end
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
