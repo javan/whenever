@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
 require 'optparse'
 require 'whenever'
 require 'whenever/version'
