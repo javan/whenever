@@ -1,4 +1,4 @@
-# Environemnt defaults to production
+# Environment defaults to production
 set :environment, "production"
 # Path defaults to the directory `whenever` was run from
 set :path, Whenever.path
