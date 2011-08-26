@@ -27,4 +27,12 @@ module Whenever
   def self.bundler?
     File.exists?(File.join(path, 'Gemfile'))
   end
+  
+  def self.string_blank?(string)
+    if string.respond_to?(:blank?)
+      string.blank?
+    else
+      string.nil? || string.strip.empty?
+    end
+  end
 end

@@ -128,7 +128,7 @@ module Whenever
       end
 
       def comma_separated_timing(frequency, max, start = 0)
-        return start     if frequency.blank? || frequency.zero?
+        return start     if frequency.nil? || frequency.is_a?(String) && Whenever.string_blank?(frequency) || frequency.zero?
         return '*'       if frequency == 1
         return frequency if frequency > (max * 0.5).ceil
 
