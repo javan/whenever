@@ -1,6 +1,16 @@
 require 'chronic'
-require 'active_support/all'
-require 'thread'
+begin
+  # whenever only needs time extensions, however it is not possible
+  # to obtain them by requiring files only.
+  # because of this we requre all integer and numeric extensions.
+  require 'active_support/core_ext/integer'
+  require 'active_support/core_ext/numeric'
+  # require of thread is needed to correct activesupport < 2.3.11
+  # breaking with rubygems >= 1.6.0 - see issue #132
+  require 'thread'
+rescue LoadError
+  require 'whenever/time_extensions'
+end
 
 module Whenever
   autoload :JobList,     'whenever/job_list'
