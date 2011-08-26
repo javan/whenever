@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
-require 'whenever'
-require 'whenever/version'
 
 options = {}
 
@@ -34,5 +32,8 @@ OptionParser.new do |opts|
   end
   opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
 end.parse!
+
+require 'whenever'
+require 'whenever/version'
 
 Whenever::CommandLine.execute(options)
