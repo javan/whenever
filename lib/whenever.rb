@@ -1,10 +1,16 @@
 require 'chronic'
 begin
-  # whenever only needs time extensions, however it is not possible
-  # to obtain them by requiring files only.
-  # because of this we requre all integer and numeric extensions.
-  require 'active_support/core_ext/integer'
-  require 'active_support/core_ext/numeric'
+  # we only need time extensions.
+  require 'active_support/core_ext/integer/time'
+  require 'active_support/core_ext/numeric/time'
+  
+  # on rails 2.3.x above requires do not add extension methods
+  # to standard classes; for that higher-level requires are necessary:
+  unless 0.respond_to?(:days)
+    require 'active_support/core_ext/integer'
+    require 'active_support/core_ext/numeric'
+  end
+  
   # require of thread is needed to correct activesupport < 2.3.11
   # breaking with rubygems >= 1.6.0 - see issue #132
   require 'thread'
