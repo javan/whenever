@@ -31,7 +31,11 @@ OptionParser.new do |opts|
   opts.on('-k', '--cut [lines]', 'Cut lines from the top of the cronfile') do |lines|
     options[:cut] = lines.to_i if lines
   end
-  opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
+  opts.on('-v', '--version') do
+    require 'whenever/version'
+    puts "Whenever v#{Whenever::VERSION}"
+    exit(0)
+  end
 end.parse!
 
 require 'whenever'
