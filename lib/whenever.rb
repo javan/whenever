@@ -4,6 +4,9 @@ begin
   require 'active_support/core_ext/integer/time'
   require 'active_support/core_ext/numeric/time'
   
+  # time extensions use ActiveSupport::Duration but do not require it.
+  require 'active_support/duration'
+  
   # on rails 2.3.x above requires do not add extension methods
   # to standard classes; for that higher-level requires are necessary:
   unless 0.respond_to?(:days)
