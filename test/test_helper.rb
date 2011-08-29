@@ -9,6 +9,8 @@ require 'mocha'
 
 module TestExtensions
   
+  class ExecError < StandardError; end
+  
   def two_hours
     "0 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
   end
@@ -23,6 +25,9 @@ module TestExtensions
       end
       rd.close
       Process.wait
+      unless $?.exitstatus == 0
+        raise ExecError, "Command failed with exit code #{$?.exitstatus}: #{cmd.join(' ')}"
+      end
       output
     else
       rd.close
