@@ -16,6 +16,11 @@ module TestExtensions
   end
   
   def collect_output(*cmd)
+    if cmd.last.is_a?(Hash)
+      options = cmd.pop
+    else
+      options = {}
+    end
     rd, wr = IO.pipe
     if fork
       wr.close
@@ -33,6 +38,11 @@ module TestExtensions
       rd.close
       STDOUT.reopen(wr)
       wr.close
+      if options[:env]
+        options[:env].each do |key, value|
+          ENV[key] = value
+        end
+      end
       exec(*cmd)
     end
   end
