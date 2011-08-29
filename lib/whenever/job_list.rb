@@ -39,7 +39,7 @@ module Whenever
     end
     
     def job_type(name, template)
-      class_eval do
+      class << self; self end.class_eval do
         define_method(name) do |task, *args|
           options = { :task => task, :template => template }
           options.merge!(args[0]) if args[0].is_a? Hash
@@ -67,13 +67,13 @@ module Whenever
     # Only works for setting values as strings.
     #
     def pre_set(variable_string = nil)
-      return if variable_string.blank?
+      return if Whenever.string_blank?(variable_string)
       
       pairs = variable_string.split('&')
       pairs.each do |pair|
         next unless pair.index('=')
         variable, value = *pair.split('=')
-        unless variable.blank? || value.blank?
+        unless Whenever.string_blank?(variable) || Whenever.string_blank?(value)
           variable = variable.strip.to_sym
           set(variable, value.strip)
           @pre_set_variables[variable] = value
@@ -86,7 +86,7 @@ module Whenever
       
       output = []
       @env.each do |key, val|
-        output << "#{key}=#{val.blank? ? '""' : val}\n"
+        output << "#{key}=#{Whenever.string_blank?(val) ? '""' : val}\n"
       end
       output << "\n"
       
@@ -130,7 +130,7 @@ module Whenever
           Whenever::Output::Cron.output(time, job) do |cron|
             cron << "\n\n"
             
-            if cron.starts_with?("@")
+            if cron[0..0] == "@"
               shortcut_jobs << cron
             else
               regular_jobs << cron
