@@ -37,6 +37,13 @@ This will create an initial "config/schedule.rb" file you.
       runner "Task.do_something_great"
     end
 
+    # Specify custom weekdays/weekend
+    set_work_week('2-6', '0-1')
+
+    every :weekday, :at => "8:00am" do
+      command "/usr/bin/weekday_task"
+    end
+
     every '0 0 27-31 * *' do
       command "echo 'you can use raw cron sytax too'"
     end
