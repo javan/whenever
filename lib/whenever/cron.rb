@@ -1,3 +1,5 @@
+require 'chronic'
+
 module Whenever
   module Output
     class Cron
