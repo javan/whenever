@@ -1,6 +1,18 @@
-### 0.6.9 / June 8th, 2011
+### 0.7.0 / September 2nd, 2011
 
 * Use mojombo's chronic, it's active again. [Javan Makhmali]
+
+* Capistrano task enhancements. [Chris Griego]
+
+* wheneverize command defaults to '.' directory. [Andrew Nesbitt]
+
+* rake job_type uses bundler if detected. [Michał Szajbe]
+
+* Indicate filename in exceptions stemming from schedule file. [Javan Makhmali]
+
+* Don't require rubygems, bundler where possible. [Oleg Pudeyev]
+
+* Documentation and code cleanup. [many nice people]
 
 
 ### 0.6.8 / May 24th, 2011

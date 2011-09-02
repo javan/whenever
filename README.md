@@ -1,5 +1,3 @@
-### Introduction
-
 Whenever is a Ruby gem that provides a clear syntax for writing and deploying cron jobs.
 
 ### Installation
