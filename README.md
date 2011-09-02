@@ -69,15 +69,11 @@ The default job types that ship with Whenever are defined like so:
 
 ```ruby
 job_type :command, ":task :output"
-job_type :rake,    "cd :path && RAILS_ENV=:environment rake :task :output"
-job_type :runner,  "cd :path && script/runner -e :environment ':task' :output"
-```
-  
-If a `script/rails` file is detected (like in a Rails 3 app), runner will be defined to fit:
-
-```ruby
+job_type :rake,    "cd :path && RAILS_ENV=:environment bundle exec rake :task --silent :output"
 job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
 ```
+
+Pre-Rails 3 apps and apps that don't use Bundler will redefine the `rake` and `runner` jobs respectively to function correctly.
 
 If a `:path` is not set it will default to the directory in which `whenever` was executed. `:environment` will default to 'production'. `:output` will be replaced with your output redirection settings which you can read more about here: <http://github.com/javan/whenever/wiki/Output-redirection-aka-logging-your-cron-jobs>
 
