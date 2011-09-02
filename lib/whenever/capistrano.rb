@@ -29,8 +29,9 @@ Capistrano::Configuration.instance(:must_exist).load do
     DESC
     task :update_crontab do
       options = { :roles => fetch(:whenever_roles) }
-
-      if find_servers(options).any?
+      servers = find_servers(options) rescue []
+      
+      if servers.any?
         on_rollback do
           if fetch :previous_release
             run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}", options
@@ -56,7 +57,9 @@ Capistrano::Configuration.instance(:must_exist).load do
     DESC
     task :clear_crontab do
       options = { :roles => whenever_roles }
-      run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options if find_servers(options).any?
+      servers = find_servers(options) rescue []
+      
+      run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options if servers.any?
     end
   end
 end
