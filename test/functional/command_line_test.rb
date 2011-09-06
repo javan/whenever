@@ -331,8 +331,10 @@ EXISTING_CRON
 
       @mock_stdout = StringIO.new
 
+      @mock_stdin.stubs(:tty?).returns(false)
+
       File.expects(:exists?).with('config/schedule.rb').returns(true)
-      @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier', :pipe => true)
+      @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
       @task = "#{two_hours} /my/command"
       Whenever.expects(:cron).returns(@task)
 

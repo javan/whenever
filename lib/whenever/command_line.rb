@@ -59,7 +59,7 @@ module Whenever
       return @current_crontab if @current_crontab
 
       command_results = (
-        if @options[:pipe]
+        if !stdin.tty?
           stdin.read
         else
           command = ['crontab -l']
@@ -76,7 +76,7 @@ module Whenever
     
     def write_crontab(contents)
       target_fh = (
-        if @options[:pipe]
+        if !stdin.tty?
           stdout
         else
           File.open(Tempfile.new('whenever_tmp_cron').path, File::WRONLY | File::APPEND)
@@ -86,7 +86,7 @@ module Whenever
       target_fh << contents
       target_fh.close
 
-      if @options[:pipe]
+      if !stdin.tty?
         exit(0)
       else
         command = ['crontab']
