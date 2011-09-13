@@ -1,5 +1,5 @@
-require 'active_support/all'
 require 'thread'
+require 'active_support/all'
 
 module Whenever
   autoload :JobList,     'whenever/job_list'
