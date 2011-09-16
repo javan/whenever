@@ -45,6 +45,10 @@ end
 every '0 0 27-31 * *' do
   command "echo 'you can use raw cron syntax too'"
 end
+
+every :month, :desc => 'Monthly accounting report' do
+  rake "monthly:accounting:report"
+end
 ```
 
 ### Define your own job types

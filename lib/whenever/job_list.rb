@@ -129,11 +129,12 @@ module Whenever
         jobs.each do |job|
           Whenever::Output::Cron.output(time, job) do |cron|
             cron << "\n\n"
+            entry = job.comment.to_s << cron
             
             if cron.starts_with?("@")
-              shortcut_jobs << cron
+              shortcut_jobs << entry
             else
-              regular_jobs << cron
+              regular_jobs << entry
             end
           end
         end

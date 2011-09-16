@@ -5,6 +5,7 @@ module Whenever
     def initialize(options = {})
       @options = options
       @at                      = options.delete(:at)
+      @description             = options.delete(:desc)
       @template                = options.delete(:template)
       @job_template            = options.delete(:job_template) || ":job"
       @options[:output]        = Whenever::Output::Redirection.new(options[:output]).to_s if options.has_key?(:output)
@@ -16,7 +17,11 @@ module Whenever
       job = process_template(@template, @options).strip
       process_template(@job_template, { :job => job }).strip
     end
-    
+
+    def comment
+      "# #{@description}\n" if @description
+    end
+
   protected
   
     def process_template(template, options)
