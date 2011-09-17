@@ -45,10 +45,6 @@ end
 every '0 0 27-31 * *' do
   command "echo 'you can use raw cron syntax too'"
 end
-
-every :month, :desc => 'Monthly accounting report' do
-  rake "monthly:accounting:report"
-end
 ```
 
 ### Define your own job types
@@ -58,7 +54,7 @@ Whenever ships with three pre-defined job types: command, runner, and rake. You 
 For example:
 
 ```ruby
-job_type :awesome, '/usr/local/bin/awesome :task :fun_level'
+job_type :awesome, '/usr/local/bin/awesome :task :fun_level', 'My awesome task description'
 
 every 2.hours do
   awesome "party", :fun_level => "extreme"
