@@ -38,10 +38,10 @@ module Whenever
       yield
     end
     
-    def job_type(name, template)
+    def job_type(name, template, description = nil)
       class_eval do
         define_method(name) do |task, *args|
-          options = { :task => task, :template => template }
+          options = { :task => task, :template => template, :description => description }
           options.merge!(args[0]) if args[0].is_a? Hash
           
           # :cron_log was an old option for output redirection, it remains for backwards compatibility

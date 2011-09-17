@@ -71,22 +71,6 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
   end
 
-  context "A plain command that has a description set" do
-    setup do
-      @output = Whenever.cron \
-      <<-file
-        set :job_template, nil
-        every 2.hours, :desc => "A short description that's added as a comment" do
-          command "blahblah"
-        end
-      file
-    end
-
-    should "output the description as a comment" do
-      assert_match /# A short description that's added as a comment\n/, @output
-    end
-  end
-
   # runner
   
   context "A runner with path set" do

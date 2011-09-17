@@ -5,7 +5,7 @@ module Whenever
     def initialize(options = {})
       @options = options
       @at                      = options.delete(:at)
-      @description             = options.delete(:desc)
+      @description             = options.delete(:description)
       @template                = options.delete(:template)
       @job_template            = options.delete(:job_template) || ":job"
       @options[:output]        = Whenever::Output::Redirection.new(options[:output]).to_s if options.has_key?(:output)
