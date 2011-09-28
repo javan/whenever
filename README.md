@@ -47,6 +47,19 @@ every '0 0 27-31 * *' do
 end
 ```
 
+### Set enviornment variables
+
+You can also set environment variables that will get defined at the
+beginning of generated output in the crontab
+
+```ruby
+env 'SOME_TOOL_PATH', '/route/to/tool'
+
+every 2.days, :at => '01:00' do
+  command "command_that_needs_env_var data_file.log"
+end
+```
+
 ### Define your own job types
 
 Whenever ships with three pre-defined job types: command, runner, and rake. You can define your own with `job_type`.
