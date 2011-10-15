@@ -1,5 +1,6 @@
 Capistrano::Configuration.instance(:must_exist).load do
   _cset(:whenever_roles)        { :db }
+  _cset(:whenever_options)      { {:roles => fetch(:whenever_roles)} }
   _cset(:whenever_command)      { "whenever" }
   _cset(:whenever_identifier)   { fetch :application }
   _cset(:whenever_environment)  { fetch :rails_env, "production" }
@@ -28,7 +29,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       which servers the crontab is updated on by setting the :whenever_roles variable.
     DESC
     task :update_crontab do
-      options = { :roles => fetch(:whenever_roles) }
+      options = fetch(:whenever_options)
 
       if find_servers(options).any?
         on_rollback do
@@ -55,7 +56,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       the :whenever_roles variable.
     DESC
     task :clear_crontab do
-      options = { :roles => whenever_roles }
+      options = fetch(:whenever_options)
       run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options if find_servers(options).any?
     end
   end
