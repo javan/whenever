@@ -38,10 +38,10 @@ module Whenever
       yield
     end
     
-    def job_type(name, template)
+    def job_type(name, template, description = nil)
       class_eval do
         define_method(name) do |task, *args|
-          options = { :task => task, :template => template }
+          options = { :task => task, :template => template, :description => description }
           options.merge!(args[0]) if args[0].is_a? Hash
           
           # :cron_log was an old option for output redirection, it remains for backwards compatibility
@@ -129,11 +129,12 @@ module Whenever
         jobs.each do |job|
           Whenever::Output::Cron.output(time, job) do |cron|
             cron << "\n\n"
+            entry = job.comment.to_s << cron
             
             if cron.starts_with?("@")
-              shortcut_jobs << cron
+              shortcut_jobs << entry
             else
-              regular_jobs << cron
+              regular_jobs << entry
             end
           end
         end

@@ -108,4 +108,24 @@ class OutputDefinedJobTest < Test::Unit::TestCase
     end
   end
 
+  context "A defined job that has an optional description set" do
+    setup do
+      Whenever.stubs(:path).returns('/my/path')
+
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        job_type :some_job, "cd :path && :task", "My job description"
+        every 2.hours do
+          some_job 'blahblah'
+        end
+      file
+    end
+
+    should "default to using the Whenever.path" do
+      assert_match /# My job description\n/, @output
+    end
+  end
+
+
 end
