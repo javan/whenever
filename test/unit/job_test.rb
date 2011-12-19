@@ -20,6 +20,32 @@ class JobTest < Test::Unit::TestCase
       Whenever.expects(:path).returns('/my/path')
       assert_equal '/my/path', new_job(:template => ':path').output
     end
+    
+    should "escape percent signs" do
+      job = new_job(
+        :template => "before :foo after",
+        :foo => "percent -> % <- percent"
+      )
+      assert_equal %q(before percent -> \% <- percent after), job.output
+    end
+    
+    should "assume percent signs are not already escaped" do
+      job = new_job(
+        :template => "before :foo after",
+        :foo => %q(percent preceded by a backslash -> \% <-)
+      )
+      assert_equal %q(before percent preceded by a backslash -> \\\% <- after), job.output
+    end
+    
+    should "reject newlines" do
+      job = new_job(
+        :template => "before :foo after",
+        :foo => "newline -> \n <- newline"
+      )
+      assert_raise ArgumentError do
+        job.output
+      end
+    end
   end
 
   
