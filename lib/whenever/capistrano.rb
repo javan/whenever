@@ -57,7 +57,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     DESC
     task :clear_crontab do
       options = fetch(:whenever_options)
-      run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options if find_servers(options).any?
+      run "cd #{fetch :current_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options if find_servers(options).any?
     end
   end
 end
