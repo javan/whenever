@@ -1,3 +1,18 @@
+### 0.7.1 / December 19th, 2011
+
+* Require thread before active_support for compatibility with Rails < 2.3.11 and RubyGems >= 1.6.0. [Micah Geisel]
+
+* More advanced role filtering in Cap task. [Brad Gessler]
+
+* Added whenever_variables as a configuration variable in Cap task. [Steve Agalloco]
+
+* Escape percent signs and reject newlines in jobs. [Amir Yalon]
+
+* Escape paths so spaces don't trip up cron. [Javan Makhmali]
+
+* Fix ambiguous handling of 1.month with :at. #99 [Javan Makhmali]
+
+
 ### 0.7.0 / September 2nd, 2011
 
 * Use mojombo's chronic, it's active again. [Javan Makhmali]
