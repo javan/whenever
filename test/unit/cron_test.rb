@@ -117,6 +117,15 @@ class CronTest < Test::Unit::TestCase
       assert_equal '0 0 1 12 *', parse_time(12.months)
     end
 
+    should "parse months with a date and/or time" do
+      # should set the day to 1 if no date is given
+      assert_equal '0 17 1 * *', parse_time(1.month, nil, "5pm")
+      # should use the date if one is given
+      assert_equal '0 2 23 * *', parse_time(1.month, nil, "February 23rd at 2am")
+      # should use an iteger as the day
+      assert_equal '0 0 5 * *', parse_time(1.month, nil, 5)
+    end
+
     should "parse correctly when given an 'at' with days, hours, minutes as a Time" do
       # first param is an array with [days, hours, minutes]
       assert_days_and_hours_and_minutes_equals %w(1 3 45),  'January 1st 3:45am'
@@ -170,7 +179,7 @@ class CronTest < Test::Unit::TestCase
       assert_equal '2 18 * * 6,0', parse_time('Weekends', nil, "6:02PM")
     end
   end
-  
+
   context "When parsing time using the cron shortcuts" do
     should "parse a :symbol into the correct shortcut" do
       assert_equal '@reboot',   parse_time(:reboot)
@@ -182,7 +191,7 @@ class CronTest < Test::Unit::TestCase
       assert_equal '@weekly',   parse_time(:weekly)
       assert_equal '@hourly',   parse_time(:hourly)
     end
-    
+
     should "convert time-based shortcuts to times" do
       assert_equal '0 0 1 * *',  parse_time(:month)
       assert_equal '0 0 * * *',  parse_time(:day)
@@ -190,22 +199,22 @@ class CronTest < Test::Unit::TestCase
       assert_equal '0 0 1 12 *', parse_time(:year)
       assert_equal '0 0 1,8,15,22 * *', parse_time(:week)
     end
-    
+
     should "raise an exception if a valid shortcut is given but also an :at" do
       assert_raises ArgumentError do
         parse_time(:hourly, nil, "1:00 am")
       end
-      
+
       assert_raises ArgumentError do
         parse_time(:reboot, nil, 5)
       end
-      
+
       assert_raises ArgumentError do
         parse_time(:daily, nil, '4:20pm')
       end
     end
   end
-  
+
   context "When given raw cron sytax" do
     should "return the same cron sytax" do
       crons = ['0 0 27-31 * *', '* * * * *', '2/3 1,9,22 11-26 1-6 *']

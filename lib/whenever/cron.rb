@@ -8,6 +8,7 @@ module Whenever
       attr_accessor :time, :task
 
       def initialize(time = nil, task = nil, at = nil)
+        @at_given = at
         @time = time
         @task = task
         @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
@@ -15,7 +16,7 @@ module Whenever
 
       def self.enumerate(item, detect_cron = true)
         if item and item.is_a?(String)
-          items = 
+          items =
             if detect_cron && item =~ REGEX
               [item]
             else
@@ -35,7 +36,7 @@ module Whenever
           end
         end
       end
-      
+
       def output
         [time_in_cron_syntax, task].compact.join(' ').strip
       end
@@ -50,12 +51,16 @@ module Whenever
       end
 
     protected
+      def day_given?
+        months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+        @at_given.is_a?(String) && months.any? { |m| @at_given.downcase.index(m) }
+      end
 
       def parse_symbol
         shortcut = case @time
           when :reboot   then '@reboot'
           when :year     then 12.months
-          when :yearly, 
+          when :yearly,
                :annually then '@annually'
           when :day      then 1.day
           when :daily    then '@daily'
@@ -67,7 +72,7 @@ module Whenever
           when :hour     then 1.hour
           when :hourly   then '@hourly'
         end
-        
+
         if shortcut.is_a?(Numeric)
           @time = shortcut
           parse_time
@@ -103,7 +108,11 @@ module Whenever
             month_frequency = (@time / 30  / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
             timing[1] = @at.is_a?(Time) ? @at.hour : 0
-            timing[2] = @at.is_a?(Time) ? @at.day  : (@at.zero? ? 1 : @at)
+            timing[2] = if @at.is_a?(Time)
+              day_given? ? @at.day : 1
+            else
+              @at.zero? ? 1 : @at
+            end
             timing[3] = comma_separated_timing(month_frequency, 12, 1)
           else
             return parse_as_string
