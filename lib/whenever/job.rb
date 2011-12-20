@@ -1,7 +1,9 @@
+require 'shellwords'
+
 module Whenever
   class Job
     attr_reader :at
-  
+
     def initialize(options = {})
       @options = options
       @at                      = options.delete(:at)
@@ -9,9 +11,9 @@ module Whenever
       @job_template            = options.delete(:job_template) || ":job"
       @options[:output]        = Whenever::Output::Redirection.new(options[:output]).to_s if options.has_key?(:output)
       @options[:environment] ||= :production
-      @options[:path]        ||= Whenever.path
+      @options[:path]          = Shellwords.shellescape(@options[:path] || Whenever.path)
     end
-  
+
     def output
       job = process_template(@template, @options).strip
       out = process_template(@job_template, { :job => job }).strip
@@ -20,9 +22,9 @@ module Whenever
       end
       out.gsub(/%/, '\%')
     end
-    
+
   protected
-  
+
     def process_template(template, options)
       template.gsub(/:\w+/) do |key|
         before_and_after = [$`[-1..-1], $'[0..0]]
@@ -41,7 +43,7 @@ module Whenever
     def escape_single_quotes(str)
       str.gsub(/'/) { "'\\''" }
     end
-    
+
     def escape_double_quotes(str)
       str.gsub(/"/) { '\"' }
     end
