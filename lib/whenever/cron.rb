@@ -123,6 +123,7 @@ module Whenever
       def parse_as_string
         return unless @time
         string = @time.to_s
+        return '@reboot' if string.downcase == '@reboot'
 
         timing = Array.new(4, '*')
         timing[0] = @at.is_a?(Time) ? @at.min  : 0
