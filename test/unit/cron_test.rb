@@ -184,7 +184,7 @@ class CronTest < Test::Unit::TestCase
     should "parse a :symbol into the correct shortcut" do
       assert_equal '@reboot',   parse_time(:reboot)
       assert_equal '@annually', parse_time(:annually)
-      assert_equal '@annually', parse_time(:yearly)
+      assert_equal '@yearly',   parse_time(:yearly)
       assert_equal '@daily',    parse_time(:daily)
       assert_equal '@midnight', parse_time(:midnight)
       assert_equal '@monthly',  parse_time(:monthly)
@@ -217,7 +217,9 @@ class CronTest < Test::Unit::TestCase
 
   context "When given raw cron sytax" do
     should "return the same cron sytax" do
-      crons = ['0 0 27-31 * *', '* * * * *', '2/3 1,9,22 11-26 1-6 *']
+      crons = ['0 0 27-31 * *', '* * * * *', '2/3 1,9,22 11-26 1-6 *',
+               '@reboot', '@yearly', '@annually', '@monthly', '@weekly',
+               '@daily', '@midnight', '@hourly']
       crons.each do |cron|
         assert_equal cron, parse_time(cron)
       end
