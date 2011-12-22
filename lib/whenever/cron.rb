@@ -3,7 +3,8 @@ require 'chronic'
 module Whenever
   module Output
     class Cron
-      REGEX = /^.+ .+ .+ .+ .+.?$/
+      KEYWORDS = [:reboot, :yearly, :annually, :monthly, :weekly, :daily, :midnight, :hourly]
+      REGEX = /^(@(#{KEYWORDS.join '|'})|.+ .+ .+ .+ .+.?)$/
 
       attr_accessor :time, :task
 
@@ -52,25 +53,18 @@ module Whenever
 
     protected
       def day_given?
-        months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+        months = %w(jan feb mar apr may jun jul aug sep oct nov dec)
         @at_given.is_a?(String) && months.any? { |m| @at_given.downcase.index(m) }
       end
 
       def parse_symbol
         shortcut = case @time
-          when :reboot   then '@reboot'
+          when *KEYWORDS then "@#{@time}" # :reboot => '@reboot'
           when :year     then 12.months
-          when :yearly,
-               :annually then '@annually'
           when :day      then 1.day
-          when :daily    then '@daily'
-          when :midnight then '@midnight'
           when :month    then 1.month
-          when :monthly  then '@monthly'
           when :week     then 1.week
-          when :weekly   then '@weekly'
           when :hour     then 1.hour
-          when :hourly   then '@hourly'
         end
 
         if shortcut.is_a?(Numeric)
