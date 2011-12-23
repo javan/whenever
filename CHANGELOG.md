@@ -1,3 +1,10 @@
+### 0.7.2 / December 23rd, 2011
+
+* Accept @reboot and friends as raw cron syntax. [Felix Buenemann]
+
+* Fix clear_crontab task so it will work both standalone and during deploy. [Justin Giancola]
+
+
 ### 0.7.1 / December 19th, 2011
 
 * Require thread before active_support for compatibility with Rails < 2.3.11 and RubyGems >= 1.6.0. [Micah Geisel]
