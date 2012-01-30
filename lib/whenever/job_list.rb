@@ -6,7 +6,6 @@ module Whenever
       if options.is_a? String
         options = { :string => options }
       end
-
       pre_set(options[:set])
       
       setup = File.read("#{File.expand_path(File.dirname(__FILE__))}/setup.rb")
@@ -15,7 +14,9 @@ module Whenever
       elsif options[:file]
         File.read(options[:file])
       end
-      
+      set(:crond,options[:crond])
+      set(:crond_username,options[:crond_username])
+
       instance_eval(setup + schedule, options[:file] || '<eval>')
     end
     
@@ -127,7 +128,7 @@ module Whenever
       
       @jobs.each do |time, jobs|
         jobs.each do |job|
-          Whenever::Output::Cron.output(time, job) do |cron|
+          Whenever::Output::Cron.output(time, job, :crond_username => crond_username) do |cron|
             cron << "\n\n"
             
             if cron.starts_with?("@")
