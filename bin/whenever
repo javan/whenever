@@ -16,6 +16,11 @@ OptionParser.new do |opts|
      options[:write] = true
      options[:identifier] = identifier if identifier
   end
+  opts.on('-d', '--crond-mode crond_username') do |identifier|
+    options[:crond] = true
+    options[:crond_username] = identifier
+  end
+
   opts.on('-c', '--clear-crontab [identifier]') do |identifier|
     options[:clear] = true
     options[:identifier] = identifier if identifier
