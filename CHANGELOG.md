@@ -1,3 +1,8 @@
+### 0.7.3 / February 23rd, 2012
+
+* Make included Capistrano task compatible with both new and old versions of Cap. [Giacomo Macrì]
+
+
 ### 0.7.2 / December 23rd, 2011
 
 * Accept @reboot and friends as raw cron syntax. [Felix Buenemann]
