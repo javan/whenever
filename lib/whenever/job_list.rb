@@ -39,7 +39,7 @@ module Whenever
     end
     
     def job_type(name, template)
-      class_eval do
+      JobList.class_eval do
         define_method(name) do |task, *args|
           options = { :task => task, :template => template }
           options.merge!(args[0]) if args[0].is_a? Hash
@@ -130,7 +130,7 @@ module Whenever
           Whenever::Output::Cron.output(time, job) do |cron|
             cron << "\n\n"
             
-            if cron.starts_with?("@")
+            if cron.start_with?("@")
               shortcut_jobs << cron
             else
               regular_jobs << cron
