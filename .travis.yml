@@ -7,3 +7,9 @@ rvm:
   - jruby-18mode
   - jruby-19mode
   - jruby-head
+gemfile:
+  - Gemfile
+  - ci/Gemfile-AS-2_3_2
+  - ci/Gemfile-AS-3_0_0
+  - ci/Gemfile-AS-3_1_0
+  - ci/Gemfile-AS-3_2_0
