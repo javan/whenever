@@ -148,6 +148,11 @@ $ whenever
   
 This will simply show you your `schedule.rb` file converted to cron syntax. It does not read or write your crontab file. Run `whenever --help` for a complete list of options.
 
+
+### Running tests
+
+To run the test suite of whenver, run `bundle exec rake test`
+
 ### Credit
 
 Whenever was created for use at Inkling (<http://inklingmarkets.com>). Their take on it: <http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html>
