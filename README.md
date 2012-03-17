@@ -42,6 +42,13 @@ every :sunday, :at => '12pm' do # Use any day of the week or :weekend, :weekday
   runner "Task.do_something_great"
 end
 
+# specify the environment to run the cron. The following
+# will be written to the production, but not staging or any
+# other environment
+every 1.day, :app_env => :production do
+  runner "Foo.bar"
+end
+
 every '0 0 27-31 * *' do
   command "echo 'you can use raw cron syntax too'"
 end
@@ -119,7 +126,7 @@ The capistrano variable `:stage` should be the one holding your environment name
 If both your environments are on the same server you'll want to namespace them or they'll overwrite each other when you deploy:
 
 ```ruby
-set :whenever_environment, defer { stage }
+set :whenever_environment, defer { "bundle exec whenever -e #{stage}" }
 set :whenever_identifier, defer { "#{application}_#{stage}" }
 require "whenever/capistrano"
 ```
