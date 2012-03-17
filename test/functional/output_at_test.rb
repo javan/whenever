@@ -1,6 +1,53 @@
 require File.expand_path(File.dirname(__FILE__) + "/../test_helper")
 
 class OutputAtTest < Test::Unit::TestCase
+  context "should accept the app_env variable not print jobs not in default env (production)" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        every "weekday", :app_env => :staging do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the command using that time" do
+      assert_match '', @output
+    end
+  end
+
+  context "should accept the app_env variable print jobs in default env (production)" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        every "weekday", :app_env => :production do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the command using that time" do
+      assert_match '0 0 * * 1-5 blahblah', @output
+    end
+  end
+
+  context "should print jobs in default env (production) if no app_env is set" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        every "weekday" do
+          command "blahblah"
+        end
+      file
+    end
+    
+    should "output the command using that time" do
+      assert_match '0 0 * * 1-5 blahblah', @output
+    end
+  end
   
   context "weekday at a (single) given time" do
     setup do
