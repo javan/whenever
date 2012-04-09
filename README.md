@@ -99,7 +99,7 @@ In your "config/deploy.rb" file:
 require "whenever/capistrano"
 ```
 
-Take a look at the recipe for options you can set. <http://github.com/javan/whenever/blob/master/lib/whenever/capistrano.rb>
+Take a look at the recipe for options you can set. <http://github.com/javan/whenever/blob/master/lib/whenever/capistrano/recipes.rb>
 For example, if you're using bundler do this:
 
 ```ruby
