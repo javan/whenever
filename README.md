@@ -71,7 +71,7 @@ job_type :rake,    "cd :path && :environment_variable=:environment bundle exec r
 job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
 ```
 
-Rake tasks running in a Rails environment, have :environment_variable set to `RAILS_ENV` else it is `ENVIRONMENT`.
+Rake tasks running in a Rails environment, have `:environment_variable` set to `RAILS_ENV` else it is `ENVIRONMENT`.
 
 Pre-Rails 3 apps and apps that don't use Bundler will redefine the `rake` and `runner` jobs respectively to function correctly.
 
