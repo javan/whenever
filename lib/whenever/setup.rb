@@ -9,11 +9,13 @@ set :job_template, "/bin/bash -l -c ':job'"
 
 job_type :command, ":task :output"
 
+environment_variable = defined?(Rails) ? 'RAILS_ENV' : 'ENVIRONMENT'
+
 # Run rake through bundler if possible
 if Whenever.bundler?
-  job_type :rake, "cd :path && RAILS_ENV=:environment bundle exec rake :task --silent :output"
+  job_type :rake, "cd :path && #{environment_variable}=:environment bundle exec rake :task --silent :output"
 else
-  job_type :rake, "cd :path && RAILS_ENV=:environment rake :task --silent :output"
+  job_type :rake, "cd :path && #{environment_variable}=:environment rake :task --silent :output"
 end
 
 # Create a runner job that's appropriate for the Rails version,
