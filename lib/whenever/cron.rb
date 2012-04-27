@@ -8,10 +8,11 @@ module Whenever
 
       attr_accessor :time, :task
 
-      def initialize(time = nil, task = nil, at = nil)
+      def initialize(time = nil, task = nil, at = nil, opts={})
         @at_given = at
         @time = time
         @task = task
+        @crond_user = opts[:crond_username]
         @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
       end
 
@@ -30,16 +31,16 @@ module Whenever
         items
       end
 
-      def self.output(times, job)
+      def self.output(times, job, opts={})
         enumerate(times).each do |time|
           enumerate(job.at, false).each do |at|
-            yield new(time, job.output, at).output
+            yield new(time, job.output, at,opts).output
           end
         end
       end
 
       def output
-        [time_in_cron_syntax, task].compact.join(' ').strip
+        [time_in_cron_syntax, @crond_user ,task].compact.join(' ').strip
       end
 
       def time_in_cron_syntax
