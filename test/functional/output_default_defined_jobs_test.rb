@@ -140,7 +140,29 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
     
     should "output the rake command using that path" do
-      assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec rake blahblah --silent', @output
+      assert_match two_hours + ' cd /my/path && ENVIRONMENT=production bundle exec rake blahblah --silent', @output
+    end
+  end
+  
+  context "A rake command with a Rails env" do
+    setup do
+      Kernel.const_set(:Rails, mock('Rails'))
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        set :path, '/my/path'
+        every :daily do
+          rake "blah:blah"
+        end
+      file
+    end
+    
+    teardown do
+      Kernel.send(:remove_const, :Rails)
+    end
+    
+    should "output the rake command with RAILS_ENV set instead of ENVIRONMENT" do
+      assert_match '@daily cd /my/path && RAILS_ENV=production bundle exec rake blah:blah --silent', @output
     end
   end
 
@@ -158,7 +180,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "not use invoke through bundler" do
-      assert_match two_hours + ' cd /my/path && RAILS_ENV=production rake blahblah --silent', @output
+      assert_match two_hours + ' cd /my/path && ENVIRONMENT=production rake blahblah --silent', @output
     end
   end
   
@@ -175,7 +197,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
     
     should "output the rake command using that path" do
-      assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production bundle exec rake blahblah --silent', @output
+      assert_match two_hours + ' cd /some/other/path && ENVIRONMENT=production bundle exec rake blahblah --silent', @output
     end
   end
   
