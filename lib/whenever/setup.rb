@@ -12,8 +12,10 @@ job_type :command, ":task :output"
 # Run rake through bundler if possible
 if Whenever.bundler?
   job_type :rake, "cd :path && RAILS_ENV=:environment bundle exec rake :task --silent :output"
+  job_type :script, "cd :path && RAILS_ENV=:environment bundle exec script/:task"
 else
   job_type :rake, "cd :path && RAILS_ENV=:environment rake :task --silent :output"
+  job_type :script, "cd :path && RAILS_ENV=:environment script/:task"
 end
 
 # Create a runner job that's appropriate for the Rails version,
