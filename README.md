@@ -69,6 +69,7 @@ The default job types that ship with Whenever are defined like so:
 job_type :command, ":task :output"
 job_type :rake,    "cd :path && RAILS_ENV=:environment bundle exec rake :task --silent :output"
 job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
+job_type :script,  "cd :path && RAILS_ENV=:environment bundle exec script/:task"
 ```
 
 Pre-Rails 3 apps and apps that don't use Bundler will redefine the `rake` and `runner` jobs respectively to function correctly.
