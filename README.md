@@ -2,7 +2,7 @@ Whenever is a Ruby gem that provides a clear syntax for writing and deploying cr
 
 ### Installation
 
-```sh  
+```sh
 $ gem install whenever
 ```
 
@@ -11,7 +11,7 @@ Or with Bundler in your Gemfile.
 ```ruby
 gem 'whenever', :require => false
 ```
- 
+
 ### Getting started
 
 ```sh
@@ -23,14 +23,14 @@ This will create an initial `config/schedule.rb` file for you.
 
 ### Example schedule.rb file
 
-```ruby  
+```ruby
 every 3.hours do
-  runner "MyModel.some_process"       
-  rake "my:rake:task"                 
+  runner "MyModel.some_process"
+  rake "my:rake:task"
   command "/usr/bin/my_great_command"
 end
 
-every 1.day, :at => '4:30 am' do 
+every 1.day, :at => '4:30 am' do
   runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
 end
 
@@ -38,7 +38,7 @@ every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
   runner "SomeModel.ladeeda"
 end
 
-every :sunday, :at => '12pm' do # Use any day of the week or :weekend, :weekday 
+every :sunday, :at => '12pm' do # Use any day of the week or :weekend, :weekday
   runner "Task.do_something_great"
 end
 
@@ -60,7 +60,7 @@ every 2.hours do
   awesome "party", :fun_level => "extreme"
 end
 ```
-  
+
 Would run `/usr/local/bin/awesome party extreme` every two hours. `:task` is always replaced with the first argument, and any additional `:whatevers` are replaced with the options passed in or by variables that have been defined with `set`.
 
 The default job types that ship with Whenever are defined like so:
@@ -83,7 +83,7 @@ You can change this by setting your own `:job_template`.
 ```ruby
 set :job_template, "bash -l -c ':job'"
 ```
-  
+
 Or set the job_template to nil to have your jobs execute normally.
 
 ```ruby
@@ -139,7 +139,7 @@ This tells rvm to trust all rvmrc files, which is documented here: http://waynee
 $ cd /apps/my-great-project
 $ whenever
 ```
-  
+
 This will simply show you your `schedule.rb` file converted to cron syntax. It does not read or write your crontab file. Run `whenever --help` for a complete list of options.
 
 ### Credit
@@ -159,7 +159,7 @@ It's a little bit dated now, but remains a good introduction.
 
 ----
 
-Compatible with Ruby 1.8.7-1.9.2, JRuby, and Rubinius. [![Build Status](https://secure.travis-ci.org/javan/whenever.png)](http://travis-ci.org/javan/whenever)
+Compatible with Ruby 1.8.7-1.9.3, JRuby, and Rubinius. [![Build Status](https://secure.travis-ci.org/javan/whenever.png)](http://travis-ci.org/javan/whenever)
 
 ----
 
