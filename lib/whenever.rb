@@ -1,5 +1,11 @@
 require 'thread'
-require 'active_support/all'
+require 'active_support/version'
+
+if ActiveSupport::VERSION::STRING >= "3.0.0"
+  require "active_support/time"
+else
+  require "active_support"
+end
 
 module Whenever
   autoload :JobList,     'whenever/job_list'
