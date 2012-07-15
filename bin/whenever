@@ -33,6 +33,10 @@ OptionParser.new do |opts|
     options[:cut] = lines.to_i if lines
   end
   opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
+  opts.on('-e', '--cron-environment [environment]', "defines the environment to parse the load file") do |env|
+    options[:cron_env] = env if env
+  end
+
 end.parse!
 
 Whenever::CommandLine.execute(options)

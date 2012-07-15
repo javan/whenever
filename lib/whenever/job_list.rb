@@ -8,7 +8,8 @@ module Whenever
       end
 
       pre_set(options[:set])
-      
+      set("cron_env", options[:cron_env] || "production")
+
       setup = File.read("#{File.expand_path(File.dirname(__FILE__))}/setup.rb")
       schedule = if options[:string]
         options[:string]
@@ -50,7 +51,7 @@ module Whenever
           options[:output] = @output if defined?(@output) && !options.has_key?(:output)
           
           @jobs[@current_time_scope] ||= []
-          @jobs[@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options))
+          @jobs[@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options)) if @options[:app_env].to_s == @set_variables[:cron_env].to_s || @options[:app_env].blank?
         end
       end
     end
