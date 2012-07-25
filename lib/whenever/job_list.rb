@@ -9,14 +9,16 @@ module Whenever
 
       pre_set(options[:set])
       
-      setup = File.read("#{File.expand_path(File.dirname(__FILE__))}/setup.rb")
+      setup_file = File.expand_path(File.dirname(__FILE__)).join('setup.rb')
+      setup = File.read(setup_file)
       schedule = if options[:string]
         options[:string]
       elsif options[:file]
         File.read(options[:file])
       end
       
-      instance_eval(setup + schedule, options[:file] || '<eval>')
+      instance_eval(setup, setup_file)
+      instance_eval(schedule, options[:file] || '<eval>')
     end
     
     def set(variable, value)
