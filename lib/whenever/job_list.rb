@@ -9,7 +9,7 @@ module Whenever
 
       pre_set(options[:set])
       
-      setup_file = File.expand_path(File.dirname(__FILE__)).join('setup.rb')
+      setup_file = File.expand_path('../setup.rb', __FILE__)
       setup = File.read(setup_file)
       schedule = if options[:string]
         options[:string]
