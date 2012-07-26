@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "shoulda", ">= 2.1.1"
   s.add_development_dependency "mocha", ">= 0.9.5"
   s.add_development_dependency "rake"
+  s.add_development_dependency "tzinfo"
   
   # I'm not sure why this isn't installed along with activesupport,
   # but for whatever reason running `bundle install` doesn't install

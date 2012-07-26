@@ -12,7 +12,7 @@ module Whenever
         @at_given = at
         @time = time
         @task = task
-        @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
+        @at   = at.is_a?(String) ? (Chronic.parse(at).try(:localtime) || 0) : (at || 0)
       end
 
       def self.enumerate(item, detect_cron = true)
