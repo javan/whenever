@@ -265,4 +265,34 @@ class OutputAtTest < Test::Unit::TestCase
     end
   end
   
+  context "Local timzone is US/Eastern" do
+    setup do
+      @current_tz=ENV['TZ']
+      ENV['TZ']='US/Eastern'
+    end
+    
+    context "interpret :at in US/Pacific timezone" do
+      setup do
+        @output = Whenever.cron \
+        <<-file
+          set :job_template, nil
+          set :timezone, 'US/Pacific'
+          every 1.day, :at => '5:02am' do
+            command "blahblah"
+          end
+        file
+      end
+        
+      should "output the command using that time" do
+        assert_match '2 8 * * * blahblah', @output
+      end
+    end
+    
+    teardown do
+      @current_tz ? ENV['TZ']=@current_tz : ENV.delete('TZ')
+    end
+    
+  end
+  
+  
 end

@@ -1,3 +1,5 @@
+require 'chronic'
+
 module Whenever
   class JobList
     attr_reader :roles
@@ -132,6 +134,10 @@ module Whenever
       regular_jobs = []
 
       output_all = roles.empty?
+      
+      old_time_class=Chronic.time_class
+      Chronic.time_class=Time.find_zone!(@timezone) if defined? @timezone      
+      
       @jobs.each do |time, jobs|
         jobs.each do |job|
           next unless output_all || roles.any? do |r|
@@ -148,7 +154,9 @@ module Whenever
           end
         end
       end
-
+      
+      Chronic.time_class=old_time_class
+      
       shortcut_jobs.join + combine(regular_jobs).join
     end
   end
