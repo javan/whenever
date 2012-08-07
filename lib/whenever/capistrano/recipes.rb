@@ -34,7 +34,7 @@ Capistrano::Configuration.instance(:must_exist).load do
           end
         end
 
-        run "cd #{fetch :current_path} && #{fetch :whenever_command} #{fetch :whenever_update_flags}", options
+        run "cd #{fetch :latest_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}", options
       end
     end
 
