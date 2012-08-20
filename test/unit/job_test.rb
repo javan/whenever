@@ -7,6 +7,15 @@ class JobTest < Test::Unit::TestCase
       assert_equal 'foo', new_job(:at => 'foo').at
     end
 
+    should "return the :on_server_roles set when #server_roles is called" do
+      assert_equal ['foo', 'bar'], new_job(:on_server_roles => ['foo', 'bar']).server_roles
+    end
+
+    should "return whether it has a server_role from #has_server_role?" do
+      assert new_job(:on_server_roles => 'foo').has_server_role?('foo')
+      refute new_job(:on_server_roles => 'bar').has_server_role?('foo')
+    end
+
     should "substitute the :task when #output is called" do
       job = new_job(:template => ":task", :task => 'abc123')
       assert_equal 'abc123', job.output
