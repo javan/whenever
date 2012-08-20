@@ -3,7 +3,6 @@ module Whenever
     attr_reader :server_roles
 
     def initialize(options)
-      puts "JobList options: #{options}"
       @jobs, @env, @set_variables, @pre_set_variables = {}, {}, {}, {}
 
       if options.is_a? String
@@ -138,7 +137,6 @@ module Whenever
           next unless output_all || server_roles.any? do |r|
             job.has_server_role?(r)
           end
-          puts "Job: #{job.inspect}"
           Whenever::Output::Cron.output(time, job) do |cron|
             cron << "\n\n"
 
