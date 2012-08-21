@@ -32,8 +32,8 @@ OptionParser.new do |opts|
   opts.on('-k', '--cut [lines]', 'Cut lines from the top of the cronfile') do |lines|
     options[:cut] = lines.to_i if lines
   end
-  opts.on('-r', '--server-roles [role1,role2]', 'Comma-separated list of server roles to generate cron jobs for') do |roles|
-    options[:server_roles] = roles.split(',').map(&:to_sym) if roles
+  opts.on('-r', '--roles [role1,role2]', 'Comma-separated list of server roles to generate cron jobs for') do |roles|
+    options[:roles] = roles.split(',').map(&:to_sym) if roles
   end
   opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
 end.parse!
