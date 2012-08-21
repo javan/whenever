@@ -46,7 +46,7 @@ every '0 0 27-31 * *' do
   command "echo 'you can use raw cron syntax too'"
 end
 
-# run this task only on server's with the :app role in Capistrano
+# run this task only on servers with the :app role in Capistrano
 # see Capistrano roles section below
 every :day, :at => '12:20am', :roles => [:app] do
   rake "app_server:task"
