@@ -13,7 +13,7 @@ class JobTest < Test::Unit::TestCase
 
     should "return whether it has a server_role from #has_server_role?" do
       assert new_job(:on_server_roles => 'foo').has_server_role?('foo')
-      refute new_job(:on_server_roles => 'bar').has_server_role?('foo')
+      assert_equal false, new_job(:on_server_roles => 'bar').has_server_role?('foo')
     end
 
     should "substitute the :task when #output is called" do
