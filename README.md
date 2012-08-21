@@ -45,7 +45,65 @@ end
 every '0 0 27-31 * *' do
   command "echo 'you can use raw cron syntax too'"
 end
+
+# run this task only on server's with the :app role in Capistrano
+# see Capistrano roles section below
+every :day, :at => '12:20am', :roles => [:app] do
+  rake "app_server:task"
+end
 ```
+
+### Capistrano roles
+
+The first thing to know about the new roles support is that it is entirely
+optional and backwards-compatible. If you don't need different jobs running on
+different servers in your capistrano deployment, then you can safely stop reading
+now and everything should just work the same way it always has.
+
+When you define a job in your schedule.rb file, by default it will be deployed to
+all servers in the whenever_roles list (which defaults to [:db]).
+
+However, if you want to restrict certain jobs to only run on subset of servers,
+you can add a :roles => [...] argument to their definitions. **Make sure to add
+that role to the whenever_roles list in your deploy.rb.**
+
+When you run `cap deploy`, jobs with a :roles list specified will only be added to
+the crontabs on servers with one or more of the roles in that list.
+
+Jobs with no :roles argument will be deployed to all servers in the whenever_roles
+list. This is to maintain backward compatibility with previous releases of whenever.
+
+So, for example, with the default whenever_roles of [:db], a job like this would be
+deployed to all servers with the :db role:
+
+    every :day, :at => '12:20am' do
+      rake 'foo:bar'
+    end
+
+If we set whenever_roles to [:db, :app] in deploy.rb, and have the following
+jobs in schedule.rb:
+
+    every :day, :at => '1:37pm', :roles => [:app] do
+      rake 'app:task' # will only be added to crontabs of :app servers
+    end
+
+    every :hour, :roles => [:db] do
+      rake 'db:task' # will only be added to crontabs of :db servers
+    end
+
+    every :day, :at => '12:02am' do
+      command "run_this_everywhere" # will be deployed to :db and :app servers
+    end
+
+Here are the basic rules:
+
+  1. If a server's role isn't listed in whenever_roles, it will *never* have jobs
+     added to its crontab.
+  1. If a server's role is listed in the whenever_roles, then it will have all
+     jobs added to its crontab that either list that role in their :roles arg or
+     that don't have a :roles arg.
+  1. If a job has a :roles arg but that role isn't in the whenever_roles list,
+     that job *will not* be deployed to any server.
 
 ### Define your own job types
 
