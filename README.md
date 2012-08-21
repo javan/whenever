@@ -76,24 +76,28 @@ list. This is to maintain backward compatibility with previous releases of whene
 So, for example, with the default whenever_roles of [:db], a job like this would be
 deployed to all servers with the :db role:
 
-    every :day, :at => '12:20am' do
-      rake 'foo:bar'
-    end
+```ruby
+every :day, :at => '12:20am' do
+  rake 'foo:bar'
+end
+```
 
 If we set whenever_roles to [:db, :app] in deploy.rb, and have the following
 jobs in schedule.rb:
 
-    every :day, :at => '1:37pm', :roles => [:app] do
-      rake 'app:task' # will only be added to crontabs of :app servers
-    end
+```ruby
+every :day, :at => '1:37pm', :roles => [:app] do
+  rake 'app:task' # will only be added to crontabs of :app servers
+end
 
-    every :hour, :roles => [:db] do
-      rake 'db:task' # will only be added to crontabs of :db servers
-    end
+every :hour, :roles => [:db] do
+  rake 'db:task' # will only be added to crontabs of :db servers
+end
 
-    every :day, :at => '12:02am' do
-      command "run_this_everywhere" # will be deployed to :db and :app servers
-    end
+every :day, :at => '12:02am' do
+  command "run_this_everywhere" # will be deployed to :db and :app servers
+end
+```
 
 Here are the basic rules:
 
