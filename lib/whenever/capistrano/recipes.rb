@@ -35,7 +35,7 @@ Capistrano::Configuration.instance(:must_exist).load do
             role_arg = ''
           else
             options[:roles] = role
-            role_arg = " --server-roles #{role}"
+            role_arg = " --roles #{role}"
           end
 
           on_rollback do
