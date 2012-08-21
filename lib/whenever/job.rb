@@ -9,12 +9,10 @@ module Whenever
       @at                      = options.delete(:at)
       @template                = options.delete(:template)
       @job_template            = options.delete(:job_template) || ":job"
-      @server_roles            = options.delete(:on_server_roles) || []
+      @server_roles            = Array.wrap(options.delete(:on_server_roles))
       @options[:output]        = Whenever::Output::Redirection.new(options[:output]).to_s if options.has_key?(:output)
       @options[:environment] ||= :production
       @options[:path]          = Shellwords.shellescape(@options[:path] || Whenever.path)
-
-      @server_roles = [@server_roles] unless @server_roles.is_a?(Array)
     end
 
     def output
