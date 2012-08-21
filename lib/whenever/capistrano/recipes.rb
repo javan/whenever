@@ -24,17 +24,30 @@ Capistrano::Configuration.instance(:must_exist).load do
     DESC
     task :update_crontab do
       options = fetch(:whenever_options)
+      roles = [options[:roles]].flatten if options[:roles]
 
       if find_servers(options).any?
-        on_rollback do
-          if fetch :previous_release
-            run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}", options
-          else
-            run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options
-          end
-        end
+        # make sure we go through the roles.each loop at least once
+        roles << :__none if roles.empty?
 
-        run "cd #{fetch :current_path} && #{fetch :whenever_command} #{fetch :whenever_update_flags}", options
+        roles.each do |role|
+          if role == :__none
+            role_arg = ''
+          else
+            options[:roles] = role
+            role_arg = " --roles #{role}"
+          end
+
+          on_rollback do
+            if fetch :previous_release
+              run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+            else
+              run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options
+            end
+          end
+
+          run "cd #{fetch :current_path} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+        end
       end
     end
 

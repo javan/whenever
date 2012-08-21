@@ -7,6 +7,15 @@ class JobTest < Test::Unit::TestCase
       assert_equal 'foo', new_job(:at => 'foo').at
     end
 
+    should "return the :roles set when #roles is called" do
+      assert_equal ['foo', 'bar'], new_job(:roles => ['foo', 'bar']).roles
+    end
+
+    should "return whether it has a role from #has_role?" do
+      assert new_job(:roles => 'foo').has_role?('foo')
+      assert_equal false, new_job(:roles => 'bar').has_role?('foo')
+    end
+
     should "substitute the :task when #output is called" do
       job = new_job(:template => ":task", :task => 'abc123')
       assert_equal 'abc123', job.output
