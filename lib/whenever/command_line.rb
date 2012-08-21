@@ -75,10 +75,6 @@ module Whenever
       command << "-u #{@options[:user]}" if @options[:user]
       command << tmp_cron_file
 
-      require 'fileutils'
-      FileUtils.cp tmp_cron_file, "/var/web/turbovote/whenever_tmp_cron"
-
-      puts "Running `#{command.join(' ')}`"
       if system(command.join(' '))
         action = 'written' if @options[:write]
         action = 'updated' if @options[:update]
