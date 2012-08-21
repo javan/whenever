@@ -46,7 +46,7 @@ Capistrano::Configuration.instance(:must_exist).load do
             end
           end
 
-          run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+          run "cd #{fetch :current_path} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
         end
       end
     end
