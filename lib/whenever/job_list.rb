@@ -1,6 +1,6 @@
 module Whenever
   class JobList
-    attr_reader :server_roles
+    attr_reader :roles
 
     def initialize(options)
       @jobs, @env, @set_variables, @pre_set_variables = {}, {}, {}, {}
@@ -11,7 +11,7 @@ module Whenever
 
       pre_set(options[:set])
 
-      @server_roles = options[:server_roles] || []
+      @roles = options[:roles] || []
 
       setup_file = File.expand_path('../setup.rb', __FILE__)
       setup = File.read(setup_file)
@@ -131,11 +131,11 @@ module Whenever
       shortcut_jobs = []
       regular_jobs = []
 
-      output_all = server_roles.empty?
+      output_all = roles.empty?
       @jobs.each do |time, jobs|
         jobs.each do |job|
-          next unless output_all || server_roles.any? do |r|
-            job.has_server_role?(r)
+          next unless output_all || roles.any? do |r|
+            job.has_role?(r)
           end
           Whenever::Output::Cron.output(time, job) do |cron|
             cron << "\n\n"
