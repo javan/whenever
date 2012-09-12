@@ -66,22 +66,23 @@ module Whenever
     end
 
     def write_crontab(contents)
-      tmp_cron_file = Tempfile.new('whenever_tmp_cron').path
-      File.open(tmp_cron_file, File::WRONLY | File::APPEND) do |file|
-        file << contents
-      end
+      tmp_cron_file = Tempfile.open('whenever_tmp_cron')
+      tmp_cron_file << contents
+      tmp_cron_file.fsync
 
       command = ['crontab']
       command << "-u #{@options[:user]}" if @options[:user]
-      command << tmp_cron_file
+      command << tmp_cron_file.path
 
       if system(command.join(' '))
         action = 'written' if @options[:write]
         action = 'updated' if @options[:update]
         puts "[write] crontab file #{action}"
+        tmp_cron_file.close!
         exit(0)
       else
         warn "[fail] Couldn't write crontab; try running `whenever' with no options to ensure your schedule file is valid."
+        tmp_cron_file.close!
         exit(1)
       end
     end
