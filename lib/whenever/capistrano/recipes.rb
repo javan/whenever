@@ -27,7 +27,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       roles = [options[:roles]].flatten if options[:roles]
 
       if find_servers(options).any?
-        # make sure we go through the roles.each loop at least once
+        roles_arg = "" # empty for begin
         roles_arg = " --roles #{roles.join(",")}" unless roles.empty?
 
         on_rollback do
