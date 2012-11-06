@@ -138,9 +138,6 @@ module Whenever
       old_time_class=Chronic.time_class
       Chronic.time_class=Time.find_zone!(@timezone) if defined? @timezone      
       
-      old_time_class=Chronic.time_class
-      Chronic.time_class=Time.find_zone!(@timezone) if defined? @timezone      
-      
       @jobs.each do |time, jobs|
         jobs.each do |job|
           next unless output_all || roles.any? do |r|
