@@ -1,3 +1,27 @@
+### 0.9.0 (unreleased)
+
+* Time zone support
+
+
+### 0.8.0 / November 8th, 2012
+
+* Separate Capistrano recipes to allow custom execution. [Bogdan Gusiev]
+
+* Execute `whenever:update_crontab` before `deploy:finalize_update`, not `deploy:restart`. [Michal Wrobel]
+
+* Added a new `script` job type. [Ján Suchal]
+
+* Use correct path in Cap task. [Alex Dean]
+
+* Fix that setup.rb and schedule.rb were eval'd together. [Niklas H]
+
+* New Capistrano roles feature. [Wes Morgan]
+
+* Stop clearing the crontab during a deploy. [Javan Makhmali]
+
+* Bump Chronic gem dependency. [rainchen]
+
+
 ### 0.7.3 / February 23rd, 2012
 
 * Make included Capistrano task compatible with both new and old versions of Cap. [Giacomo Macrì]
