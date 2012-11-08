@@ -2,7 +2,7 @@ require 'shellwords'
 
 module Whenever
   class Job
-    attr_reader :at, :roles
+    attr_reader :at, :roles, :stages
 
     def initialize(options = {})
       @options = options
@@ -10,6 +10,7 @@ module Whenever
       @template                = options.delete(:template)
       @job_template            = options.delete(:job_template) || ":job"
       @roles                   = Array.wrap(options.delete(:roles))
+      @stages                  = Array.wrap(options.delete(:stages))
       @options[:output]        = Whenever::Output::Redirection.new(options[:output]).to_s if options.has_key?(:output)
       @options[:environment] ||= :production
       @options[:path]          = Shellwords.shellescape(@options[:path] || Whenever.path)
@@ -26,6 +27,10 @@ module Whenever
 
     def has_role?(role)
       roles.empty? || roles.include?(role)
+    end
+
+    def has_stage?(stage)
+      stages.empty? || stages.include?(stage)
     end
 
   protected
