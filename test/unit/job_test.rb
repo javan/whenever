@@ -16,6 +16,15 @@ class JobTest < Test::Unit::TestCase
       assert_equal false, new_job(:roles => 'bar').has_role?('foo')
     end
 
+    should "return the :stage set when #stages is called" do
+      assert_equal ['foo', 'bar'], new_job(:stages => ['foo', 'bar']).stages
+    end
+
+    should "return whether it has a stage from #has_stage?" do
+      assert new_job(:stages => 'foo').has_stage?('foo')
+      assert_equal false, new_job(:stages => 'bar').has_stage?('foo')
+    end
+
     should "substitute the :task when #output is called" do
       job = new_job(:template => ":task", :task => 'abc123')
       assert_equal 'abc123', job.output

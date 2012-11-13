@@ -1,6 +1,6 @@
 module Whenever
   class JobList
-    attr_reader :roles
+    attr_reader :roles, :stage
 
     def initialize(options)
       @jobs, @env, @set_variables, @pre_set_variables = {}, {}, {}, {}
@@ -12,6 +12,7 @@ module Whenever
       pre_set(options[:set])
 
       @roles = options[:roles] || []
+      @stage = options[:stage]
 
       setup_file = File.expand_path('../setup.rb', __FILE__)
       setup = File.read(setup_file)
@@ -131,12 +132,14 @@ module Whenever
       shortcut_jobs = []
       regular_jobs = []
 
-      output_all = roles.empty?
+      output_all_roles = roles.empty?
+      output_all_stages = stage.blank?
       @jobs.each do |time, jobs|
         jobs.each do |job|
-          next unless output_all || roles.any? do |r|
+          next unless output_all_roles || roles.any? do |r|
             job.has_role?(r)
           end
+          next unless output_all_stages || job.has_stage?(stage)
           Whenever::Output::Cron.output(time, job) do |cron|
             cron << "\n\n"
 
@@ -153,3 +156,4 @@ module Whenever
     end
   end
 end
+

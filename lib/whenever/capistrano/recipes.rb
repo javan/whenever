@@ -1,6 +1,6 @@
 Capistrano::Configuration.instance(:must_exist).load do
   _cset(:whenever_roles)        { :db }
-  _cset(:whenever_options)      { {:roles => fetch(:whenever_roles)} }
+  _cset(:whenever_options)      { {:roles => fetch(:whenever_roles), :stage => fetch(:stage)} }
   _cset(:whenever_command)      { "whenever" }
   _cset(:whenever_identifier)   { fetch :application }
   _cset(:whenever_environment)  { fetch :rails_env, "production" }
@@ -25,6 +25,9 @@ Capistrano::Configuration.instance(:must_exist).load do
     task :update_crontab do
       options = fetch(:whenever_options)
       roles = [options[:roles]].flatten if options[:roles]
+      stage = options[:stage]
+
+      stage_arg = stage ? " --stage #{stage}" : ""
 
       if find_servers(options).any?
         # make sure we go through the roles.each loop at least once
@@ -40,13 +43,13 @@ Capistrano::Configuration.instance(:must_exist).load do
 
           on_rollback do
             if fetch :previous_release
-              run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+              run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}#{stage_arg}", options
             else
               run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options
             end
           end
 
-          run "cd #{fetch :latest_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+          run "cd #{fetch :latest_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}#{stage_arg}", options
         end
       end
     end
