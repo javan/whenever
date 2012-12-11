@@ -43,7 +43,7 @@ module Whenever
       end
 
       def time_in_cron_syntax
-        case @time.squish
+        case @time
           when REGEX  then @time # raw cron sytax given
           when Symbol then parse_symbol
           when String then parse_as_string
