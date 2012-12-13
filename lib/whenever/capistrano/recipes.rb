@@ -24,7 +24,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     DESC
     task :update_crontab do
       options = fetch(:whenever_options)
-      roles = [options[:roles]].flatten if options[:roles]
+      roles = Array(options[:roles])
 
       if find_servers(options).any?
         # make sure we go through the roles.each loop at least once
