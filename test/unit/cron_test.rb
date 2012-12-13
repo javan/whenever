@@ -218,6 +218,7 @@ class CronTest < Test::Unit::TestCase
   context "When given raw cron sytax" do
     should "return the same cron sytax" do
       crons = ['0 0 27-31 * *', '* * * * *', '2/3 1,9,22 11-26 1-6 *',
+               "*\t*\t*\t*\t*",
                '@reboot', '@yearly', '@annually', '@monthly', '@weekly',
                '@daily', '@midnight', '@hourly']
       crons.each do |cron|
