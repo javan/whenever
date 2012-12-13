@@ -26,27 +26,27 @@ Capistrano::Configuration.instance(:must_exist).load do
       options = fetch(:whenever_options)
       roles = Array(options[:roles])
 
-      if find_servers(options).any?
-        # make sure we go through the roles.each loop at least once
-        roles << :__none if roles.empty?
+      servers = find_servers(options)
+      if servers.any?
+        server_roles_map = servers.inject({}) do |map, server|
+          map[server] = role_names_for_host(server) & roles
+          map
+        end
 
-        roles.each do |role|
-          if role == :__none
-            role_arg = ''
-          else
-            options[:roles] = role
-            role_arg = " --roles #{role}"
-          end
+        server_roles_map.each do |server, roles|
+          roles_arg = "" # empty for begin
+          roles_arg = " --roles #{roles.join(",")}" unless roles.empty?
 
+          run_opts = options.merge(:hosts => server.host)
           on_rollback do
             if fetch :previous_release
-              run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+              run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{roles_arg}", run_opts
             else
-              run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options
+              run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", run_opts
             end
           end
 
-          run "cd #{fetch :latest_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+          run "cd #{fetch :current_path} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{roles_arg}", run_opts
         end
       end
     end
