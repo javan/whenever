@@ -26,27 +26,32 @@ Capistrano::Configuration.instance(:must_exist).load do
       options = fetch(:whenever_options)
       roles = Array(options[:roles])
 
-      if find_servers(options).any?
-        # make sure we go through the roles.each loop at least once
-        roles << :__none if roles.empty?
+      servers = find_servers(options)
+      if servers.any?
+        # For all servers running cron, create a mapping of {server => [whenever_roles_server_belongs_to]}
+        server_roles_map = servers.inject({}) do |map, server|
+          map[server] = role_names_for_host(server) & roles
+          map
+        end
 
-        roles.each do |role|
-          if role == :__none
-            role_arg = ''
-          else
-            options[:roles] = role
-            role_arg = " --roles #{role}"
-          end
+        server_roles_map.each do |server, roles|
+          # Create `whenever` executable --roles argument for server.
+          roles_arg = "" # empty for begin
+          roles_arg = " --roles #{roles.join(",")}" unless roles.empty?
+
+          # Target specific host for the capistrano `run` command
+          run_opts = options.merge(:hosts => server.host)
 
           on_rollback do
             if fetch :previous_release
-              run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+              run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{roles_arg}", run_opts
             else
-              run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options
+              run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", run_opts
             end
           end
 
-          run "cd #{fetch :latest_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+          # For specific host, generate crontab for all whenever_roles it belongs
+          run "cd #{fetch :current_path} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{roles_arg}", run_opts
         end
       end
     end
