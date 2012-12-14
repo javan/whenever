@@ -2,19 +2,20 @@ require 'thread'
 require 'active_support/all'
 
 module Whenever
-  autoload :JobList,     'whenever/job_list'
-  autoload :Job,         'whenever/job'
-  autoload :CommandLine, 'whenever/command_line'
-  
+  autoload :JobList,           'whenever/job_list'
+  autoload :Job,               'whenever/job'
+  autoload :CommandLine,       'whenever/command_line'
+  autoload :CapistranoSupport, 'whenever/capistrano/support'
+
   module Output
     autoload :Cron,        'whenever/cron'
     autoload :Redirection, 'whenever/output_redirection'
   end
-  
+
   def self.cron(options)
     Whenever::JobList.new(options).generate_cron_output
   end
-  
+
   def self.path
     Dir.pwd
   end
