@@ -9,12 +9,13 @@ module Whenever
     
     def initialize(options={})
       @options = options
+      @original_identifier = options[:identifier]
       
       @options[:file]       ||= 'config/schedule.rb'
       @options[:cut]        ||= 0
       @options[:identifier] ||= default_identifier
       
-      unless File.exists?(@options[:file])
+      unless File.exists?(@options[:file]) || !file_required?
         warn("[fail] Can't find file: #{@options[:file]}")
         exit(1)
       end
@@ -45,6 +46,10 @@ module Whenever
     end
     
   protected
+  
+    def file_required?
+      !@options[:clear] || !@original_identifier
+    end
     
     def default_identifier
       File.expand_path(@options[:file])
