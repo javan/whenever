@@ -1,4 +1,6 @@
 Capistrano::Configuration.instance(:must_exist).load do
+  include Whenever::CapistranoSupport
+
   _cset(:whenever_roles)        { :db }
   _cset(:whenever_options)      { {:roles => fetch(:whenever_roles)} }
   _cset(:whenever_command)      { "whenever" }
@@ -23,30 +25,22 @@ Capistrano::Configuration.instance(:must_exist).load do
       which servers the crontab is updated on by setting the :whenever_roles variable.
     DESC
     task :update_crontab do
-      options = fetch(:whenever_options)
-      roles = [options[:roles]].flatten if options[:roles]
+      args[:command] = fetch(:whenever_command)
+      args[:flags]   = fetch(:whenever_update_flags)
+      args[:path]    = fetch(:release_path)
 
-      if find_servers(options).any?
-        # make sure we go through the roles.each loop at least once
-        roles << :__none if roles.empty?
+      if servers.any?
+        run_whenever_commands(args)
 
-        roles.each do |role|
-          if role == :__none
-            role_arg = ''
+        on_rollback do
+          if fetch(:previous_release)
+            # rollback to the previous release's crontab
+            args[:path] = fetch(:previous_release)
           else
-            options[:roles] = role
-            role_arg = " --roles #{role}"
+            # clear the crontab if no previous release
+            args[:flags] = fetch(:whenever_clear_flags)
           end
-
-          on_rollback do
-            if fetch :previous_release
-              run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
-            else
-              run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options
-            end
-          end
-
-          run "cd #{fetch :release_path} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{role_arg}", options
+          run_whenever_commands(args)
         end
       end
     end
@@ -64,8 +58,14 @@ Capistrano::Configuration.instance(:must_exist).load do
     DESC
 
     task :clear_crontab do
-      options = fetch(:whenever_options)
-      run "cd #{fetch :latest_release} && #{fetch :whenever_command} #{fetch :whenever_clear_flags}", options if find_servers(options).any?
+      if servers.any?
+        args = %w(command options clear_flags).inject({}) do |a, k|
+          a[k.to_sym] = fetch("whenever_#{k}".to_sym)
+        end
+        args[:path] = fetch(:latest_release)
+
+        run_whenever_commands(args)
+      end
     end
   end
 end
