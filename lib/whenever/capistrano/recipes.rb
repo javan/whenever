@@ -28,16 +28,20 @@ Capistrano::Configuration.instance(:must_exist).load do
 
       servers = find_servers(options)
       if servers.any?
+        # For all servers running cron, create a mapping of {server => [whenever_roles_server_belongs_to]}
         server_roles_map = servers.inject({}) do |map, server|
           map[server] = role_names_for_host(server) & roles
           map
         end
 
         server_roles_map.each do |server, roles|
+          # Create `whenever` executable --roles argument for server.
           roles_arg = "" # empty for begin
           roles_arg = " --roles #{roles.join(",")}" unless roles.empty?
 
+          # Target specific host for the capistrano `run` command
           run_opts = options.merge(:hosts => server.host)
+
           on_rollback do
             if fetch :previous_release
               run "cd #{fetch :previous_release} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{roles_arg}", run_opts
@@ -46,6 +50,7 @@ Capistrano::Configuration.instance(:must_exist).load do
             end
           end
 
+          # For specific host, generate crontab for all whenever_roles it belongs
           run "cd #{fetch :current_path} && #{fetch :whenever_command} #{fetch :whenever_update_flags}#{roles_arg}", run_opts
         end
       end
