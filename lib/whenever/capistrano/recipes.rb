@@ -11,19 +11,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   _cset(:whenever_clear_flags)  { "--clear-crontab #{fetch :whenever_identifier}" }
 
   namespace :whenever do
-    desc <<-DESC
-      Update application's crontab entries using Whenever. You can configure \
-      the command used to invoke Whenever by setting the :whenever_command \
-      variable, which can be used with Bundler to set the command to \
-      "bundle exec whenever". You can configure the identifier used by setting \
-      the :whenever_identifier variable, which defaults to the same value configured \
-      for the :application variable. You can configure the environment by setting \
-      the :whenever_environment variable, which defaults to the same value \
-      configured for the :rails_env variable which itself defaults to "production". \
-      Finally, you can completely override all arguments to the Whenever command \
-      by setting the :whenever_update_flags variable. Additionally you can configure \
-      which servers the crontab is updated on by setting the :whenever_roles variable.
-    DESC
+    desc "Update application's crontab entries using Whenever"
     task :update_crontab do
       args[:command] = fetch(:whenever_command)
       args[:flags]   = fetch(:whenever_update_flags)
@@ -46,18 +34,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
     end
 
-    desc <<-DESC
-      Clear application's crontab entries using Whenever. You can configure \
-      the command used to invoke Whenever by setting the :whenever_command \
-      variable, which can be used with Bundler to set the command to \
-      "bundle exec whenever". You can configure the identifier used by setting \
-      the :whenever_identifier variable, which defaults to the same value configured \
-      for the :application variable. Finally, you can completely override all \
-      arguments to the Whenever command by setting the :whenever_clear_flags variable. \
-      Additionally you can configure which servers the crontab is cleared on by setting \
-      the :whenever_roles variable.
-    DESC
-
+    desc "Clear application's crontab entries using Whenever"
     task :clear_crontab do
       if servers.any?
         args[:command] = fetch(:whenever_command)
