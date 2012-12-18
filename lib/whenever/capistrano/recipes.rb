@@ -1,5 +1,7 @@
+require 'whenever/capistrano/support'
+
 Capistrano::Configuration.instance(:must_exist).load do
-  include Whenever::CapistranoSupport
+  Whenever::CapistranoSupport.load_into(self)
 
   _cset(:whenever_roles)        { :db }
   _cset(:whenever_options)      { {:roles => fetch(:whenever_roles)} }
@@ -13,12 +15,14 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :whenever do
     desc "Update application's crontab entries using Whenever"
     task :update_crontab do
-      args[:command] = fetch(:whenever_command)
-      args[:flags]   = fetch(:whenever_update_flags)
-      args[:path]    = fetch(:release_path)
+      args = {
+        :command => fetch(:whenever_command),
+        :flags   => fetch(:whenever_update_flags),
+        :path    => fetch(:release_path)
+      }
 
-      if servers.any?
-        run_whenever_commands(args)
+      if whenever_servers.any?
+        whenever_run_commands(args)
 
         on_rollback do
           if fetch(:previous_release)
@@ -29,19 +33,21 @@ Capistrano::Configuration.instance(:must_exist).load do
             args[:flags] = fetch(:whenever_clear_flags)
           end
 
-          run_whenever_commands(args)
+          whenever_run_commands(args)
         end
       end
     end
 
     desc "Clear application's crontab entries using Whenever"
     task :clear_crontab do
-      if servers.any?
-        args[:command] = fetch(:whenever_command)
-        args[:flags]   = fetch(:whenever_clear_flags)
-        args[:path]    = fetch(:latest_release)
+      if whenever_servers.any?
+        args = {
+          :command => fetch(:whenever_command),
+          :flags   => fetch(:whenever_clear_flags),
+          :path    => fetch(:latest_release)
+        }
 
-        run_whenever_commands(args)
+        whenever_run_commands(args)
       end
     end
   end
