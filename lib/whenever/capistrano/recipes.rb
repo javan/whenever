@@ -1,3 +1,5 @@
+require 'whenever/capistrano/support'
+
 Capistrano::Configuration.instance(:must_exist).load do
   include Whenever::CapistranoSupport
 

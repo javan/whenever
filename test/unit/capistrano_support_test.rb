@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/../test_helper")
+require File.expand_path(File.dirname(__FILE__) + "/../../lib/whenever/capistrano/support")
 
 class CapistranoTestSubject
   include Whenever::CapistranoSupport
