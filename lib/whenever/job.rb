@@ -10,7 +10,7 @@ module Whenever
       @template                = options.delete(:template)
       @job_template            = options.delete(:job_template) || ":job"
       @roles                   = Array.wrap(options.delete(:roles))
-      @options[:output]        = Whenever::Output::Redirection.new(options[:output]).to_s if options.has_key?(:output)
+      @options[:output]        = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output]).to_s : ''
       @options[:environment] ||= :production
       @options[:path]          = Shellwords.shellescape(@options[:path] || Whenever.path)
     end
