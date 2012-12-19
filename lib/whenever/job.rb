@@ -33,7 +33,7 @@ module Whenever
     def process_template(template, options)
       template.gsub(/:\w+/) do |key|
         before_and_after = [$`[-1..-1], $'[0..0]]
-        option = options[key.sub(':', '').to_sym]
+        option = options[key.sub(':', '').to_sym] || key
 
         if before_and_after.all? { |c| c == "'" }
           escape_single_quotes(option)

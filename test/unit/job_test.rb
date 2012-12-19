@@ -30,6 +30,10 @@ class JobTest < Test::Unit::TestCase
       assert_equal '/my/path', new_job(:template => ':path').output
     end
 
+    should "not substitute parameters for which no value is set" do
+      assert_equal 'Hello :world', new_job(:template => ':matching :world', :matching => 'Hello').output
+    end
+
     should "escape the :path" do
       assert_equal '/my/spacey\ path', new_job(:template => ':path', :path => '/my/spacey path').output
     end
