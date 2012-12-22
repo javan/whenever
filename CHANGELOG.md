@@ -3,6 +3,19 @@
 * Time zone support
 
 
+### 0.8.1 / December 22nd, 2012
+
+* Fix multiserver roles bug. [Wes Morgan]
+
+* Refactor Cap recipes and add tests for them. [Wes Morgan]
+
+* Fix file not found error when running under JRuby. [Wes Morgan]
+
+* Stop interpolating template attributes with no corresponding value. [Vincent Boisard]
+
+* Support for raw cron separated by tabs. [Étienne Barrié]
+
+
 ### 0.8.0 / November 8th, 2012
 
 * Separate Capistrano recipes to allow custom execution. [Bogdan Gusiev]
