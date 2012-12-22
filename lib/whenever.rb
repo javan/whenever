@@ -5,7 +5,6 @@ module Whenever
   autoload :JobList,           'whenever/job_list'
   autoload :Job,               'whenever/job'
   autoload :CommandLine,       'whenever/command_line'
-  autoload :CapistranoSupport, 'whenever/capistrano/support'
 
   module Output
     autoload :Cron,        'whenever/cron'
