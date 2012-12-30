@@ -18,7 +18,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       args = {
         :command => fetch(:whenever_command),
         :flags   => fetch(:whenever_update_flags),
-        :path    => fetch(:release_path)
+        :path    => fetch(:latest_release)
       }
 
       if whenever_servers.any?
@@ -30,6 +30,7 @@ Capistrano::Configuration.instance(:must_exist).load do
             args[:path] = fetch(:previous_release)
           else
             # clear the crontab if no previous release
+            args[:path]  = fetch(:release_path)
             args[:flags] = fetch(:whenever_clear_flags)
           end
 
