@@ -31,7 +31,7 @@ module Whenever
             roles_arg = roles.empty? ? "" : " --roles #{roles.join(',')}"
 
             command = "cd #{args[:path]} && #{args[:command]} #{args[:flags]}#{roles_arg}"
-            run command, whenever_options.merge(:hosts => server.host)
+            run command, whenever_options.merge(:hosts => server)
           end
         end
 
