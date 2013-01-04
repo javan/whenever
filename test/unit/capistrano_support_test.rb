@@ -112,8 +112,8 @@ class CapistranoSupportTest < Test::Unit::TestCase
           roles = [:role1, :role2]
           @capistrano.stubs(:whenever_options).returns({:roles => roles})
 
-          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role1', {:roles => [:role1, :role2], :hosts => 'server1.foo.com'})
-          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role2', {:roles => [:role1, :role2], :hosts => 'server2.foo.com'})
+          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role1', {:roles => [:role1, :role2], :hosts => @mock_server1})
+          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role2', {:roles => [:role1, :role2], :hosts => @mock_server2})
 
           @capistrano.whenever_run_commands(:command => "whenever",
                                             :path => "/foo/bar",
@@ -126,7 +126,7 @@ class CapistranoSupportTest < Test::Unit::TestCase
           roles = [:role1, :role2, :role3]
           @capistrano.stubs(:whenever_options).returns({:roles => roles})
 
-          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role1,role3', {:roles => [:role1, :role2, :role3], :hosts => 'server1.foo.com'})
+          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role1,role3', {:roles => [:role1, :role2, :role3], :hosts => @mock_server1})
 
           @capistrano.whenever_run_commands(:command => "whenever",
                                             :path => "/foo/bar",
