@@ -99,9 +99,10 @@ class CapistranoSupportTest < Test::Unit::TestCase
 
       context "with some servers defined" do
         setup do
-          @mock_server1, @mock_server2 = mock(), mock()
+          @mock_server1, @mock_server2, @mock_server3 = mock("Server1"), mock("Server2"), mock("Server3")
           @mock_server1.stubs(:host).returns("server1.foo.com")
           @mock_server2.stubs(:host).returns("server2.foo.com")
+          @mock_server3.stubs(:host => "server3.foo.com", :port => 1022, :user => 'test')
           @mock_servers = [@mock_server1, @mock_server2]
         end
 
@@ -112,8 +113,8 @@ class CapistranoSupportTest < Test::Unit::TestCase
           roles = [:role1, :role2]
           @capistrano.stubs(:whenever_options).returns({:roles => roles})
 
-          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role1', {:roles => [:role1, :role2], :hosts => 'server1.foo.com'})
-          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role2', {:roles => [:role1, :role2], :hosts => 'server2.foo.com'})
+          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role1', {:roles => roles, :hosts => @mock_server1})
+          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role2', {:roles => roles, :hosts => @mock_server2})
 
           @capistrano.whenever_run_commands(:command => "whenever",
                                             :path => "/foo/bar",
@@ -122,11 +123,25 @@ class CapistranoSupportTest < Test::Unit::TestCase
 
         should "call run w/ all role args for servers w/ >1 role" do
           @capistrano.stubs(:role_names_for_host).with(@mock_server1).returns([:role1, :role3])
-          @capistrano.stubs(:whenever_servers).returns([@mock_servers.first])
+          @capistrano.stubs(:whenever_servers).returns([@mock_server1])
           roles = [:role1, :role2, :role3]
           @capistrano.stubs(:whenever_options).returns({:roles => roles})
 
-          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role1,role3', {:roles => [:role1, :role2, :role3], :hosts => 'server1.foo.com'})
+          @capistrano.expects(:run).once.with('cd /foo/bar && whenever --flag1 --flag2 --roles role1,role3', {:roles => roles, :hosts => @mock_server1})
+
+          @capistrano.whenever_run_commands(:command => "whenever",
+                                            :path => "/foo/bar",
+                                            :flags => "--flag1 --flag2")
+        end
+
+        should "call run w/ proper server options (port, user)" do
+          @capistrano.stubs(:role_names_for_host).with(@mock_server3).returns([:role3])
+          @capistrano.stubs(:whenever_servers).returns([@mock_server3])
+          @capistrano.stubs(:whenever_options).returns({:roles => [:role3]})
+
+          @capistrano.expects(:run).once.with do |command, options|
+            options[:hosts].user == "test" && options[:hosts].port == 1022
+          end
 
           @capistrano.whenever_run_commands(:command => "whenever",
                                             :path => "/foo/bar",
