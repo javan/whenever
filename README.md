@@ -225,4 +225,4 @@ Compatible with Ruby 1.8.7-1.9.3, JRuby, and Rubinius. [![Build Status](https://
 
 ----
 
-Copyright &copy; 2012 Javan Makhmali
+Copyright &copy; 2013 Javan Makhmali

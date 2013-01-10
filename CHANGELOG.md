@@ -3,6 +3,15 @@
 * Time zone support
 
 
+### 0.8.2 / January 10, 2013
+
+* Fix Capistrano host options. [Igor Yamolov, Wes Morgan]
+
+* Improve JRuby test support. [Igor Yamolov]
+
+* Use correct release path in Cap task. [Wes Morgan]
+
+
 ### 0.8.1 / December 22nd, 2012
 
 * Fix multiserver roles bug. [Wes Morgan]
