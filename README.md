@@ -108,6 +108,38 @@ Or set the job_template to nil to have your jobs execute normally.
 set :job_template, nil
 ```
 
+### Rake integration
+
+Whenever comes with two pre-defined rake tasks, `install` and `uninstall`. In your `Rakefile`:
+
+```ruby
+require 'whenever/rake'
+
+Whenever.default_tasks
+```
+
+This gives you:
+
+```
+$ rake -T
+rake whenever:install    # Use Whenever to install cron jobs
+rake whenever:uninstall  # Use Whenever to uninstall cron jobs
+```
+
+The default tasks are configurable as well:
+
+```ruby
+require 'whenever/rake'
+
+Whenever::InstallTask.new(:cron_install) do |whenever|	
+  whenever.do_stuff				 
+  ...					 
+end
+
+# This lets you add dependencies to your cron tasks
+task :cron_install => :other_task
+```
+
 ### Capistrano integration
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys.
