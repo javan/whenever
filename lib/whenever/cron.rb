@@ -6,13 +6,17 @@ module Whenever
       KEYWORDS = [:reboot, :yearly, :annually, :monthly, :weekly, :daily, :midnight, :hourly]
       REGEX = /^(@(#{KEYWORDS.join '|'})|.+\s+.+\s+.+\s+.+\s+.+.?)$/
 
-      attr_accessor :time, :task
+      attr_accessor :time, :job
 
-      def initialize(time = nil, task = nil, at = nil)
+      def initialize(time = nil, job = nil, at = nil)
         @at_given = at
         @time = time
-        @task = task
+        @job = job
         @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
+
+        if @time.is_a?(Numeric) && @time > 0.seconds && @time < 1.minute
+          expand_less_than_a_minute_tasks
+        end
       end
 
       def self.enumerate(item, detect_cron = true)
@@ -33,13 +37,13 @@ module Whenever
       def self.output(times, job)
         enumerate(times).each do |time|
           enumerate(job.at, false).each do |at|
-            yield new(time, job.output, at).output
+            yield new(time, job, at).output
           end
         end
       end
 
       def output
-        [time_in_cron_syntax, task].compact.join(' ').strip
+        [time_in_cron_syntax, job.output].compact.join(' ').strip
       end
 
       def time_in_cron_syntax
@@ -84,8 +88,8 @@ module Whenever
       def parse_time
         timing = Array.new(5, '*')
         case @time
-          when 0.seconds...1.minute
-            raise ArgumentError, "Time must be in minutes or higher"
+          when 0.seconds
+            raise ArgumentError, "Time must be greater than 0 seconds"
           when 1.minute...1.hour
             minute_frequency = @time / 60
             timing[0] = comma_separated_timing(minute_frequency, 59, @at || 0)
@@ -146,6 +150,21 @@ module Whenever
         max_occurances += 1 if original_start.zero?
 
         output[0, max_occurances].join(',')
+      end
+
+      def expand_less_than_a_minute_tasks
+        # Run cron task every minute, and use chained sleep commands
+        task = @job.options[:task]
+        chained_tasks = [task]
+        (1.minute / @time).times do |i|
+          sleep_time = (i + 1) * @time
+          if sleep_time < 60.seconds
+            chained_tasks << "sleep #{sleep_time} && #{task}"
+          end
+        end
+        @job.options[:task] = chained_tasks.map{|t| "(#{t})" }.join(' & ')
+
+        @time = 1.minute
       end
     end
   end
