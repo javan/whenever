@@ -78,6 +78,22 @@ class CapistranoSupportTest < Test::Unit::TestCase
       end
     end
 
+    context "#whenever_prepare_for_rollback" do
+      should "set path to previous_release if there is a previous release" do
+        args = {}
+        @capistrano.stubs(:fetch).with(:previous_release).returns("/some/path/20121221010000")
+        assert_equal({:path => "/some/path/20121221010000"}, @capistrano.whenever_prepare_for_rollback(args))
+      end
+
+      should "set path to release_path and flags to whenever_clear_flags if there is no previous release" do
+        args = {}
+        @capistrano.stubs(:fetch).with(:previous_release).returns(nil)
+        @capistrano.stubs(:fetch).with(:release_path).returns("/some/path/20121221010000")
+        @capistrano.stubs(:fetch).with(:whenever_clear_flags).returns("--clear-crontab whenever_identifier")
+        assert_equal({:path => "/some/path/20121221010000", :flags => "--clear-crontab whenever_identifier"}, @capistrano.whenever_prepare_for_rollback(args))
+      end
+    end
+
     context "#whenever_run_commands" do
       should "require :command arg" do
         assert_raise ArgumentError do
