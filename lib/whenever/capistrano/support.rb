@@ -22,6 +22,18 @@ module Whenever
           end
         end
 
+        def whenever_prepare_for_rollback args
+          if fetch(:previous_release)
+            # rollback to the previous release's crontab
+            args[:path] = fetch(:previous_release)
+          else
+            # clear the crontab if no previous release
+            args[:path]  = fetch(:release_path)
+            args[:flags] = fetch(:whenever_clear_flags)
+          end
+          args
+        end
+
         def whenever_run_commands(args)
           unless [:command, :path, :flags].all? { |a| args.include?(a) }
             raise ArgumentError, ":command, :path, & :flags are required"

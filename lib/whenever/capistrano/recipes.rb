@@ -22,29 +22,11 @@ Capistrano::Configuration.instance(:must_exist).load do
       }
 
       if whenever_servers.any?
-        if task_call_frames[0].task.fully_qualified_name == 'deploy:rollback'
-          if fetch(:previous_release)
-            # rollback to the previous release's crontab
-            args[:path] = fetch(:previous_release)
-          else
-            # clear the crontab if no previous release
-            args[:path]  = fetch(:release_path)
-            args[:flags] = fetch(:whenever_clear_flags)
-          end
-        end
-
+        args = whenever_prepare_for_rollback(args) if task_call_frames[0].task.fully_qualified_name == 'deploy:rollback'
         whenever_run_commands(args)
 
         on_rollback do
-          if fetch(:previous_release)
-            # rollback to the previous release's crontab
-            args[:path] = fetch(:previous_release)
-          else
-            # clear the crontab if no previous release
-            args[:path]  = fetch(:release_path)
-            args[:flags] = fetch(:whenever_clear_flags)
-          end
-
+          args = whenever_prepare_for_rollback(args)
           whenever_run_commands(args)
         end
       end
