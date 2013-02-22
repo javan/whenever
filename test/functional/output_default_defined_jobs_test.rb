@@ -31,7 +31,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "output the command with the default job template" do
-      assert_match /^.+ .+ .+ .+ \/bin\/bash -l -c 'blahblah'$/, @output
+      assert_match /^.+ .+ .+ .+ \/bin\/sh -l -c 'blahblah'$/, @output
     end
   end
 
@@ -39,16 +39,16 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
-        set :job_template, "/bin/bash -l -c ':job'"
+        set :job_template, "/bin/sh -l -c ':job'"
         every 2.hours do
-          command "blahblah", :job_template => "/bin/sh -l -c ':job'"
+          command "blahblah", :job_template => "/usr/bin/env bash -l -c ':job'"
         end
       file
     end
 
     should "output the command using that job_template" do
-      assert_match /^.+ .+ .+ .+ \/bin\/sh -l -c 'blahblah'$/, @output
-      assert_no_match /bash/, @output
+      assert_match /^.+ .+ .+ .+ \/usr\/bin\/env bash -l -c 'blahblah'$/, @output
+      assert_no_match /\/bin\/sh/, @output
     end
   end
 

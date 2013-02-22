@@ -12,7 +12,7 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
     end
 
     should "output the cron job" do
-      assert_equal two_hours + " /bin/bash -l -c 'blahblah'\n\n", @output
+      assert_equal two_hours + " /bin/sh -l -c 'blahblah'\n\n", @output
     end
   end
 
@@ -28,7 +28,7 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
 
     # this should output the job because not specifying a role means "all roles"
     should "output the cron job" do
-      assert_equal two_hours + " /bin/bash -l -c 'blahblah'\n\n", @output
+      assert_equal two_hours + " /bin/sh -l -c 'blahblah'\n\n", @output
     end
   end
 
@@ -44,7 +44,7 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
 
     # this should output the job because not requesting roles means "all roles"
     should "output the cron job" do
-      assert_equal two_hours + " /bin/bash -l -c 'blahblah'\n\n", @output
+      assert_equal two_hours + " /bin/sh -l -c 'blahblah'\n\n", @output
     end
   end
 
@@ -78,7 +78,7 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
     end
 
     should "output both jobs" do
-      assert_equal two_hours + " /bin/bash -l -c 'role1_cmd'\n\n0 * * * * /bin/bash -l -c 'role2_cmd'\n\n", @output
+      assert_equal two_hours + " /bin/sh -l -c 'role1_cmd'\n\n0 * * * * /bin/sh -l -c 'role2_cmd'\n\n", @output
     end
   end
 end

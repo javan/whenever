@@ -5,7 +5,7 @@ set :path, Whenever.path
 
 # All jobs are wrapped in this template.
 # http://blog.scoutapp.com/articles/2010/09/07/rvm-and-cron-in-production
-set :job_template, "/bin/bash -l -c ':job'"
+set :job_template, "/bin/sh -l -c ':job'"
 
 job_type :command, ":task :output"
 
