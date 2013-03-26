@@ -44,7 +44,7 @@ module Whenever
       yield
     end
 
-    def job_type(name, template)
+    def job_type(name, template = nil, &block)
       class_eval do
         define_method(name) do |task, *args|
           options = { :task => task, :template => template }
@@ -56,7 +56,7 @@ module Whenever
           options[:output] = @output if defined?(@output) && !options.has_key?(:output)
 
           @jobs[@current_time_scope] ||= []
-          @jobs[@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options))
+          @jobs[@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options), &block)
         end
       end
     end

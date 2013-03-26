@@ -4,10 +4,10 @@ module Whenever
   class Job
     attr_reader :at, :roles
 
-    def initialize(options = {})
+    def initialize(options = {}, &template_builder)
       @options = options
       @at                      = options.delete(:at)
-      @template                = options.delete(:template)
+      @template                = template_builder || options.delete(:template)
       @job_template            = options.delete(:job_template) || ":job"
       @roles                   = Array.wrap(options.delete(:roles))
       @options[:output]        = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output]).to_s : ''
@@ -31,6 +31,10 @@ module Whenever
   protected
 
     def process_template(template, options)
+      if template.respond_to?(:call)
+        template = template.call(options, self)
+      end
+
       template.gsub(/:\w+/) do |key|
         before_and_after = [$`[-1..-1], $'[0..0]]
         option = options[key.sub(':', '').to_sym] || key
