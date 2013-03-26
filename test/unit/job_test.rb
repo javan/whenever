@@ -111,10 +111,31 @@ class JobTest < Test::Unit::TestCase
     end
   end
 
+  context "A Job with a Proc template builder" do
+    should "use template builder in favor of string template" do
+      job = new_job(:template => 'foo', :job_template => 'left ":job" right') { 'bar' }
+      assert_equal %q(left "bar" right), job.output
+    end
+
+    should "replace options in the builder's result" do
+      job = new_job(:task => 'foo', :hip => 'hop', :job_template => 'left ":job" right') { 'some :hip :task' }
+      assert_equal %q(left "some hop foo" right), job.output
+    end
+
+    should "chain the passed tasks" do
+      job = new_job(:job_template => 'left ":job" right', :tasks => ["def", "abc"]) do |options|
+        break if !options[:tasks] || options[:tasks].empty?
+        taskcmds = options[:tasks].map { |task| "bundle exec rake #{task}" }
+        "cd :_path && " << taskcmds.join(" && ")
+      end
+      assert_equal %q(left "cd :_path && bundle exec rake def && bundle exec rake abc" right), job.output
+    end
+  end
+
 private
 
-  def new_job(options={})
-    Whenever::Job.new(options)
+  def new_job(options={}, &block)
+    Whenever::Job.new(options, &block)
   end
 
 end
