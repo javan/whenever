@@ -24,7 +24,11 @@ class JobTest < Test::Unit::TestCase
     should "substitute the :path when #output is called" do
       assert_equal 'foo', new_job(:template => ':path', :path => 'foo').output
     end
-
+    
+    should "subsitute template found in the options when #output is called" do
+      assert_equal 'foo', new_job(:template => ':templated_option', :task => 'foo', :templated_option => ':task').output
+    end
+    
     should "substitute the :path with the default Whenever.path if none is provided when #output is called" do
       Whenever.expects(:path).returns('/my/path')
       assert_equal '/my/path', new_job(:template => ':path').output
