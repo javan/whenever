@@ -15,20 +15,14 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :whenever do
     desc "Update application's crontab entries using Whenever"
     task :update_crontab do
-      args = {
-        :command => fetch(:whenever_command),
-        :flags   => fetch(:whenever_update_flags),
-        :path    => fetch(:latest_release)
-      }
-
       if whenever_servers.any?
-        args = whenever_prepare_for_rollback(args) if task_call_frames[0].task.fully_qualified_name == 'deploy:rollback'
-        whenever_run_commands(args)
+        args = {
+          :command => fetch(:whenever_command),
+          :flags   => fetch(:whenever_update_flags),
+          :path    => fetch(:latest_release)
+        }
 
-        on_rollback do
-          args = whenever_prepare_for_rollback(args)
-          whenever_run_commands(args)
-        end
+        whenever_run_commands(args)
       end
     end
 
@@ -41,6 +35,19 @@ Capistrano::Configuration.instance(:must_exist).load do
           :path    => fetch(:latest_release)
         }
 
+        whenever_run_commands(args)
+      end
+    end
+
+    desc "Rollback application's crontab entries using Whenever"
+    task :rollback_crontab do
+      if whenever_servers.any?
+        args = {
+          :command => fetch(:whenever_command),
+          :flags   => fetch(:whenever_update_flags),
+        }
+
+        args = whenever_prepare_for_rollback(args)
         whenever_run_commands(args)
       end
     end
