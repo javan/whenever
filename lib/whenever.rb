@@ -23,7 +23,7 @@ module Whenever
     File.exists?(File.join(path, 'script', 'rails'))
   end
 
-  def self.rails4?
+  def self.rails_binstub?
     File.exists?(File.join(path, 'bin', 'rails'))
   end
 

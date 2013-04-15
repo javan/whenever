@@ -125,10 +125,10 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
   end
 
-  context "A runner for a Rails 4 app" do
+  context "A runner for a Rails binstub" do
     setup do
       Whenever.expects(:path).at_least_once.returns('/my/path')
-      Whenever.expects(:rails4?).returns(true)
+      Whenever.expects(:rails_binstub?).returns(true)
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
@@ -138,7 +138,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       file
     end
 
-    should "use the Rails 4 runner job by default" do
+    should "use the Rails binstub runner job by default" do
       assert_match two_hours + %( cd /my/path && bin/rails runner -e production 'blahblah'), @output
     end
   end
