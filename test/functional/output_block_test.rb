@@ -6,13 +6,12 @@ class BlockTest < Test::Unit::TestCase
 
     context "weekday at a (single) given time" do
       setup do
-        block = Proc.new do
+        @output = Whenever.cron({}) do
           set :job_template, nil
           every "weekday", :at => '5:02am' do
             command "blahblah"
           end
         end
-        @output = Whenever.cron :block => block
       end
       
       should "output the command using that time" do
@@ -22,13 +21,12 @@ class BlockTest < Test::Unit::TestCase
 
     context "A plain command with the job template set to nil" do
       setup do
-        block = Proc.new do
+        @output = Whenever.cron({}) do
           set :job_template, nil
           every :day do
             command "blahblah"
           end
         end
-        @output = Whenever.cron :block => block
       end
 
       should "output the command" do
@@ -38,14 +36,13 @@ class BlockTest < Test::Unit::TestCase
 
     context "A defined job with a :task" do
       setup do
-        block = Proc.new do
+        @output = Whenever.cron({}) do
           set :job_template, nil
           job_type :some_job, "before :task after"
           every 2.hours do
             some_job "during"
           end
         end
-        @output = Whenever.cron :block => block
       end
 
       should "output the defined job with the task" do

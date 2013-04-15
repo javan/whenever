@@ -2,7 +2,7 @@ module Whenever
   class JobList
     attr_reader :roles
 
-    def initialize(options)
+    def initialize(options, &block)
       @jobs, @env, @set_variables, @pre_set_variables = {}, {}, {}, {}
 
       if options.is_a? String
@@ -19,8 +19,8 @@ module Whenever
 
       if options[:string]
         instance_eval options[:string], '<eval>'
-      elsif options[:block]
-        instance_eval &options[:block]
+      elsif block
+        instance_eval &block
       elsif options[:file]
         instance_eval File.read(options[:file]), options[:file]
       end
