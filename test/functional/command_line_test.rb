@@ -201,17 +201,18 @@ NEW_CRON
   context "params with a block" do
     setup do
       Whenever::CommandLine.any_instance.expects(:warn)
+      @block = Proc.new{}
     end
 
     should "exit with block and file" do
       assert_raise SystemExit do
-        @command = Whenever::CommandLine.new(:block => Proc.new{}, :file => 'config/schedule.rb', :identifier => 'My identifier')
+        @command = Whenever::CommandLine.new(:file => 'config/schedule.rb', :identifier => 'My identifier', &@block)
       end
     end
 
     should "exit with a block and no identifier" do
       assert_raise SystemExit do
-        @command = Whenever::CommandLine.new(:block => Proc.new{})
+        @command = Whenever::CommandLine.new(&@block)
       end
     end
   end
