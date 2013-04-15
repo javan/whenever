@@ -10,11 +10,23 @@ module Whenever
     def initialize(options={})
       @options = options
       
-      @options[:file]       ||= 'config/schedule.rb'
-      @options[:cut]        ||= 0
-      @options[:identifier] ||= default_identifier
+      if [@options[:block], @options[:file]].compact.length > 1
+        warn("[fail] Cannot give both a block and a file as schedule. Choose one.")
+        exit(1)
+      end
+
+      if @options[:block] && !@options[:identifier]
+        warn("[fail] Identifier is required when using a block")
+        exit(1)
+      end
+
+      @options[:cut] ||= 0
+      unless @options[:block]
+        @options[:file]       ||= 'config/schedule.rb'
+        @options[:identifier] ||= default_identifier
+      end
       
-      unless File.exists?(@options[:file])
+      if @options[:file] && !File.exists?(@options[:file])
         warn("[fail] Can't find file: #{@options[:file]}")
         exit(1)
       end

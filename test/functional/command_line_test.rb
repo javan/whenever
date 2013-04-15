@@ -175,21 +175,44 @@ NEW_CRON
 
   context "combined params" do
     setup do
-      Whenever::CommandLine.any_instance.expects(:exit)
       Whenever::CommandLine.any_instance.expects(:warn)
       File.expects(:exists?).with('config/schedule.rb').returns(true)
     end
 
     should "exit with write and clear" do
-      @command = Whenever::CommandLine.new(:write => true, :clear => true)
+      assert_raise SystemExit do
+        @command = Whenever::CommandLine.new(:write => true, :clear => true)
+      end
     end
 
     should "exit with write and update" do
-      @command = Whenever::CommandLine.new(:write => true, :update => true)
+      assert_raise SystemExit do
+        @command = Whenever::CommandLine.new(:write => true, :update => true)
+      end
     end
 
     should "exit with update and clear" do
-      @command = Whenever::CommandLine.new(:update => true, :clear => true)
+      assert_raise SystemExit do
+        @command = Whenever::CommandLine.new(:update => true, :clear => true)
+      end
+    end
+  end
+
+  context "params with a block" do
+    setup do
+      Whenever::CommandLine.any_instance.expects(:warn)
+    end
+
+    should "exit with block and file" do
+      assert_raise SystemExit do
+        @command = Whenever::CommandLine.new(:block => Proc.new{}, :file => 'config/schedule.rb', :identifier => 'My identifier')
+      end
+    end
+
+    should "exit with a block and no identifier" do
+      assert_raise SystemExit do
+        @command = Whenever::CommandLine.new(:block => Proc.new{})
+      end
     end
   end
 
