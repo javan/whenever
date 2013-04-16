@@ -131,6 +131,11 @@ set :whenever_identifier, defer { "#{application}_#{stage}" }
 require "whenever/capistrano"
 ```
 
+If the server you are deploying to does not use the capistrano role of `:db`, then list the capistrano roles used in your script
+```ruby
+set :whenever_roles, [:app, :web]
+```
+
 ### Capistrano roles
 
 The first thing to know about the new roles support is that it is entirely
