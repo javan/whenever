@@ -2,6 +2,8 @@
 set :environment, "production"
 # Path defaults to the directory `whenever` was run from
 set :path, Whenever.path
+# Environment argument defaults to RAILS_ENV
+set :env_argument, "RAILS_ENV"
 
 # All jobs are wrapped in this template.
 # http://blog.scoutapp.com/articles/2010/09/07/rvm-and-cron-in-production
@@ -11,11 +13,11 @@ job_type :command, ":task :output"
 
 # Run rake through bundler if possible
 if Whenever.bundler?
-  job_type :rake, "cd :path && RAILS_ENV=:environment bundle exec rake :task --silent :output"
-  job_type :script, "cd :path && RAILS_ENV=:environment bundle exec script/:task :output"
+  job_type :rake, "cd :path && :env_argument=:environment bundle exec rake :task --silent :output"
+  job_type :script, "cd :path && :env_argument=:environment bundle exec script/:task :output"
 else
-  job_type :rake, "cd :path && RAILS_ENV=:environment rake :task --silent :output"
-  job_type :script, "cd :path && RAILS_ENV=:environment script/:task :output"
+  job_type :rake, "cd :path && :env_argument=:environment rake :task --silent :output"
+  job_type :script, "cd :path && :env_argument=:environment script/:task :output"
 end
 
 # Create a runner job that's appropriate for the Rails version,
