@@ -185,7 +185,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :path, '/my/path'
-        set :env_argument, 'RAKE_ENV'
+        set :environment_variable, 'RAKE_ENV'
         every 2.hours do
           rake "blahblah"
         end
@@ -203,9 +203,9 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :path, '/my/path'
-        set :env_argument, 'RAKE_ENV'
+        set :environment_variable, 'RAKE_ENV'
         every 2.hours do
-          rake "blahblah", :env_argument => 'SOME_ENV'
+          rake "blahblah", :environment_variable => 'SOME_ENV'
         end
       file
     end
@@ -275,7 +275,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        set :env_argument, 'RAKE_ENV'
+        set :environment_variable, 'RAKE_ENV'
         set :path, '/my/path'
         every 2.hours do
           script "blahblah"
