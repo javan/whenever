@@ -179,7 +179,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
   end
 
-  context "A rake command that sets the environment argument" do
+  context "A rake command that sets the environment variable" do
     setup do
       @output = Whenever.cron \
       <<-file
@@ -192,12 +192,12 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       file
     end
 
-    should "output the rake command using that environment argument" do
+    should "output the rake command using that environment variable" do
       assert_match two_hours + ' cd /my/path && RAKE_ENV=production bundle exec rake blahblah --silent', @output
     end
   end
 
-  context "A rake command that overrides the environment argument" do
+  context "A rake command that overrides the environment variable" do
     setup do
       @output = Whenever.cron \
       <<-file
@@ -210,7 +210,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       file
     end
 
-    should "output the rake command using that environment argument" do
+    should "output the rake command using that environment variable" do
       assert_match two_hours + ' cd /my/path && SOME_ENV=production bundle exec rake blahblah --silent', @output
     end
   end
@@ -270,7 +270,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
   end
 
-  context "A script command that uses an environment argument" do
+  context "A script command that uses an environment variable" do
     setup do
       @output = Whenever.cron \
       <<-file
@@ -283,7 +283,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       file
     end
 
-    should "output the script command using that environment argument" do
+    should "output the script command using that environment variable" do
       assert_match two_hours + ' cd /my/path && RAKE_ENV=production bundle exec script/blahblah', @output
     end
   end
