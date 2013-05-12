@@ -3,13 +3,25 @@ require File.expand_path(File.dirname(__FILE__) + "/../test_helper")
 class CronTest < Test::Unit::TestCase
 
   context "When parsing time in minutes" do
-    should "raise if less than 1 minute" do
-      assert_raises ArgumentError do
-        parse_time(59.seconds)
+    context "handling times less than 1 minute" do
+      should "raise if 0 seconds" do
+        assert_raises ArgumentError do
+          parse_time(0.minutes)
+        end
       end
 
-      assert_raises ArgumentError do
-        parse_time(0.minutes)
+      should "expand times less than 1 minute using sleep" do
+        cron = new_cron 22.seconds, 'test'
+        assert_equal 1.minute, cron.time
+        assert_equal '(test) & (sleep 22 && test) & (sleep 44 && test)', cron.job.options[:task]
+
+        cron = new_cron 30.seconds, 'test'
+        assert_equal 1.minute, cron.time
+        assert_equal '(test) & (sleep 30 && test)', cron.job.options[:task]
+
+        cron = new_cron 45.seconds, 'test'
+        assert_equal 1.minute, cron.time
+        assert_equal '(test) & (sleep 45 && test)', cron.job.options[:task]
       end
     end
 
@@ -250,4 +262,7 @@ private
     Whenever::Output::Cron.new(time, task, at).time_in_cron_syntax
   end
 
+  def new_cron(time, task)
+    Whenever::Output::Cron.new(time, Whenever::Job.new(:task => 'test'))
+  end
 end
