@@ -78,6 +78,18 @@ job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :out
 job_type :script,  "cd :path && :environment_variable=:environment bundle exec script/:task :output"
 ```
 
+You can also set templatized options. This is especially useful when you would like your output location to be named after your task or another set option: 
+
+```ruby
+env_log = "/path/to/:env/command.log"
+
+every 3.hours do
+  command 'echo foo', output: env_log
+end
+```
+
+This templatizing is *not* recursive so don't try to template options that contain their templates themselves. Its intended use-case is for simple substitions of `:path`, `:task`, etc. that would have required a lot more variables and string substition to accomplish.
+
 Pre-Rails 3 apps and apps that don't use Bundler will redefine the `rake` and `runner` jobs respectively to function correctly.
 
 If a `:path` is not set it will default to the directory in which `whenever` was executed. `:environment_variable` will default to 'RAILS_ENV'. `:environment` will default to 'production'. `:output` will be replaced with your output redirection settings which you can read more about here: <http://github.com/javan/whenever/wiki/Output-redirection-aka-logging-your-cron-jobs>

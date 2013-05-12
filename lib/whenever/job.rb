@@ -17,8 +17,9 @@ module Whenever
     end
 
     def output
-      job = process_template(@template, @options).strip
-      out = process_template(@job_template, { :job => job }).strip
+      opts = templatize_options(@options)
+      job  = process_template(@template, opts).strip
+      out  = process_template(@job_template, { :job => job }).strip
       if out =~ /\n/
         raise ArgumentError, "Task contains newline"
       end
@@ -30,6 +31,13 @@ module Whenever
     end
 
   protected
+
+    def templatize_options opts
+      opts.inject({}) do |new_opts, (key, temp)|
+        new_opts[key] = temp.is_a?(String) ? process_template(temp, opts) : temp
+        new_opts
+      end
+    end
 
     def process_template(template, options)
       template.gsub(/:\w+/) do |key|
