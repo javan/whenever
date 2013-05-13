@@ -140,7 +140,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "output the rake command using that path" do
-      assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec rake blahblah --silent', @output
+      assert_match two_hours + ' rvm use && cd /my/path && RAILS_ENV=production bundle exec rake blahblah --silent', @output
     end
   end
 
@@ -158,7 +158,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "not use invoke through bundler" do
-      assert_match two_hours + ' cd /my/path && RAILS_ENV=production rake blahblah --silent', @output
+      assert_match two_hours + ' rvm use && cd /my/path && RAILS_ENV=production rake blahblah --silent', @output
     end
   end
 
@@ -169,13 +169,13 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
         set :job_template, nil
         set :path, '/my/path'
         every 2.hours do
-          rake "blahblah", :path => '/some/other/path'
+          rake "blahblah", path: '/some/other/path'
         end
       file
     end
 
     should "output the rake command using that path" do
-      assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production bundle exec rake blahblah --silent', @output
+      assert_match two_hours + ' rvm use && cd /some/other/path && RAILS_ENV=production bundle exec rake blahblah --silent', @output
     end
   end
 
@@ -193,7 +193,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "output the rake command using that environment variable" do
-      assert_match two_hours + ' cd /my/path && RAKE_ENV=production bundle exec rake blahblah --silent', @output
+      assert_match two_hours + ' rvm use && cd /my/path && RAKE_ENV=production bundle exec rake blahblah --silent', @output
     end
   end
 
@@ -211,7 +211,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "output the rake command using that environment variable" do
-      assert_match two_hours + ' cd /my/path && SOME_ENV=production bundle exec rake blahblah --silent', @output
+      assert_match two_hours + ' rvm use && cd /my/path && SOME_ENV=production bundle exec rake blahblah --silent', @output
     end
   end
 
@@ -230,7 +230,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "output the script command using that path" do
-      assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec script/blahblah', @output
+      assert_match two_hours + ' rvm use && cd /my/path && RAILS_ENV=production bundle exec script/blahblah', @output
     end
   end
 
@@ -248,7 +248,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "not use invoke through bundler" do
-      assert_match two_hours + ' cd /my/path && RAILS_ENV=production script/blahblah', @output
+      assert_match two_hours + ' rvm use && cd /my/path && RAILS_ENV=production script/blahblah', @output
     end
   end
 
@@ -266,7 +266,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "output the script command using that path" do
-      assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production bundle exec script/blahblah >> /log/file 2>&1', @output
+      assert_match two_hours + ' rvm use && cd /some/other/path && RAILS_ENV=production bundle exec script/blahblah >> /log/file 2>&1', @output
     end
   end
 
@@ -284,7 +284,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
 
     should "output the script command using that environment variable" do
-      assert_match two_hours + ' cd /my/path && RAKE_ENV=production bundle exec script/blahblah', @output
+      assert_match two_hours + ' rvm use && cd /my/path && RAKE_ENV=production bundle exec script/blahblah', @output
     end
   end
 

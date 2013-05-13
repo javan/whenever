@@ -13,11 +13,11 @@ job_type :command, ":task :output"
 
 # Run rake through bundler if possible
 if Whenever.bundler?
-  job_type :rake, "cd :path && :environment_variable=:environment bundle exec rake :task --silent :output"
-  job_type :script, "cd :path && :environment_variable=:environment bundle exec script/:task :output"
+  job_type :rake, "rvm use && cd :path && :environment_variable=:environment bundle exec rake :task --silent :output"
+  job_type :script, "rvm use && cd :path && :environment_variable=:environment bundle exec script/:task :output"
 else
-  job_type :rake, "cd :path && :environment_variable=:environment rake :task --silent :output"
-  job_type :script, "cd :path && :environment_variable=:environment script/:task :output"
+  job_type :rake, "rvm use && cd :path && :environment_variable=:environment rake :task --silent :output"
+  job_type :script, "rvm use && cd :path && :environment_variable=:environment script/:task :output"
 end
 
 # Create a runner job that's appropriate for the Rails version,
