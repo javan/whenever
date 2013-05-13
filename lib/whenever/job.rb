@@ -6,13 +6,14 @@ module Whenever
 
     def initialize(options = {})
       @options = options
-      @at                      = options.delete(:at)
-      @template                = options.delete(:template)
-      @job_template            = options.delete(:job_template) || ":job"
-      @roles                   = Array.wrap(options.delete(:roles))
-      @options[:output]        = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output]).to_s : ''
-      @options[:environment] ||= :production
-      @options[:path]          = Shellwords.shellescape(@options[:path] || Whenever.path)
+      @at                               = options.delete(:at)
+      @template                         = options.delete(:template)
+      @job_template                     = options.delete(:job_template) || ":job"
+      @roles                            = Array.wrap(options.delete(:roles))
+      @options[:output]                 = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output]).to_s : ''
+      @options[:environment_variable] ||= "RAILS_ENV"
+      @options[:environment]          ||= :production
+      @options[:path]                   = Shellwords.shellescape(@options[:path] || Whenever.path)
     end
 
     def output
