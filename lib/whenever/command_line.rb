@@ -3,18 +3,31 @@ require 'tempfile'
 
 module Whenever
   class CommandLine
-    def self.execute(options={})
-      new(options).run
+    def self.execute(options={}, &block)
+      new(options, &block).run
     end
     
-    def initialize(options={})
+    def initialize(options={}, &block)
       @options = options
+      @block = block
       
-      @options[:file]       ||= 'config/schedule.rb'
-      @options[:cut]        ||= 0
-      @options[:identifier] ||= default_identifier
+      if [@block, @options[:file]].compact.length > 1
+        warn("[fail] Cannot give both a block and a file as schedule. Choose one.")
+        exit(1)
+      end
+
+      if @block && !@options[:identifier]
+        warn("[fail] Identifier is required when using a block")
+        exit(1)
+      end
+
+      @options[:cut] ||= 0
+      unless @block
+        @options[:file]       ||= 'config/schedule.rb'
+        @options[:identifier] ||= default_identifier
+      end
       
-      unless File.exists?(@options[:file])
+      if @options[:file] && !File.exists?(@options[:file])
         warn("[fail] Can't find file: #{@options[:file]}")
         exit(1)
       end
@@ -52,7 +65,7 @@ module Whenever
   
     def whenever_cron
       return '' if @options[:clear]
-      @whenever_cron ||= [comment_open, Whenever.cron(@options), comment_close].compact.join("\n") + "\n"
+      @whenever_cron ||= [comment_open, Whenever.cron(@options, &@block), comment_close].compact.join("\n") + "\n"
     end
     
     def read_crontab

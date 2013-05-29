@@ -2,7 +2,7 @@ module Whenever
   class JobList
     attr_reader :roles
 
-    def initialize(options)
+    def initialize(options, &block)
       @jobs, @env, @set_variables, @pre_set_variables = {}, {}, {}, {}
 
       if options.is_a? String
@@ -15,14 +15,15 @@ module Whenever
 
       setup_file = File.expand_path('../setup.rb', __FILE__)
       setup = File.read(setup_file)
-      schedule = if options[:string]
-        options[:string]
-      elsif options[:file]
-        File.read(options[:file])
-      end
-
       instance_eval(setup, setup_file)
-      instance_eval(schedule, options[:file] || '<eval>')
+
+      if options[:string]
+        instance_eval options[:string], '<eval>'
+      elsif block
+        instance_eval &block
+      elsif options[:file]
+        instance_eval File.read(options[:file]), options[:file]
+      end
     end
 
     def set(variable, value)

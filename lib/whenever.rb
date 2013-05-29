@@ -11,8 +11,8 @@ module Whenever
     autoload :Redirection, 'whenever/output_redirection'
   end
 
-  def self.cron(options)
-    Whenever::JobList.new(options).generate_cron_output
+  def self.cron(options, &block)
+    Whenever::JobList.new(options, &block).generate_cron_output
   end
 
   def self.path
