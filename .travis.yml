@@ -2,7 +2,5 @@ rvm:
   - 1.9.2
   - 1.9.3
   - 2.0.0
-  - ree
   - jruby
-  - jruby-18mode
   - jruby-19mode
