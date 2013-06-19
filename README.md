@@ -53,6 +53,10 @@ every :day, :at => '12:20am', :roles => [:app] do
 end
 ```
 
+It's important to note that the schedule.rb only defines the tasks you wish to add to your crontab. You can review and debug the generated cron tasks by using the `whenever`, which by default shows the proposed changes to your crontab.
+
+To actually add the newly defined tasks to your crontab, you need to run the `whenever` command with the --update-crontab option.
+
 ### Define your own job types
 
 Whenever ships with three pre-defined job types: command, runner, and rake. You can define your own with `job_type`.
