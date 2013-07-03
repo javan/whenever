@@ -11,6 +11,7 @@ module Whenever
           when String   then redirect_from_string
           when Hash     then redirect_from_hash
           when NilClass then ">> /dev/null 2>&1"
+          when Proc     then @output.call
           else ''
         end 
       end
