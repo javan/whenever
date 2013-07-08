@@ -304,4 +304,23 @@ class OutputRedirectionTest < Test::Unit::TestCase
       assert_match /^.+ .+ .+ .+ blahblah >> cron.log 2>&1$/, @output
     end
   end
+
+
+  context "A command when the standard output is set to a lambda" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        set :output, lambda { "2>&1 | logger -t whenever_cron" }
+        every 2.hours do
+          command "blahblah"
+        end
+      file
+    end
+
+    should "output the command by result of the lambda evaluated" do
+      assert_match /^.+ .+ .+ .+ blahblah 2>&1 | logger -t whenever_cron$/, @output
+    end
+  end
+
 end
