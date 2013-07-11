@@ -3,6 +3,15 @@
 * Time zone support
 
 
+### 0.8.3 / July 11, 2013
+
+* Improve Cap rollback logic. [Jeroen Jacobs]
+
+* Allow configuration of the environment variable. [andfx]
+
+* Output option can be a callable Proc. [Li Xiao]
+
+
 ### 0.8.2 / January 10, 2013
 
 * Fix Capistrano host options. [Igor Yamolov, Wes Morgan]
