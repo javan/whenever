@@ -78,7 +78,8 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
     end
 
     should "output both jobs" do
-      assert_equal two_hours + " /bin/bash -l -c 'role1_cmd'\n\n0 * * * * /bin/bash -l -c 'role2_cmd'\n\n", @output
+      assert_match two_hours + " /bin/bash -l -c 'role1_cmd'", @output
+      assert_match "0 * * * * /bin/bash -l -c 'role2_cmd'", @output
     end
   end
 end
