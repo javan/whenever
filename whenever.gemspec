@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Javan Makhmali"]
   s.email       = ["javan@javan.us"]
+  s.license     = "MIT"
   s.homepage    = ""
   s.summary     = %q{Cron jobs in ruby.}
   s.description = %q{Clean ruby syntax for writing and deploying cron jobs.}
