@@ -3,6 +3,13 @@
 * Time zone support
 
 
+### 0.8.4 / July 22, 2012
+
+* Don't require schedule file when clearing. [Javan Makhmali]
+
+* Use bin/rails when available. [Javan Makhmali]
+
+
 ### 0.8.3 / July 11, 2013
 
 * Improve Cap rollback logic. [Jeroen Jacobs]
