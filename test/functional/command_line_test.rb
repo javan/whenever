@@ -161,6 +161,18 @@ NEW_CRON
     end
   end
 
+  context "A command line clear with no schedule file" do
+    setup do
+      File.expects(:exists?).with('config/schedule.rb').returns(false)
+      @command = Whenever::CommandLine.new(:clear => true, :identifier => 'My identifier')
+    end
+
+    should "run successfully" do
+      @command.expects(:write_crontab).returns(true)
+      assert @command.run
+    end
+  end
+
   context "A command line update with no identifier" do
     setup do
       File.expects(:exists?).with('config/schedule.rb').returns(true)
