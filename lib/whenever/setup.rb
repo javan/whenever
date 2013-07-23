@@ -21,7 +21,7 @@ else
 end
 
 # Create a runner job that's appropriate for the Rails version,
-if Whenever.rails3?
+if Whenever.rails3? || Whenever.rails4?
   job_type :runner, "cd :path && script/rails runner -e :environment ':task' :output"
 else
   job_type :runner, "cd :path && script/runner -e :environment ':task' :output"
