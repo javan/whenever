@@ -19,7 +19,11 @@ module Whenever
     Dir.pwd
   end
 
-  def self.rails3?
+  def self.bin_rails?
+    File.exists?(File.join(path, 'bin', 'rails'))
+  end
+
+  def self.script_rails?
     File.exists?(File.join(path, 'script', 'rails'))
   end
 

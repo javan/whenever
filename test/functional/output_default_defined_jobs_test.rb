@@ -107,10 +107,10 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
   end
 
-  context "A runner for a Rails 3 app" do
+  context "A runner for an app with bin/rails" do
     setup do
       Whenever.expects(:path).at_least_once.returns('/my/path')
-      Whenever.expects(:rails3?).returns(true)
+      Whenever.expects(:bin_rails?).returns(true)
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
@@ -120,7 +120,25 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       file
     end
 
-    should "use the Rails 3 runner job by default" do
+    should "use a script/rails runner job by default" do
+      assert_match two_hours + %( cd /my/path && bin/rails runner -e production 'blahblah'), @output
+    end
+  end
+
+  context "A runner for an app with script/rails" do
+    setup do
+      Whenever.expects(:path).at_least_once.returns('/my/path')
+      Whenever.expects(:script_rails?).returns(true)
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        every 2.hours do
+          runner 'blahblah'
+        end
+      file
+    end
+
+    should "use a script/rails runner job by default" do
       assert_match two_hours + %( cd /my/path && script/rails runner -e production 'blahblah'), @output
     end
   end

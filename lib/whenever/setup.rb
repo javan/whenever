@@ -20,9 +20,16 @@ else
   job_type :script, "cd :path && :environment_variable=:environment script/:task :output"
 end
 
-# Create a runner job that's appropriate for the Rails version,
-if Whenever.rails3?
-  job_type :runner, "cd :path && script/rails runner -e :environment ':task' :output"
-else
-  job_type :runner, "cd :path && script/runner -e :environment ':task' :output"
+# Create a runner job that's appropriate for the Rails version
+def runner_for_app
+  case
+  when Whenever.bin_rails?
+    "bin/rails runner"
+  when Whenever.script_rails?
+    "script/rails runner"
+  else
+    "script/runner"
+  end
 end
+
+job_type :runner, "cd :path && #{runner_for_app} -e :environment ':task' :output"
