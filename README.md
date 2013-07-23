@@ -21,6 +21,20 @@ $ wheneverize .
 
 This will create an initial `config/schedule.rb` file for you.
 
+### Usage
+
+```bash
+whenever -i my_great_project_name # add your job(s) to the crontab
+whenever -c my_great_project_name # clear the jobs you have added from the cron.
+whenever --help # list available commands
+```
+
+Listing jobs that have been added by whenever.
+
+```bash
+crontab -l # check scripts added to cron and see their associations
+```
+
 ### Example schedule.rb file
 
 ```ruby
