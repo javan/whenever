@@ -5,7 +5,7 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   _cset(:whenever_roles)        { :db }
   _cset(:whenever_options)      { {:roles => fetch(:whenever_roles)} }
-  _cset(:whenever_command)      { "whenever" }
+  _cset(:whenever_command)      { "bundle exec whenever" }
   _cset(:whenever_identifier)   { fetch :application }
   _cset(:whenever_environment)  { fetch :rails_env, "production" }
   _cset(:whenever_variables)    { "environment=#{fetch :whenever_environment}" }
