@@ -100,6 +100,11 @@ class JobTest < Test::Unit::TestCase
       assert_equal 'left abc123 right', job.output
     end
 
+    should "reuse parameter in the job template" do
+      job = new_job(:template => ':path :task', :path => 'path', :task => "abc123", :job_template => ':path left :job right')
+      assert_equal 'path left path abc123 right', job.output
+    end
+
     should "escape single quotes" do
       job = new_job(:template => "before ':task' after", :task => "quote -> ' <- quote", :job_template => "left ':job' right")
       assert_equal %q(left 'before '\''quote -> '\\''\\'\\'''\\'' <- quote'\'' after' right), job.output
