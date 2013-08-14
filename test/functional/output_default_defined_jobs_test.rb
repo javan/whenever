@@ -35,6 +35,24 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
   end
 
+  context "A plain command with a job_template using a normal parameter" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, "/bin/bash -l -c 'cd :path && :job'"
+        every 2.hours do
+          set :path, "/tmp"
+          command "blahblah"
+        end
+      file
+    end
+
+    should "output the command using that job_template" do
+      assert_match /^.+ .+ .+ .+ \/bin\/bash -l -c 'cd \/tmp \&\& blahblah'$/, @output
+    end
+  end
+
+
   context "A plain command that overrides the job_template set" do
     setup do
       @output = Whenever.cron \
@@ -48,6 +66,24 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
 
     should "output the command using that job_template" do
       assert_match /^.+ .+ .+ .+ \/bin\/sh -l -c 'blahblah'$/, @output
+      assert_no_match /bash/, @output
+    end
+  end
+
+  context "A plain command that overrides the job_template set using a parameter" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, "/bin/bash -l -c 'cd :path && :job'"
+        every 2.hours do
+          set :path, "/tmp"
+          command "blahblah", :job_template => "/bin/sh -l -c 'cd :path && :job'"
+        end
+      file
+    end
+
+    should "output the command using that job_template" do
+      assert_match /^.+ .+ .+ .+ \/bin\/sh -l -c 'cd \/tmp && blahblah'$/, @output
       assert_no_match /bash/, @output
     end
   end

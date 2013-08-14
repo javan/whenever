@@ -2,6 +2,9 @@
 
 * Time zone support
 
+* Allow the :job_template system to reprocess using the parameters provided so
+  that the :job_template can refer to job-specific parameters. [Austin Ziegler]
+
 
 ### 0.8.4 / July 22, 2012
 
