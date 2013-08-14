@@ -18,7 +18,7 @@ module Whenever
 
     def output
       job = process_template(@template, @options).strip
-      out = process_template(@job_template, { :job => job }).strip
+      out = process_template(@job_template, @options.merge(:job => job)).strip
       if out =~ /\n/
         raise ArgumentError, "Task contains newline"
       end
