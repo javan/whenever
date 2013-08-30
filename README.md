@@ -137,6 +137,32 @@ set :whenever_environment, defer { stage }
 set :whenever_identifier, defer { "#{application}_#{stage}" }
 require "whenever/capistrano"
 ```
+##### Using Capistrano Environment in schedule.rb
+
+Once you've followed the pattern above to set the environment (or if you choose to 
+[set it on the fly](https://github.com/javan/whenever/wiki/Setting-variables-on-the-fly)), 
+whenever will put the provided value into the variable `@environment`. From there, you can 
+do conditional tasks like this:
+
+```ruby
+# Production only
+if @environment == 'production'
+  every 4.hours do
+    rake 'prod_only:special_task'
+  end
+end
+
+# Every env
+every 30.minutes do
+  command 'echo "everyone will do this"'
+end
+```
+
+You may also want to add the following line to the top of your `schedule.rb`:
+
+`env :RAILS_ENV, @environment`
+
+This will ensure that your cron jobs all run with the correct environment.
 
 ### Capistrano roles
 
