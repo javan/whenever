@@ -138,6 +138,19 @@ set :whenever_identifier, defer { "#{application}_#{stage}" }
 require "whenever/capistrano"
 ```
 
+If you want to specify a different cron user than the deployment user, you can do like this:
+
+```ruby
+set :whenever_sudo_as, 'cron_user'
+require "whenever/capistrano"
+```
+It executes the command as 'cron_user' with sudo.
+If you are using rvm, adding this line might be helpful, too.
+
+```ruby
+set :whenever_sudo, 'rvmsudo'
+```
+
 ### Capistrano roles
 
 The first thing to know about the new roles support is that it is entirely

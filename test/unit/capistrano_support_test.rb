@@ -120,6 +120,7 @@ class CapistranoSupportTest < Test::Unit::TestCase
           @mock_server2.stubs(:host).returns("server2.foo.com")
           @mock_server3.stubs(:host => "server3.foo.com", :port => 1022, :user => 'test')
           @mock_servers = [@mock_server1, @mock_server2]
+          @capistrano.stubs(:exists?).with(:whenever_sudo_as).returns(false)
         end
 
         should "call run for each host w/ appropriate role args" do
@@ -163,6 +164,25 @@ class CapistranoSupportTest < Test::Unit::TestCase
                                             :path => "/foo/bar",
                                             :flags => "--flag1 --flag2")
         end
+
+        context "with whenever_sudo_as defined" do
+          should "call run w/ sudo as another user" do
+            @capistrano.stubs(:role_names_for_host).with(@mock_server1).returns([:role1, :role3])
+            @capistrano.stubs(:whenever_servers).returns([@mock_server1])
+            roles = [:role1, :role2, :role3]
+            @capistrano.stubs(:whenever_options).returns({:roles => roles})
+            @capistrano.stubs(:exists?).with(:whenever_sudo_as).returns(true)
+            @capistrano.stubs(:fetch).with(:whenever_sudo).returns('sudo')
+            @capistrano.stubs(:fetch).with(:whenever_sudo_as).returns('another_user')
+
+            @capistrano.expects(:run).once.with('cd /foo/bar && sudo -p \'sudo password: \' -u another_user whenever --flag1 --flag2 --roles role1,role3', {:roles => roles, :hosts => @mock_server1})
+
+            @capistrano.whenever_run_commands(:command => "whenever",
+                                              :path => "/foo/bar",
+                                              :flags => "--flag1 --flag2")
+          end
+        end
+
       end
     end
   end
