@@ -41,8 +41,9 @@ module Whenever
 
           whenever_server_roles.each do |server, roles|
             roles_arg = roles.empty? ? "" : " --roles #{roles.join(',')}"
-
-            command = "cd #{args[:path]} && #{args[:command]} #{args[:flags]}#{roles_arg}"
+            command = "cd #{args[:path]} && "
+            command += "#{fetch(:whenever_sudo)} -p 'sudo password: ' -u #{fetch(:whenever_sudo_as)} " if exists? :whenever_sudo_as
+            command += "#{args[:command]} #{args[:flags]}#{roles_arg}"
             run command, whenever_options.merge(:hosts => server)
           end
         end
