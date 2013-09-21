@@ -105,7 +105,7 @@ set :job_template, "bash -l -c 'cd :path && :job'"
 
 ### Capistrano integration
 
-Use the built-in Capistrano recipe for easy crontab updates with deploys.
+Use the built-in Capistrano recipe for easy crontab updates with deploys. For Capistrano V3, see the next section.
 
 In your "config/deploy.rb" file:
 
@@ -136,6 +136,26 @@ If both your environments are on the same server you'll want to namespace them o
 set :whenever_environment, defer { stage }
 set :whenever_identifier, defer { "#{application}_#{stage}" }
 require "whenever/capistrano"
+```
+
+### Capistrano V3 Integration
+
+In your "Capfile" file:
+
+```ruby
+require "whenever/capistrano3"
+```
+
+If you're using bundler do this.  **DO NOT** set ':whenever_command' to 'bundle exec whenever'.  It will **NOT** work.
+
+```ruby
+SSHKit.config.command_map[:whenever] = "bundle exec whenever"
+```
+
+Take a look at the load:defaults (bottom of file) task for options you can set. <http://github.com/javan/whenever/blob/master/lib/whenever/tasks/whenever.rake>. For example, to namespace the crontab entries by application and stage do this.
+
+```ruby
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 ```
 
 ### Capistrano roles
