@@ -53,6 +53,40 @@ every :day, :at => '12:20am', :roles => [:app] do
 end
 ```
 
+### The `whenever` command
+
+```sh
+$ cd /apps/my-great-project
+$ whenever
+```
+
+This will simply show you your `schedule.rb` file converted to cron syntax. It does not read or write your crontab file.
+
+To write your Whenever jobs to your crontab file, run
+```sh
+$ whenever --write-crontab [identifier] # a unique identifier for your application
+```
+
+or, more succinctly
+
+```sh
+$ whenever -w [identifier]
+```
+
+Similarly, after updating your `schedule.rb` file, remember to update your crontab file running
+
+```sh
+$ whenever --update-crontab [identifier]
+```
+
+or, even simpler
+
+```sh
+$ whenever -i [identifier]
+```
+
+Run `whenever --help` for a complete list of options.
+
 ### Define your own job types
 
 Whenever ships with three pre-defined job types: command, runner, and rake. You can define your own with `job_type`.
@@ -201,15 +235,6 @@ If your production environment uses RVM (Ruby Version Manager) you will run into
 `rvm_trust_rvmrcs_flag=1`
 
 This tells rvm to trust all rvmrc files, which is documented here: http://wayneeseguin.beginrescueend.com/2010/08/22/ruby-environment-version-manager-rvm-1-0-0/
-
-### The `whenever` command
-
-```sh
-$ cd /apps/my-great-project
-$ whenever
-```
-
-This will simply show you your `schedule.rb` file converted to cron syntax. It does not read or write your crontab file. Run `whenever --help` for a complete list of options.
 
 ### Credit
 
