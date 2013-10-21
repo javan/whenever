@@ -143,7 +143,7 @@ require "whenever/capistrano"
 In your "Capfile" file:
 
 ```ruby
-require "whenever/capistrano3"
+require "whenever/capistrano"
 ```
 
 If you're using bundler do this.  **DO NOT** set ':whenever_command' to 'bundle exec whenever'.  It will **NOT** work.
