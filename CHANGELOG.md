@@ -5,6 +5,7 @@
 * Allow the :job_template system to reprocess using the parameters provided so
   that the :job_template can refer to job-specific parameters. [Austin Ziegler]
 
+* Allow to add extra set variables for capistrano via `:whenever_extra_variables` variable [Trung Lê]
 
 ### 0.8.4 / July 22, 2012
 

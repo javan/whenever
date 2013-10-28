@@ -22,6 +22,10 @@ module Whenever
           end
         end
 
+        def whenever_variables(hash)
+          hash.map { |k, v| "#{k}=#{v}" }.join('&')
+        end
+
         def whenever_prepare_for_rollback args
           if fetch(:previous_release)
             # rollback to the previous release's crontab
