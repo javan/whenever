@@ -228,7 +228,7 @@ It's a little bit dated now, but remains a good introduction.
 
 ----
 
-Compatible with Ruby 1.8.7-1.9.3, JRuby, and Rubinius. [![Build Status](https://secure.travis-ci.org/javan/whenever.png)](http://travis-ci.org/javan/whenever)
+Compatible with Ruby 1.8.7-2.0.0, JRuby, and Rubinius. [![Build Status](https://secure.travis-ci.org/javan/whenever.png)](http://travis-ci.org/javan/whenever)
 
 ----
 
