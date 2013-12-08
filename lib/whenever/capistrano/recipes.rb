@@ -9,8 +9,8 @@ Capistrano::Configuration.instance(:must_exist).load do
   _cset(:whenever_identifier)   { fetch :application }
   _cset(:whenever_environment)  { fetch :rails_env, "production" }
   _cset(:whenever_variables)    { "environment=#{fetch :whenever_environment}" }
-  _cset(:whenever_update_flags) { "--update-crontab #{fetch :whenever_identifier} --set #{fetch :whenever_variables}" }
-  _cset(:whenever_clear_flags)  { "--clear-crontab #{fetch :whenever_identifier}" }
+  _cset(:whenever_update_flags) { %Q{--update-crontab "#{fetch :whenever_identifier}" --set #{fetch :whenever_variables}} }
+  _cset(:whenever_clear_flags)  { %Q{--clear-crontab "#{fetch :whenever_identifier}"} }
 
   namespace :whenever do
     desc "Update application's crontab entries using Whenever"
