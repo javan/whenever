@@ -1,4 +1,4 @@
-require 'whenever/capistrano/support'
+require 'whenever/capistrano/v2/support'
 
 Capistrano::Configuration.instance(:must_exist).load do
   Whenever::CapistranoSupport.load_into(self)

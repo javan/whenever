@@ -1,4 +1,4 @@
-require "whenever/capistrano/recipes"
+require "whenever/capistrano/v2/recipes"
 
 Capistrano::Configuration.instance(:must_exist).load do
   # Write the new cron jobs near the end.
