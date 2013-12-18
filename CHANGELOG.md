@@ -1,9 +1,8 @@
-### 0.9.0 (unreleased)
+### 0.9.0 / December 17, 2013
 
-* Time zone support
+* Capistrano V3 support. [Philip Hallstrom]
 
-* Allow the :job_template system to reprocess using the parameters provided so
-  that the :job_template can refer to job-specific parameters. [Austin Ziegler]
+* Process params in job templates. [Austin Ziegler]
 
 
 ### 0.8.4 / July 22, 2012
