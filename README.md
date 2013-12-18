@@ -96,13 +96,6 @@ Or set the job_template to nil to have your jobs execute normally.
 set :job_template, nil
 ```
 
-The `:job_template` can also contain parameters included with the job
-definition.
-
-```ruby
-set :job_template, "bash -l -c 'cd :path && :job'"
-```
-
 ### Capistrano integration
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys. For Capistrano V3, see the next section.
