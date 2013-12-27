@@ -30,6 +30,10 @@ every 3.hours do
   command "/usr/bin/my_great_command"
 end
 
+every 5.minutes do
+  command "/usr/bin/my_great_command"
+end
+
 every 1.day, :at => '4:30 am' do
   runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
 end
