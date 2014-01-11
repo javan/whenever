@@ -140,7 +140,7 @@ require "whenever/capistrano"
 ```
 
 If you're using bundler do this.  **DO NOT** set ':whenever_command' to 'bundle exec whenever'.  It will **NOT** work.
-Be default, 'bundle exec whenever' will be called.  If you need something different and the command contains a space
+By default, 'bundle exec whenever' will be called.  If you need something different and the command contains a space
 you will need to map it via the following method.  This is an issue with SSHKit.
 
 ```ruby
