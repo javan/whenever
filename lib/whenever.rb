@@ -19,6 +19,10 @@ module Whenever
     Dir.pwd
   end
 
+  def self.rails4?
+    Rails.version.starts_with?('4')
+  end
+
   def self.bin_rails?
     File.exists?(File.join(path, 'bin', 'rails'))
   end
