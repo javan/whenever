@@ -19,6 +19,18 @@ module Whenever
     Dir.pwd
   end
 
+  def self.rails4?
+    begin
+      if File.exists?(File.join(path, 'Gemfile'))
+        `bundle exec rails --version`.start_with?('Rails 4')
+      else
+        `rails --version`.start_with?('Rails 4')
+      end
+    rescue => e
+      false
+    end
+  end
+
   def self.bin_rails?
     File.exists?(File.join(path, 'bin', 'rails'))
   end

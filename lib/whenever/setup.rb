@@ -23,6 +23,8 @@ end
 # Create a runner job that's appropriate for the Rails version
 def runner_for_app
   case
+  when Whenever.rails4?
+    "rails runner"
   when Whenever.bin_rails?
     "bin/rails runner"
   when Whenever.script_rails?

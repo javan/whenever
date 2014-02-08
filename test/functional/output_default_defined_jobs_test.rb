@@ -143,6 +143,24 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     end
   end
 
+  context "A runner for an app with bin/rails when rails4" do
+    setup do
+      Whenever.expects(:path).at_least_once.returns('/my/path')
+      Whenever.expects(:rails4?).returns(true)
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        every 2.hours do
+          runner 'blahblah'
+        end
+      file
+    end
+
+    should "use a script/rails runner job by default" do
+      assert_match two_hours + %( cd /my/path && rails runner -e production 'blahblah'), @output
+    end
+  end
+
   context "A runner for an app with bin/rails" do
     setup do
       Whenever.expects(:path).at_least_once.returns('/my/path')
