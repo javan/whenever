@@ -20,7 +20,15 @@ module Whenever
   end
 
   def self.rails4?
-    Rails.version.starts_with?('4')
+    begin
+      if File.exists?(File.join(path, 'Gemfile'))
+        `bundle exec rails --version`.start_with?('Rails 4')
+      else
+        `rails --version`.start_with?('Rails 4')
+      end
+    rescue => e
+      false
+    end
   end
 
   def self.bin_rails?
