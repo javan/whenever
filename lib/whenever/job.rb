@@ -17,11 +17,8 @@ module Whenever
     end
 
     def output
-      job = process_template(@template, @options).strip
-      out = process_template(@job_template, @options.merge(:job => job)).strip
-      if out =~ /\n/
-        raise ArgumentError, "Task contains newline"
-      end
+      job = process_template(@template, @options)
+      out = process_template(@job_template, @options.merge(:job => job))
       out.gsub(/%/, '\%')
     end
 
@@ -43,7 +40,7 @@ module Whenever
         else
           option
         end
-      end
+      end.squish
     end
 
     def escape_single_quotes(str)

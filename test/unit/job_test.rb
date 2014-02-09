@@ -54,14 +54,13 @@ class JobTest < Test::Unit::TestCase
       assert_equal %q(before percent preceded by a backslash -> \\\% <- after), job.output
     end
 
-    should "reject newlines" do
+    should "squish spaces and newlines" do
       job = new_job(
         :template => "before :foo after",
-        :foo => "newline -> \n <- newline"
+        :foo => "newline -> \n <- newline space ->     <- space"
       )
-      assert_raise ArgumentError do
-        job.output
-      end
+
+      assert_equal "before newline -> <- newline space -> <- space after", job.output
     end
   end
 
