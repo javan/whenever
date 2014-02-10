@@ -23,6 +23,15 @@ module Whenever
 
       instance_eval(setup, setup_file)
       instance_eval(schedule, options[:file] || '<eval>')
+      
+      #load the environment specific file, if it exists
+      folder = File.join(File.dirname(schedule), "schedule")
+      if defined? environment
+        per_env_schedule = File.join(folder, "#{environment}.rb")
+        if File.file? per_env_schedule
+          instance_eval(per_env_schedule, options[:file] || '<eval>')
+        end
+      end
     end
 
     def set(variable, value)
