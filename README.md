@@ -215,7 +215,7 @@ If your production environment uses RVM (Ruby Version Manager) you will run into
 
 `rvm_trust_rvmrcs_flag=1`
 
-This tells rvm to trust all rvmrc files, which is documented here: http://wayneeseguin.beginrescueend.com/2010/08/22/ruby-environment-version-manager-rvm-1-0-0/
+This tells rvm to trust all rvmrc files.
 
 ### The `whenever` command
 
