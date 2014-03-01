@@ -20,8 +20,8 @@ namespace :whenever do
     setup_whenever_task(:whenever_clear_flags)
   end
 
-  after 'deploy:updated', 'whenever:update_crontab'
-  after 'deploy:reverted', 'whenever:update_crontab'
+  after "deploy:updated",  "whenever:update_crontab"
+  after "deploy:reverted", "whenever:update_crontab"
 end
 
 namespace :load do
