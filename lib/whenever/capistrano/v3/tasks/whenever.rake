@@ -27,7 +27,6 @@ end
 namespace :load do
   task :defaults do
     set :whenever_roles,        ->{ :db }
-    set :whenever_options,      ->{ {:roles => fetch(:whenever_roles)} }
     set :whenever_command,      ->{ "bundle exec whenever" }
     set :whenever_identifier,   ->{ fetch :application }
     set :whenever_environment,  ->{ fetch :rails_env, "production" }
