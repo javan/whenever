@@ -139,14 +139,6 @@ In your "Capfile" file:
 require "whenever/capistrano"
 ```
 
-If you're using bundler do this.  **DO NOT** set ':whenever_command' to 'bundle exec whenever'.  It will **NOT** work.
-By default, 'bundle exec whenever' will be called.  If you need something different and the command contains a space
-you will need to map it via the following method.  This is an issue with SSHKit.
-
-```ruby
-SSHKit.config.command_map[:whenever] = "bundle exec whenever"
-```
-
 Take a look at the load:defaults (bottom of file) task for options you can set. <http://github.com/javan/whenever/blob/master/lib/whenever/tasks/whenever.rake>. For example, to namespace the crontab entries by application and stage do this.
 
 ```ruby
