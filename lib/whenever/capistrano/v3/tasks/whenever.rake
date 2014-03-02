@@ -5,7 +5,9 @@ namespace :whenever do
     on roles fetch(:whenever_roles) do |host|
       args = args + Array(yield(host)) if block_given?
       within release_path do
-        execute :whenever, *args
+        with fetch(:whenever_command_environment_variables) do
+          execute :whenever, *args
+        end
       end
     end
   end
@@ -31,6 +33,7 @@ namespace :load do
   task :defaults do
     set :whenever_roles,        ->{ :db }
     set :whenever_command,      ->{ "bundle exec whenever" }
+    set :whenever_command_environment_variables, ->{ {} }
     set :whenever_identifier,   ->{ fetch :application }
     set :whenever_environment,  ->{ fetch :rails_env, "production" }
     set :whenever_variables,    ->{ "environment=#{fetch :whenever_environment}" }
