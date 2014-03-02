@@ -1,23 +1,27 @@
 namespace :whenever do
-  def setup_whenever_task(flags)
+  def setup_whenever_task
     SSHKit.config.command_map[:whenever] = fetch(:whenever_command)
 
     on roles fetch(:whenever_roles) do |host|
-      roles = host.roles_array.join(",")
       within release_path do
-        execute :whenever, fetch(flags), "--roles=#{roles}"
+        execute :whenever, *Array(yield(host))
       end
     end
   end
 
   desc "Update application's crontab entries using Whenever"
   task :update_crontab do
-    setup_whenever_task(:whenever_update_flags)
+    setup_whenever_task do |host|
+      roles = host.roles_array.join(",")
+      [fetch(:whenever_update_flags),  "--roles=#{roles}"]
+    end
   end
 
   desc "Clear application's crontab entries using Whenever"
   task :clear_crontab do
-    setup_whenever_task(:whenever_clear_flags)
+    setup_whenever_task do
+      fetch(:whenever_clear_flags)
+    end
   end
 
   after "deploy:updated",  "whenever:update_crontab"
