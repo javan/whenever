@@ -1,40 +1,36 @@
 namespace :whenever do
+  def setup_whenever_task(*args, &block)
+    SSHKit.config.command_map[:whenever] = fetch(:whenever_command)
+
+    on roles fetch(:whenever_roles) do |host|
+      args = args + Array(yield(host)) if block_given?
+      within release_path do
+        execute :whenever, *args
+      end
+    end
+  end
+
   desc "Update application's crontab entries using Whenever"
   task :update_crontab do
-    on roles fetch(:whenever_roles) do
-      within release_path do
-        if fetch(:whenever_command)
-          execute fetch(:whenever_command), fetch(:whenever_update_flags)
-        else
-          execute :bundle, :exec, :whenever, fetch(:whenever_update_flags)
-        end
-      end
+    setup_whenever_task do |host|
+      roles = host.roles_array.join(",")
+      [fetch(:whenever_update_flags),  "--roles=#{roles}"]
     end
   end
 
   desc "Clear application's crontab entries using Whenever"
   task :clear_crontab do
-    on roles fetch(:whenever_roles) do
-      within release_path do
-        if fetch(:whenever_command)
-          execute %{#{fetch(:whenever_command)} #{fetch(:whenever_clear_flags)}}
-        else
-          execute :bundle, :exec, :whenever, fetch(:whenever_clear_flags)
-        end
-      end
-    end
+    setup_whenever_task(fetch(:whenever_clear_flags))
   end
 
-  after 'deploy:updated', 'whenever:update_crontab'
-  after 'deploy:reverted', 'whenever:update_crontab'
-  
+  after "deploy:updated",  "whenever:update_crontab"
+  after "deploy:reverted", "whenever:update_crontab"
 end
 
 namespace :load do
   task :defaults do
     set :whenever_roles,        ->{ :db }
-    set :whenever_options,      ->{ {:roles => fetch(:whenever_roles)} }
-    set :whenever_command,      ->{  }
+    set :whenever_command,      ->{ "bundle exec whenever" }
     set :whenever_identifier,   ->{ fetch :application }
     set :whenever_environment,  ->{ fetch :rails_env, "production" }
     set :whenever_variables,    ->{ "environment=#{fetch :whenever_environment}" }
