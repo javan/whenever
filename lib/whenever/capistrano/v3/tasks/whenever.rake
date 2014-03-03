@@ -3,10 +3,10 @@ namespace :whenever do
     SSHKit.config.command_map[:whenever] = fetch(:whenever_command)
 
     on roles fetch(:whenever_roles) do |host|
-      args = args + Array(yield(host)) if block_given?
+      host_args = Array(yield(host))
       within release_path do
         with fetch(:whenever_command_environment_variables) do
-          execute :whenever, *args
+          execute :whenever, *(args + host_args)
         end
       end
     end
