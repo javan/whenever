@@ -9,6 +9,7 @@ module Whenever
       @at                               = options.delete(:at)
       @template                         = options.delete(:template)
       @job_template                     = options.delete(:job_template) || ":job"
+      @template_locals                  = options.delete(:template_locals) || {}
       @roles                            = Array.wrap(options.delete(:roles))
       @options[:output]                 = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output]).to_s : ''
       @options[:environment_variable] ||= "RAILS_ENV"
@@ -18,7 +19,7 @@ module Whenever
 
     def output
       job = process_template(@template, @options)
-      out = process_template(@job_template, @options.merge(:job => job))
+      out = process_template(@job_template, @options.merge(@template_locals.merge(:job => job)))
       out.gsub(/%/, '\%')
     end
 
