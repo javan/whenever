@@ -99,6 +99,11 @@ class JobTest < Test::Unit::TestCase
       assert_equal 'left abc123 right', job.output
     end
 
+    should "interpolate tempalte variables" do
+      job = new_job(:template => ':task', :task => 'abc123', :job_template => 'left :job right:bang', :template_locals => {:bang => :'!' })
+      assert_equal 'left abc123 right!', job.output
+    end
+
     should "reuse parameter in the job template" do
       job = new_job(:template => ':path :task', :path => 'path', :task => "abc123", :job_template => ':path left :job right')
       assert_equal 'path left path abc123 right', job.output

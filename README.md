@@ -96,6 +96,16 @@ Or set the job_template to nil to have your jobs execute normally.
 set :job_template, nil
 ```
 
+Also, you can interpolate variables on job_template.
+
+```ruby
+set :job_template, "/path/to/lockrun --lockfile=/tmp/:lockrun_id.lockrun -- sh -c ':job'"
+
+every 1.day, :at => '5:00 am' do
+  rake "foo:bar", :template_locals => {:lockrun_id => 'ID'}
+end
+```
+
 ### Capistrano integration
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys. For Capistrano V3, see the next section.
