@@ -53,6 +53,14 @@ every :day, :at => '12:20am', :roles => [:app] do
 end
 ```
 
+### Update the crontab
+
+To load the schedules into your crontab simply run the following command:
+
+```sh
+$ whenever --update-crontab
+```
+
 ### Define your own job types
 
 Whenever ships with three pre-defined job types: command, runner, and rake. You can define your own with `job_type`.
