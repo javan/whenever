@@ -108,4 +108,40 @@ class OutputDefinedJobTest < Test::Unit::TestCase
     end
   end
 
+  context "A defined job with a :task and an option where the default option is set inside the job type" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        job_type :some_job, "before :task after :option1", :option1 => 'happy'
+        every 2.hours do
+          some_job "during"
+        end
+      file
+    end
+
+    should "output the defined job with the task and options" do
+      assert_match /^.+ .+ .+ .+ before during after happy$/, @output
+    end
+  end
+
+  context "A defined job with a :task and an option where the default option is set inside other job type" do
+    setup do
+      @output = Whenever.cron \
+      <<-file
+        set :job_template, nil
+        job_type :some_job, "before :task after :option1", :option1 => 'happy'
+        job_type :some_other_job, "before :task after :option1"
+        every 2.hours do
+          some_job "birthday"
+          some_other_job "during"
+        end
+      file
+    end
+
+    should "output the defined job with that option left untouched" do
+      assert_match /^.+ .+ .+ .+ before birthday after happy\n\n.+ .+ .+ .+ before during after :option1$/, @output
+    end
+  end
+
 end
