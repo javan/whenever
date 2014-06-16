@@ -140,7 +140,7 @@ module Whenever
           Whenever::Output::Cron.output(time, job) do |cron|
             cron << "\n\n"
 
-            if cron.starts_with?("@")
+            if cron[0,1] == "@"
               shortcut_jobs << cron
             else
               regular_jobs << cron
