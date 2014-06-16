@@ -40,7 +40,7 @@ module Whenever
         else
           option
         end
-      end.squish
+      end.gsub(/\s+/m, " ").strip
     end
 
     def escape_single_quotes(str)
