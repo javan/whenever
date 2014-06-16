@@ -1,5 +1,13 @@
 require 'thread'
-require 'active_support/all'
+
+# Although whenever doesn't require activesupport, we prefer to use their Numeric
+# extensions if they're available. If activesupport isn't available, load our own
+# minimal version of the extensions.
+begin
+  require 'active_support/core_ext/numeric/time'
+rescue LoadError
+  require 'whenever/numeric_extensions'
+end
 
 module Whenever
   autoload :JobList,           'whenever/job_list'

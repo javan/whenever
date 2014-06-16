@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "chronic", ">= 0.6.3"
-  s.add_dependency "activesupport", ">= 2.3.4"
 
   s.add_development_dependency "mocha", ">= 0.9.5"
   s.add_development_dependency "rake"
