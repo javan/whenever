@@ -5,7 +5,7 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron :roles => [:role1], :string => \
       <<-file
-        every 2.hours, :roles => [:role1] do
+        every Whenever.hours(2), :roles => [:role1] do
           command "blahblah"
         end
       file
@@ -20,7 +20,7 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron :roles => [:role1], :string => \
       <<-file
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -36,7 +36,7 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
-        every 2.hours, :roles => [:role1] do
+        every Whenever.hours(2), :roles => [:role1] do
           command "blahblah"
         end
       file
@@ -52,7 +52,7 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron :roles => [:role1], :string => \
       <<-file
-        every 2.hours, :roles => [:role2] do
+        every Whenever.hours(2), :roles => [:role2] do
           command "blahblah"
         end
       file
@@ -67,7 +67,7 @@ class OutputJobsForRolesTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron :roles => [:role1, :role2], :string => \
       <<-file
-        every 2.hours, :roles => [:role1] do
+        every Whenever.hours(2), :roles => [:role1] do
           command "role1_cmd"
         end
 

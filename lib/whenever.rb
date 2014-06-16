@@ -30,4 +30,29 @@ module Whenever
   def self.bundler?
     File.exists?(File.join(path, 'Gemfile'))
   end
+
+  # Return the number of seconds in `num` minutes
+  def self.minutes(num)
+    num.to_i * 60
+  end
+
+  # Return the number of seconds in `num` hours
+  def self.hours(num)
+    num.to_i * 3_600
+  end
+
+  # Return the number of seconds in `num` days
+  def self.days(num)
+    num.to_i * 86_400
+  end
+
+  # Return the number of seconds in `num` weeks
+  def self.weeks(num)
+    num.to_i * 604_800
+  end
+
+  # Return the number of seconds in `num` months
+  def self.months(num)
+    num.to_i * 2_592_000
+  end
 end

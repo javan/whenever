@@ -123,7 +123,7 @@ class OutputAtTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every [1.month, 1.day], :at => 'january 5:02am, june 17th at 2:22pm, june 3rd at 3:33am' do
+        every [Whenever.months(1), Whenever.days(1)], :at => 'january 5:02am, june 17th at 2:22pm, june 3rd at 3:33am' do
           command "blahblah"
         end
       file
@@ -190,7 +190,7 @@ class OutputAtTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 5.minutes, :at => 1 do
+        every Whenever.minutes(5), :at => 1 do
           command "blahblah"
         end
       file
@@ -206,7 +206,7 @@ class OutputAtTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 4.minutes, :at => 2 do
+        every Whenever.minutes(4), :at => 2 do
           command "blahblah"
         end
       file
@@ -222,7 +222,7 @@ class OutputAtTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 3.minutes, :at => 7 do
+        every Whenever.minutes(3), :at => 7 do
           command "blahblah"
         end
       file
@@ -238,7 +238,7 @@ class OutputAtTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.minutes, :at => 27 do
+        every Whenever.minutes(2), :at => 27 do
           command "blahblah"
         end
       file

@@ -5,22 +5,22 @@ class CronTest < Test::Unit::TestCase
   context "When parsing time in minutes" do
     should "raise if less than 1 minute" do
       assert_raises ArgumentError do
-        parse_time(59.seconds)
+        parse_time(59)
       end
 
       assert_raises ArgumentError do
-        parse_time(0.minutes)
+        parse_time(0)
       end
     end
 
     # For santity, do some tests on straight String
     should "parse correctly" do
-      assert_equal '* * * * *', parse_time(1.minute)
-      assert_equal '0,5,10,15,20,25,30,35,40,45,50,55 * * * *', parse_time(5.minutes)
-      assert_equal '7,14,21,28,35,42,49,56 * * * *', parse_time(7.minutes)
-      assert_equal '0,30 * * * *', parse_time(30.minutes)
-      assert_equal '32 * * * *', parse_time(32.minutes)
-      assert_not_equal '60 * * * *', parse_time(60.minutes) # 60 minutes bumps up into the hour range
+      assert_equal '* * * * *', parse_time(Whenever.minutes(1))
+      assert_equal '0,5,10,15,20,25,30,35,40,45,50,55 * * * *', parse_time(Whenever.minutes(5))
+      assert_equal '7,14,21,28,35,42,49,56 * * * *', parse_time(Whenever.minutes(7))
+      assert_equal '0,30 * * * *', parse_time(Whenever.minutes(30))
+      assert_equal '32 * * * *', parse_time(Whenever.minutes(32))
+      assert_not_equal '60 * * * *', parse_time(Whenever.minutes(60)) # 60 minutes bumps up into the hour range
     end
 
     # Test all minutes
@@ -30,19 +30,19 @@ class CronTest < Test::Unit::TestCase
         start += num unless 60.modulo(num).zero?
         minutes = (start..59).step(num).to_a
 
-        assert_equal "#{minutes.join(',')} * * * *", parse_time(num.minutes)
+        assert_equal "#{minutes.join(',')} * * * *", parse_time(Whenever.minutes(num))
       end
     end
   end
 
   context "When parsing time in hours" do
     should "parse correctly" do
-      assert_equal '0 * * * *', parse_time(1.hour)
-      assert_equal '0 0,2,4,6,8,10,12,14,16,18,20,22 * * *', parse_time(2.hours)
-      assert_equal '0 0,3,6,9,12,15,18,21 * * *', parse_time(3.hours)
-      assert_equal '0 5,10,15,20 * * *', parse_time(5.hours)
-      assert_equal '0 17 * * *', parse_time(17.hours)
-      assert_not_equal '0 24 * * *', parse_time(24.hours) # 24 hours bumps up into the day range
+      assert_equal '0 * * * *', parse_time(Whenever.hours(1))
+      assert_equal '0 0,2,4,6,8,10,12,14,16,18,20,22 * * *', parse_time(Whenever.hours(2))
+      assert_equal '0 0,3,6,9,12,15,18,21 * * *', parse_time(Whenever.hours(3))
+      assert_equal '0 5,10,15,20 * * *', parse_time(Whenever.hours(5))
+      assert_equal '0 17 * * *', parse_time(Whenever.hours(17))
+      assert_not_equal '0 24 * * *', parse_time(Whenever.hours(24)) # 24 hours bumps up into the day range
     end
 
     (2..23).each do |num|
@@ -51,7 +51,7 @@ class CronTest < Test::Unit::TestCase
         start += num unless 24.modulo(num).zero?
         hours = (start..23).step(num).to_a
 
-        assert_equal "0 #{hours.join(',')} * * *", parse_time(num.hours)
+        assert_equal "0 #{hours.join(',')} * * *", parse_time(Whenever.hours(num))
       end
     end
 
@@ -73,14 +73,14 @@ class CronTest < Test::Unit::TestCase
 
   context "When parsing time in days (of month)" do
     should "parse correctly" do
-      assert_equal '0 0 * * *', parse_time(1.days)
-      assert_equal '0 0 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 * *', parse_time(2.days)
-      assert_equal '0 0 1,5,9,13,17,21,25,29 * *', parse_time(4.days)
-      assert_equal '0 0 1,8,15,22 * *', parse_time(7.days)
-      assert_equal '0 0 1,17 * *', parse_time(16.days)
-      assert_equal '0 0 17 * *', parse_time(17.days)
-      assert_equal '0 0 29 * *', parse_time(29.days)
-      assert_not_equal '0 0 30 * *', parse_time(30.days) # 30 days bumps into the month range
+      assert_equal '0 0 * * *', parse_time(Whenever.days(1))
+      assert_equal '0 0 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 * *', parse_time(Whenever.days(2))
+      assert_equal '0 0 1,5,9,13,17,21,25,29 * *', parse_time(Whenever.days(4))
+      assert_equal '0 0 1,8,15,22 * *', parse_time(Whenever.days(7))
+      assert_equal '0 0 1,17 * *', parse_time(Whenever.days(16))
+      assert_equal '0 0 17 * *', parse_time(Whenever.days(17))
+      assert_equal '0 0 29 * *', parse_time(Whenever.days(29))
+      assert_not_equal '0 0 30 * *', parse_time(Whenever.days(30)) # 30 days bumps into the month range
     end
 
     should "parse correctly when given an 'at' with hours, minutes as a Time" do
@@ -104,26 +104,26 @@ class CronTest < Test::Unit::TestCase
 
   context "When parsing time in months" do
     should "parse correctly" do
-      assert_equal '0 0 1 * *', parse_time(1.month)
-      assert_equal '0 0 1 1,3,5,7,9,11 *', parse_time(2.months)
-      assert_equal '0 0 1 1,4,7,10 *', parse_time(3.months)
-      assert_equal '0 0 1 1,5,9 *', parse_time(4.months)
-      assert_equal '0 0 1 1,6 *', parse_time(5.months)
-      assert_equal '0 0 1 7 *', parse_time(7.months)
-      assert_equal '0 0 1 8 *', parse_time(8.months)
-      assert_equal '0 0 1 9 *', parse_time(9.months)
-      assert_equal '0 0 1 10 *', parse_time(10.months)
-      assert_equal '0 0 1 11 *', parse_time(11.months)
-      assert_equal '0 0 1 12 *', parse_time(12.months)
+      assert_equal '0 0 1 * *', parse_time(Whenever.months(1))
+      assert_equal '0 0 1 1,3,5,7,9,11 *', parse_time(Whenever.months(2))
+      assert_equal '0 0 1 1,4,7,10 *', parse_time(Whenever.months(3))
+      assert_equal '0 0 1 1,5,9 *', parse_time(Whenever.months(4))
+      assert_equal '0 0 1 1,6 *', parse_time(Whenever.months(5))
+      assert_equal '0 0 1 7 *', parse_time(Whenever.months(7))
+      assert_equal '0 0 1 8 *', parse_time(Whenever.months(8))
+      assert_equal '0 0 1 9 *', parse_time(Whenever.months(9))
+      assert_equal '0 0 1 10 *', parse_time(Whenever.months(10))
+      assert_equal '0 0 1 11 *', parse_time(Whenever.months(11))
+      assert_equal '0 0 1 12 *', parse_time(Whenever.months(12))
     end
 
     should "parse months with a date and/or time" do
       # should set the day to 1 if no date is given
-      assert_equal '0 17 1 * *', parse_time(1.month, nil, "5pm")
+      assert_equal '0 17 1 * *', parse_time(Whenever.months(1), nil, "5pm")
       # should use the date if one is given
-      assert_equal '0 2 23 * *', parse_time(1.month, nil, "February 23rd at 2am")
+      assert_equal '0 2 23 * *', parse_time(Whenever.months(1), nil, "February 23rd at 2am")
       # should use an iteger as the day
-      assert_equal '0 0 5 * *', parse_time(1.month, nil, 5)
+      assert_equal '0 0 5 * *', parse_time(Whenever.months(1), nil, 5)
     end
 
     should "parse correctly when given an 'at' with days, hours, minutes as a Time" do
@@ -230,19 +230,19 @@ class CronTest < Test::Unit::TestCase
 private
 
   def assert_days_and_hours_and_minutes_equals(expected, time)
-    cron = parse_time(2.months, 'some task', time)
+    cron = parse_time(Whenever.months(2), 'some task', time)
     minutes, hours, days, *garbage = cron.split(' ')
     assert_equal expected, [days, hours, minutes]
   end
 
   def assert_hours_and_minutes_equals(expected, time)
-    cron = parse_time(2.days, 'some task', time)
+    cron = parse_time(Whenever.days(2), 'some task', time)
     minutes, hours, *garbage = cron.split(' ')
     assert_equal expected, [hours, minutes]
   end
 
   def assert_minutes_equals(expected, time)
-    cron = parse_time(2.hours, 'some task', time)
+    cron = parse_time(Whenever.hours(2), 'some task', time)
     assert_equal expected, cron.split(' ')[0]
   end
 

@@ -8,7 +8,7 @@ class OutputDefinedJobTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         job_type :some_job, "before :task after"
-        every 2.hours do
+        every Whenever.hours(2) do
           some_job "during"
         end
       file
@@ -25,7 +25,7 @@ class OutputDefinedJobTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         job_type :some_job, "before :task after :option1 :option2"
-        every 2.hours do
+        every Whenever.hours(2) do
           some_job "during", :option1 => 'happy', :option2 => 'birthday'
         end
       file
@@ -43,7 +43,7 @@ class OutputDefinedJobTest < Test::Unit::TestCase
         set :job_template, nil
         job_type :some_job, "before :task after :option1"
         set :option1, 'happy'
-        every 2.hours do
+        every Whenever.hours(2) do
           some_job "during"
         end
       file
@@ -61,7 +61,7 @@ class OutputDefinedJobTest < Test::Unit::TestCase
         set :job_template, nil
         job_type :some_job, "before :task after :option1"
         set :option1, 'global'
-        every 2.hours do
+        every Whenever.hours(2) do
           some_job "during", :option1 => 'local'
         end
       file
@@ -78,7 +78,7 @@ class OutputDefinedJobTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         job_type :some_job, "before :task after :option1"
-        every 2.hours do
+        every Whenever.hours(2) do
           some_job "during", :option2 => 'happy'
         end
       file
@@ -97,7 +97,7 @@ class OutputDefinedJobTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         job_type :some_job, "cd :path && :task"
-        every 2.hours do
+        every Whenever.hours(2) do
           some_job 'blahblah'
         end
       file
