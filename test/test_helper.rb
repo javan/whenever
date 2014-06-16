@@ -4,6 +4,7 @@ require 'whenever'
 require 'test/unit'
 require 'shoulda'
 require 'mocha'
+require 'mocha/mini_test'
 
 module TestExtensions
   
