@@ -73,13 +73,13 @@ module Whenever
     # Only works for setting values as strings.
     #
     def pre_set(variable_string = nil)
-      return if variable_string.blank?
+      return if variable_string.nil? || variable_string == ""
 
       pairs = variable_string.split('&')
       pairs.each do |pair|
         next unless pair.index('=')
         variable, value = *pair.split('=')
-        unless variable.blank? || value.blank?
+        unless variable.nil? || variable == "" || value.nil? || value == ""
           variable = variable.strip.to_sym
           set(variable, value.strip)
           @pre_set_variables[variable] = value
@@ -92,7 +92,7 @@ module Whenever
 
       output = []
       @env.each do |key, val|
-        output << "#{key}=#{val.blank? ? '""' : val}\n"
+        output << "#{key}=#{val.nil? || val == "" ? '""' : val}\n"
       end
       output << "\n"
 
