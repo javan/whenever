@@ -24,13 +24,13 @@ This will create an initial `config/schedule.rb` file for you.
 ### Example schedule.rb file
 
 ```ruby
-every 3.hours do
+every Whenever.hours(3) do
   runner "MyModel.some_process"
   rake "my:rake:task"
   command "/usr/bin/my_great_command"
 end
 
-every 1.day, :at => '4:30 am' do
+every Whenever.days(1), :at => '4:30 am' do
   runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
 end
 
@@ -62,7 +62,7 @@ For example:
 ```ruby
 job_type :awesome, '/usr/local/bin/awesome :task :fun_level'
 
-every 2.hours do
+every Whenever.hours(2) do
   awesome "party", :fun_level => "extreme"
 end
 ```
@@ -94,6 +94,20 @@ Or set the job_template to nil to have your jobs execute normally.
 
 ```ruby
 set :job_template, nil
+```
+### Rails integration
+
+Whenever will work as described in rails and non rails projects. However, when running
+alongside rails, acivesupport time helpers can also be used when defining a schedule:
+
+```ruby
+every 3.hours do
+  rake "my:rake:task"
+end
+
+every 1.days do
+  rake "my:rake:task"
+end
 ```
 
 ### Capistrano integration
