@@ -2,6 +2,7 @@ require 'thread'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/kernel/singleton_class'
 require 'active_support/core_ext/array/wrap'
+require 'active_support/core_ext/numeric/time'
 
 module Whenever
   autoload :JobList,           'whenever/job_list'
