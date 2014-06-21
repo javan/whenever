@@ -3,6 +3,7 @@ require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/kernel/singleton_class'
 require 'active_support/core_ext/array/wrap'
 require 'active_support/core_ext/numeric/time'
+require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/string/filters'
 require 'active_support/core_ext/string/starts_ends_with'
 
