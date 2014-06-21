@@ -4,13 +4,14 @@ require 'whenever'
 require 'test/unit'
 require 'shoulda'
 require 'mocha'
+require 'mocha/mini_test'
 
 module TestExtensions
-  
+
   def two_hours
     "0 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
   end
-  
+
 end
 
 class Test::Unit::TestCase
