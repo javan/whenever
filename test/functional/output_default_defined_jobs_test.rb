@@ -9,7 +9,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -24,7 +24,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
     setup do
       @output = Whenever.cron \
       <<-file
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -40,7 +40,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, "/bin/bash -l -c 'cd :path && :job'"
-        every 2.hours do
+        every Whenever.hours(2) do
           set :path, "/tmp"
           command "blahblah"
         end
@@ -58,7 +58,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, "/bin/bash -l -c ':job'"
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :job_template => "/bin/sh -l -c ':job'"
         end
       file
@@ -75,7 +75,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, "/bin/bash -l -c 'cd :path && :job'"
-        every 2.hours do
+        every Whenever.hours(2) do
           set :path, "/tmp"
           command "blahblah", :job_template => "/bin/sh -l -c 'cd :path && :job'"
         end
@@ -95,7 +95,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         if environment == 'production' && path == '/what/you/want'
-          every 2.hours do
+          every Whenever.hours(2) do
             command "blahblah"
           end
         end
@@ -115,7 +115,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :path, '/my/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           runner 'blahblah'
         end
       file
@@ -132,7 +132,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :path, '/my/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           runner "blahblah", :path => '/some/other/path'
         end
       file
@@ -150,7 +150,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           runner 'blahblah'
         end
       file
@@ -168,7 +168,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           runner 'blahblah'
         end
       file
@@ -187,7 +187,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :path, '/my/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           rake "blahblah"
         end
       file
@@ -205,7 +205,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           rake 'blahblah'
         end
       file
@@ -222,7 +222,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :path, '/my/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           rake "blahblah", :path => '/some/other/path'
         end
       file
@@ -240,7 +240,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
         set :job_template, nil
         set :path, '/my/path'
         set :environment_variable, 'RAKE_ENV'
-        every 2.hours do
+        every Whenever.hours(2) do
           rake "blahblah"
         end
       file
@@ -258,7 +258,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
         set :job_template, nil
         set :path, '/my/path'
         set :environment_variable, 'RAKE_ENV'
-        every 2.hours do
+        every Whenever.hours(2) do
           rake "blahblah", :environment_variable => 'SOME_ENV'
         end
       file
@@ -277,7 +277,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :path, '/my/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           script "blahblah"
         end
       file
@@ -295,7 +295,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           script 'blahblah'
         end
       file
@@ -313,7 +313,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
         set :job_template, nil
         set :output, '/log/file'
         set :path, '/my/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           script "blahblah", :path => '/some/other/path'
         end
       file
@@ -331,7 +331,7 @@ class OutputDefaultDefinedJobsTest < Test::Unit::TestCase
         set :job_template, nil
         set :environment_variable, 'RAKE_ENV'
         set :path, '/my/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           script "blahblah"
         end
       file

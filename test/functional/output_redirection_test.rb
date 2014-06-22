@@ -8,7 +8,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -26,7 +26,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, 'logfile.log'
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -42,7 +42,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => {:standard => 'dev_null', :error => 'dev_err'}
         end
       file
@@ -59,7 +59,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, 'logfile.log'
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => 'otherlog.log'
         end
       file
@@ -77,7 +77,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, 'logfile.log'
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => {:error => 'dev_err', :standard => 'dev_null' }
         end
       file
@@ -95,7 +95,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, 'logfile.log'
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => false
         end
       file
@@ -113,7 +113,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, 'logfile.log'
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -131,7 +131,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, {:error => 'dev_err', :standard => 'dev_null' }
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -148,7 +148,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, {:error => 'dev_null'}
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -165,7 +165,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, {:standard => 'dev_out'}
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -181,7 +181,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => {:error => 'dev_err'}
         end
       file
@@ -197,7 +197,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => {:standard => 'dev_out'}
         end
       file
@@ -213,7 +213,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => {:standard => nil}
         end
       file
@@ -229,7 +229,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => {:error => nil}
         end
       file
@@ -245,7 +245,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => {:error => nil, :standard => nil}
         end
       file
@@ -261,7 +261,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => {:error => nil, :standard => 'my.log'}
         end
       file
@@ -277,7 +277,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       @output = Whenever.cron \
       <<-file
         set :job_template, nil
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah", :output => {:error => 'my_error.log', :standard => nil}
         end
       file
@@ -294,7 +294,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :cron_log, "cron.log"
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file
@@ -312,7 +312,7 @@ class OutputRedirectionTest < Test::Unit::TestCase
       <<-file
         set :job_template, nil
         set :output, lambda { "2>&1 | logger -t whenever_cron" }
-        every 2.hours do
+        every Whenever.hours(2) do
           command "blahblah"
         end
       file

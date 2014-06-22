@@ -212,7 +212,7 @@ NEW_CRON
         set :job_template, nil
         set :environment, :silly
         set :path, '/my/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           runner "blahblah"
         end
       file
@@ -230,7 +230,7 @@ NEW_CRON
         set :job_template, nil
         set :environment, :silly
         set :path, '/silly/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           runner "blahblah"
         end
       file
@@ -248,7 +248,7 @@ NEW_CRON
         set :job_template, nil
         set :environment, :silly
         set :path, '/silly/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           runner "blahblah"
         end
       file
@@ -266,7 +266,7 @@ NEW_CRON
         set :job_template, nil
         set :environment, :silly
         set :path, '/silly/path'
-        every 2.hours do
+        every Whenever.hours(2) do
           runner "blahblah"
         end
       file
