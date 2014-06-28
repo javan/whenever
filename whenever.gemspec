@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency "chronic", ">= 0.6.3"
   s.add_dependency "activesupport", ">= 2.3.4"
 
-  s.add_development_dependency "shoulda", ">= 2.1.1"
   s.add_development_dependency "mocha", ">= 0.9.5"
   s.add_development_dependency "rake"
 end
