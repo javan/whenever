@@ -11,7 +11,9 @@ module Whenever
   rescue LoadError
     # 1.8.7
     require 'test/unit'
-    class TestCase < Test::Unit::TestCase; end
+    class TestCase < Test::Unit::TestCase
+      def default_test; end
+    end
   end
 
   class TestCase
