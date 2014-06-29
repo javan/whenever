@@ -1,5 +1,5 @@
 require 'fileutils'
-require 'tempfile'
+require 'open3'
 
 module Whenever
   class CommandLine
@@ -66,23 +66,19 @@ module Whenever
     end
 
     def write_crontab(contents)
-      tmp_cron_file = Tempfile.open('whenever_tmp_cron')
-      tmp_cron_file << contents
-      tmp_cron_file.fsync
-
       command = ['crontab']
       command << "-u #{@options[:user]}" if @options[:user]
-      command << tmp_cron_file.path
+      command << "-"
 
-      if system(command.join(' '))
+      _, status = Open3.capture2(command.join(' '), stdin_data: contents)
+      
+      if status.success?
         action = 'written' if @options[:write]
         action = 'updated' if @options[:update]
         puts "[write] crontab file #{action}"
-        tmp_cron_file.close!
         exit(0)
       else
         warn "[fail] Couldn't write crontab; try running `whenever' with no options to ensure your schedule file is valid."
-        tmp_cron_file.close!
         exit(1)
       end
     end
