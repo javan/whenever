@@ -1,5 +1,3 @@
-require 'thread'
-
 # Although whenever doesn't require activesupport, we prefer to use their Numeric
 # extensions if they're available. If activesupport isn't available, load our own
 # minimal version of the extensions.
