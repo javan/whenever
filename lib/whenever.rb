@@ -2,7 +2,7 @@
 # extensions if they're available. If activesupport isn't available, load our own
 # minimal version of the extensions.
 begin
-  require 'active_support/core_ext/numeric/time'
+  require 'active_support/core_ext/integer/time'
 rescue LoadError
   require 'whenever/numeric_extensions'
 end
