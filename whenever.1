@@ -1,0 +1,58 @@
+.TH WHENEVER 1 2014-08-30 "Ruby Gem" "whenever"
+
+.SH NAME
+whenever - utility for writing and deploying cron jobs
+
+.SH SYNOPSIS
+\fBwhenever\fR [\fIOPTIONS\fR]
+
+.SH DESCRIPTION
+\fBwhenever\fR(1) is a utility for writing and deploying cron jobs. Without options it will simply show schedule.rb file converted to cron syntax and it does not read or write your crontab file.
+
+.SH OPTIONS
+.TP
+\fB-i\fR, \fB--update-crontab\fR [\fIIDENTIFIER\fR]
+Update crontab file. Only the section identified by \fIIDENTIFIER\fR is updated. Default: full path to schedule.rb file.
+
+.TP
+\fB-w\fR, \fB--write-crontab\fR [\fIIDENTIFIER\fR]
+Overwrite crontab file. Default: full path to schedule.rb file
+
+.TP
+\fB-c\fR, \fB--clear-crontab\fR [\fIIDENTIFIER\fR]
+Clear crontab file. Only the section identified by \fIIDENTIFIER\fR is cleared. Default: full path to schedule.rb file.
+
+.TP
+\fB-s\fR, \fB--set\fR [\fIVARIABLES\fR]
+Set whenever configuration variables. List of variables: \fBpath\fR, \fBenvironment_variable\fR, \fBenvironment\fR, \fBoutput\fR. Example: --set 'environment=staging&path=/my/sweet/path'.
+
+.TP
+\fB-f\fR, \fB--load-file\fR [\fISCHEDULE_FILE\fR]
+Specifying schedule.rb file. Default: config/schedule.rb.
+
+.TP
+\fB-u\fR, \fB--user\fR [\fIUSER\fR]
+User whose crontab should be modified (requires proper write privileges). Default: current user.
+
+.TP
+\fB-k\fR, \fB--cut\fR [\fILINES\fR]
+Cut lines from the top of the cronfile.
+
+.TP
+\fB-r\fR, \fB--roles\fR [\fIROLE1\fR,\fIROLE2\fR]
+Comma-separated list of server roles to generate cron jobs for.
+
+.TP
+\fB-v\fR, \fB--version\fR
+Show version.
+
+.SH BUGS
+If you've found a genuine bug or issue, please use the Issues section on github: \fIhttp://github.com/javan/whenever/issues\fR.
+
+.SH AUTHORS
+Javan Makhmali <javan@javan.us>
+
+.SH SEE ALSO
+\fBwheneverize\fR(1)
+\fBcrontab\fR(1)
+\fIhttps://github.com/javan/whenever\fR
