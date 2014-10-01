@@ -83,22 +83,22 @@ module Whenever
 
       def parse_time
         timing = Array.new(5, '*')
-        case @time
-          when 0.seconds...1.minute
+        case @time.value
+          when 0.seconds.value...1.minute.value
             raise ArgumentError, "Time must be in minutes or higher"
-          when 1.minute...1.hour
+          when 1.minute.value...1.hour.value
             minute_frequency = @time / 60
             timing[0] = comma_separated_timing(minute_frequency, 59, @at || 0)
-          when 1.hour...1.day
+          when 1.hour.value...1.day.value
             hour_frequency = (@time / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min : @at
             timing[1] = comma_separated_timing(hour_frequency, 23)
-          when 1.day...1.month
+          when 1.day.value...1.month.value
             day_frequency = (@time / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
             timing[1] = @at.is_a?(Time) ? @at.hour : @at
             timing[2] = comma_separated_timing(day_frequency, 31, 1)
-          when 1.month..12.months
+          when 1.month.value..12.months.value
             month_frequency = (@time / 30  / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
             timing[1] = @at.is_a?(Time) ? @at.hour : 0
