@@ -60,11 +60,11 @@ module Whenever
       def parse_symbol
         shortcut = case @time
           when *KEYWORDS then "@#{@time}" # :reboot => '@reboot'
-          when :year     then 12.months
-          when :day      then 1.day
-          when :month    then 1.month
-          when :week     then 1.week
-          when :hour     then 1.hour
+          when :year     then Whenever.seconds(12, :months)
+          when :day      then Whenever.seconds(1, :day)
+          when :month    then Whenever.seconds(1, :month)
+          when :week     then Whenever.seconds(1, :week)
+          when :hour     then Whenever.seconds(1, :hour)
         end
 
         if shortcut.is_a?(Numeric)
@@ -84,21 +84,21 @@ module Whenever
       def parse_time
         timing = Array.new(5, '*')
         case @time
-          when 0.seconds...1.minute
+          when Whenever.seconds(0, :seconds)...Whenever.seconds(1, :minute)
             raise ArgumentError, "Time must be in minutes or higher"
-          when 1.minute...1.hour
+          when Whenever.seconds(1, :minute)...Whenever.seconds(1, :hour)
             minute_frequency = @time / 60
             timing[0] = comma_separated_timing(minute_frequency, 59, @at || 0)
-          when 1.hour...1.day
+          when Whenever.seconds(1, :hour)...Whenever.seconds(1, :day)
             hour_frequency = (@time / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min : @at
             timing[1] = comma_separated_timing(hour_frequency, 23)
-          when 1.day...1.month
+          when Whenever.seconds(1, :day)...Whenever.seconds(1, :month)
             day_frequency = (@time / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
             timing[1] = @at.is_a?(Time) ? @at.hour : @at
             timing[2] = comma_separated_timing(day_frequency, 31, 1)
-          when 1.month..12.months
+          when Whenever.seconds(1, :month)..Whenever.seconds(12, :months)
             month_frequency = (@time / 30  / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
             timing[1] = @at.is_a?(Time) ? @at.hour : 0

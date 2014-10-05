@@ -21,8 +21,8 @@ module Whenever
         File.read(options[:file])
       end
 
-      instance_eval(setup, setup_file)
-      instance_eval(schedule, options[:file] || '<eval>')
+      instance_eval(Whenever::NumericSeconds.process_string(setup), setup_file)
+      instance_eval(Whenever::NumericSeconds.process_string(schedule), options[:file] || '<eval>')
     end
 
     def set(variable, value)

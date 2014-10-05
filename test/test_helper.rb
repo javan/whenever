@@ -17,19 +17,19 @@ module Whenever::TestHelpers
     end
 
     def assert_days_and_hours_and_minutes_equals(expected, time)
-      cron = parse_time(2.months, 'some task', time)
+      cron = parse_time(Whenever.seconds(2, :months), 'some task', time)
       minutes, hours, days, *garbage = cron.split(' ')
       assert_equal expected, [days, hours, minutes]
     end
 
     def assert_hours_and_minutes_equals(expected, time)
-      cron = parse_time(2.days, 'some task', time)
+      cron = parse_time(Whenever.seconds(2, :days), 'some task', time)
       minutes, hours, *garbage = cron.split(' ')
       assert_equal expected, [hours, minutes]
     end
 
     def assert_minutes_equals(expected, time)
-      cron = parse_time(2.hours, 'some task', time)
+      cron = parse_time(Whenever.seconds(2, :hours), 'some task', time)
       assert_equal expected, cron.split(' ')[0]
     end
 end

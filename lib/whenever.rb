@@ -1,24 +1,17 @@
-# Although whenever doesn't require activesupport, we prefer to use their Numeric
-# extensions if they're available. If activesupport isn't available, load our own
-# minimal version of the extensions.
-begin
-  require 'active_support/core_ext/integer/time'
-rescue LoadError
-  require 'whenever/numeric_extensions'
-end
+require 'whenever/numeric_seconds'
+require 'whenever/job_list'
+require 'whenever/job'
+require 'whenever/command_line'
+require 'whenever/cron'
+require 'whenever/output_redirection'
 
 module Whenever
-  autoload :JobList,           'whenever/job_list'
-  autoload :Job,               'whenever/job'
-  autoload :CommandLine,       'whenever/command_line'
-
-  module Output
-    autoload :Cron,        'whenever/cron'
-    autoload :Redirection, 'whenever/output_redirection'
-  end
-
   def self.cron(options)
     Whenever::JobList.new(options).generate_cron_output
+  end
+
+  def self.seconds(number, units)
+    Whenever::NumericSeconds.seconds(number, units)
   end
 
   def self.path
