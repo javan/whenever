@@ -1,3 +1,14 @@
+### 0.9.3 / October 5, 2014
+
+* Drop ActiveSupport dependency [James Healy, Javan Makhmali]
+
+* Drop shoulda for tests
+
+* Fix `whenever:clear_crontab` Cap 3 task [Javan Makhmali]
+
+* Avoid using tempfiles [ahoward]
+
+
 ### 0.9.2 / March 4, 2014
 
 * Fix issues generating arguments for `execute` in Capistrano 3 tasks. [Javan Makhmali]
