@@ -71,7 +71,7 @@ module Whenever
     # we need this to maintain 1.8 compatibility. Once 1.8 support is dropped,
     # this can be removed
     def singleton_class_shim
-      if self.respond_to?(:singleton_clas)
+      if self.respond_to?(:singleton_class)
         singleton_class
       else
         class << self; self; end
