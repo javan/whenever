@@ -3,10 +3,10 @@ namespace :whenever do
     args = Array(fetch(:whenever_command)) + args
 
     on roles fetch(:whenever_roles) do |host|
-      args = args + Array(yield(host)) if block_given?
+      args_for_host = block_given? ? args + Array(yield(host)) : args
       within release_path do
         with fetch(:whenever_command_environment_variables) do
-          execute *args
+          execute *args_for_host
         end
       end
     end
