@@ -1,3 +1,10 @@
+### 0.9.4 / October 24, 2014
+
+* Fix duplicated command line arguments when deploying to multiple servers with Cap 3. [betesh]
+
+* Set `whenever_environment` to the current stage before defaulting to production in Cap 3 tasks. [Karthik T]
+
+
 ### 0.9.3 / October 5, 2014
 
 * Drop ActiveSupport dependency [James Healy, Javan Makhmali]
