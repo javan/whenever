@@ -4,7 +4,7 @@ module Whenever
   module Output
     class Cron
       KEYWORDS = [:reboot, :yearly, :annually, :monthly, :weekly, :daily, :midnight, :hourly]
-      REGEX = /^(@(#{KEYWORDS.join '|'})|.+\s+.+\s+.+\s+.+\s+.+.?)$/
+      REGEX = /^(@(#{KEYWORDS.join '|'})|(([\d\/,\-]+|\*)\s*){5})$/
 
       attr_accessor :time, :task
 
@@ -44,7 +44,7 @@ module Whenever
 
       def time_in_cron_syntax
         case @time
-          when REGEX  then @time # raw cron sytax given
+          when REGEX  then @time # raw cron syntax given
           when Symbol then parse_symbol
           when String then parse_as_string
           else parse_time

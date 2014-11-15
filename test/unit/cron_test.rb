@@ -11,7 +11,7 @@ class CronTest < Whenever::TestCase
     end
   end
 
-  # For santity, do some tests on straight String
+  # For sanity, do some tests on straight cron-syntax strings
   should "parse correctly" do
     assert_equal '* * * * *', parse_time(Whenever.seconds(1, :minute))
     assert_equal '0,5,10,15,20,25,30,35,40,45,50,55 * * * *', parse_time(Whenever.seconds(5, :minutes))
@@ -214,6 +214,18 @@ class CronParseShortcutsTest < Whenever::TestCase
 end
 
 class CronParseRawTest < Whenever::TestCase
+  should "raise if cron-syntax string is too long" do
+    assert_raises ArgumentError do
+      parse_time('* * * * * *')
+    end
+  end
+
+  should "raise if cron-syntax string is invalid" do
+    assert_raises ArgumentError do
+      parse_time('** * * * *')
+    end
+  end
+
   should "return the same cron sytax" do
     crons = ['0 0 27-31 * *', '* * * * *', '2/3 1,9,22 11-26 1-6 *',
              "*\t*\t*\t*\t*",
