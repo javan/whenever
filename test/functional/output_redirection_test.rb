@@ -245,4 +245,71 @@ class OutputRedirectionTest < Whenever::TestCase
 
     assert_match /^.+ .+ .+ .+ blahblah 2>&1 | logger -t whenever_cron$/, output
   end
+
+  test "a command when all output is set to a MailCommand" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :output, Whenever::Output::MailCommand.new(to: 'admin@example.com', from: 'cron@example.com', subject: "Something went wrong in your cron job")
+      every 2.hours do
+        command "blahblah"
+      end
+    file
+
+    assert_match /^.+ .+ .+ .+ blahblah >> >\( mail -E -s "Something went wrong in your cron job" -r "cron@example.com" admin@example.com \) 2>&1$/, output
+  end
+
+  test "a command when all output is set to a LoggerCommand" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :output, Whenever::Output::LoggerCommand.new(tag: :whenever_cron)
+      every 2.hours do
+        command "blahblah"
+      end
+    file
+
+    assert_match /^.+ .+ .+ .+ blahblah >> >\( logger -t whenever_cron \) 2>&1$/, output
+  end
+
+  test "a command when all output is set to a TeeCommand" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      mail_command = Whenever::Output::MailCommand.new(to: 'admin@example.com', from: 'cron@example.com', subject: "Something went wrong in your cron job")
+      logger_command = Whenever::Output::LoggerCommand.new(tag: :whenever_cron)
+      set :output, Whenever::Output::TeeCommand.new(mail_command, "log/whenever.log", logger_command)
+      every 2.hours do
+        command "blahblah"
+      end
+    file
+
+    assert_match /^.+ .+ .+ .+ blahblah >> >\( tee >\( mail -E -s "Something went wrong in your cron job" -r "cron@example.com" admin@example.com \) log\/whenever\.log >\( logger -t whenever_cron \) > \/dev\/null \) 2>&1$/, output
+  end
+
+  test "a command when the standard output is omitted and standard error is set to a Command" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :output, { error: Whenever::Output::LoggerCommand.new(tag: :whenever_cron) }
+      every 2.hours do
+        command "blahblah"
+      end
+    file
+
+    assert_match /^.+ .+ .+ .+ blahblah 2>> >\( logger -t whenever_cron \)$/, output
+  end
+
+  test "a command when the standard output is set to nil and standard error is set to a Command" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :output, { standard: nil, error: Whenever::Output::LoggerCommand.new(tag: :whenever_cron) }
+      every 2.hours do
+        command "blahblah"
+      end
+    file
+
+    assert_match /^.+ .+ .+ .+ blahblah >> \/dev\/null 2>> >\( logger -t whenever_cron \)$/, output
+  end
 end
