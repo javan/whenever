@@ -31,4 +31,11 @@ module Whenever
   def self.bundler?
     File.exist?(File.join(path, 'Gemfile'))
   end
+
+  def self.update_cron options
+    o = { update: true, console: false}
+    o.merge! options if options
+    Whenever::CommandLine.execute o
+  end
+
 end
