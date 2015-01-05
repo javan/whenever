@@ -32,6 +32,12 @@ module Whenever::TestHelpers
       cron = parse_time(Whenever.seconds(2, :hours), 'some task', time)
       assert_equal expected, cron.split(' ')[0]
     end
+
+    def assert_years_and_days_and_hours_and_minutes_equals(expected, time)
+      cron = parse_time(:year, 'some task', time)
+      minutes, hours, days, month, *garbage = cron.split(' ')
+      assert_equal expected, [month, days, hours, minutes]
+    end
 end
 
 Whenever::TestCase.send(:include, Whenever::TestHelpers)
