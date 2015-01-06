@@ -72,10 +72,12 @@ Would run `/usr/local/bin/awesome party extreme` every two hours. `:task` is alw
 The default job types that ship with Whenever are defined like so:
 
 ```ruby
-job_type :command, ":task :output"
-job_type :rake,    "cd :path && :environment_variable=:environment bundle exec rake :task --silent :output"
-job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
-job_type :script,  "cd :path && :environment_variable=:environment bundle exec script/:task :output"
+job_type :command,    ":task :output"
+job_type :rake,       "cd :path && :environment_variable=:environment :bundle_command rake :task --silent :output"
+job_type :rbenv_rake, %Q{export PATH=/opt/rbenv/shims:/opt/rbenv/bin:/usr/bin:$PATH; eval "$(rbenv init -)"; \
+                         cd :path && bundle exec rake :task --silent :output }
+job_type :script,     "cd :path && :environment_variable=:environment :bundle_command script/:task :output"
+job_type :runner,     "cd :path && :runner_command -e :environment ':task' :output"
 ```
 
 Pre-Rails 3 apps and apps that don't use Bundler will redefine the `rake` and `runner` jobs respectively to function correctly.
@@ -210,6 +212,10 @@ If your production environment uses RVM (Ruby Version Manager) you will run into
 `rvm_trust_rvmrcs_flag=1`
 
 This tells rvm to trust all rvmrc files.
+
+### Using with rbenv
+
+For `rake` tasks, just use `rbenv_rake "my:rake:task"` instead of `rake "my:rake:task`.
 
 ### The `whenever` command
 
