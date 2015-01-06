@@ -241,4 +241,4 @@ Compatible with Ruby 1.8.7-2.1.0, JRuby, and Rubinius. [![Build Status](https://
 
 ----
 
-Copyright &copy; 2014 Javan Makhmali
+Copyright &copy; 2015 Javan Makhmali
