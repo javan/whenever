@@ -100,11 +100,13 @@ set :job_template, nil
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys. For Capistrano V3, see the next section.
 
-In your "config/deploy.rb" file:
+In your `Capfile` file:
 
 ```ruby
 require "whenever/capistrano"
 ```
+
+Make sure that you are requiring whenever from `Capfile` and not from `config/deploy.rb` or you will break capistrano's loading mechanism and get weird errors (the variables that whenever expects to be defined won't be defined).
 
 Take a look at the recipe for options you can set. <https://github.com/javan/whenever/blob/master/lib/whenever/capistrano/v2/recipes.rb>
 For example, if you're using bundler do this:
