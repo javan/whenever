@@ -73,7 +73,7 @@ class OutputAtTest < Whenever::TestCase
       end
     file
 
-    assert_match %(2 5,15 * * 1,3,5 cd /your/path && script/runner -e production 'blahblah'), output
+    assert_match %(2 5,15 * * 1,3,5 cd /your/path && bundle exec script/runner -e production 'blahblah'), output
   end
 
   test "various days at a various aligned times using a rake task" do
@@ -138,9 +138,9 @@ class OutputAtTest < Whenever::TestCase
     file
 
     assert_match '@daily cd /your/path && RAILS_ENV=production bundle exec rake blah:blah --silent', output
-    assert_match %(@daily cd /your/path && script/runner -e production 'runner_1'), output
+    assert_match %(@daily cd /your/path && bundle exec script/runner -e production 'runner_1'), output
     assert_match '@daily command_1', output
-    assert_match %(@daily cd /your/path && script/runner -e production 'runner_2'), output
+    assert_match %(@daily cd /your/path && bundle exec script/runner -e production 'runner_2'), output
     assert_match '@daily command_2', output
   end
 
