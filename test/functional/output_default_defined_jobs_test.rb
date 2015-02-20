@@ -96,7 +96,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + %( cd /my/path && script/runner -e production 'blahblah'), output
+    assert_match two_hours + %( cd /my/path && bundle exec script/runner -e production 'blahblah'), output
   end
 
   test "A runner that overrides the path set" do
@@ -109,7 +109,21 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + %( cd /some/other/path && script/runner -e production 'blahblah'), output
+    assert_match two_hours + %( cd /some/other/path && bundle exec script/runner -e production 'blahblah'), output
+  end
+
+  test "A runner for a non-bundler app" do
+    Whenever.expects(:bundler?).returns(false)
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :path, '/my/path'
+      every 2.hours do
+        runner 'blahblah'
+      end
+    file
+
+    assert_match two_hours + %( cd /my/path && script/runner -e production 'blahblah'), output
   end
 
   test "A runner for an app with bin/rails" do
