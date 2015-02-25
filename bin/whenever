@@ -36,6 +36,9 @@ OptionParser.new do |opts|
     options[:roles] = roles.split(',').map(&:to_sym) if roles
   end
   opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
+  opts.on('-V', '--verbose', 'Not to run jobs in silence mode') do |mode|
+    options[:verbose] = true
+  end
 end.parse!
 
 Whenever::CommandLine.execute(options)
