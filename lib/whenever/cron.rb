@@ -20,8 +20,8 @@ module Whenever
       end
 
       def randomize_at(at, time)
-        return at if at.present?
-        unless time.is_a?(Symbol) && time.in?([:hour,:day])
+        return at unless at.nil?
+        unless time.is_a?(Symbol) && [:hour,:day].include?(time)
           #puts 'Sorry, the randomizing-feature works only for symbols :hour and :day'
           return at
         end
