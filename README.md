@@ -34,6 +34,7 @@ every 1.day, :at => '4:30 am' do
   runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
 end
 
+# Note: If you use the Symbol-Shortcut (:hour or :day at the moment) and leave the at-argument blank, the exact time of execution will be randomized
 every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
   runner "SomeModel.ladeeda"
 end
