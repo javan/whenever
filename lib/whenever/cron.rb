@@ -12,7 +12,25 @@ module Whenever
         @at_given = at
         @time = time
         @task = task
+        
+        at = randomize_at(at,time)
+        
         @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
+
+      end
+
+      def randomize_at(at, time)
+        return at if at.present?
+        unless time.is_a?(Symbol) && time.in?([:hour,:day])
+          #puts 'Sorry, the randomizing-feature works only for symbols :hour and :day'
+          return at
+        end
+
+        case time
+          when :hour  then return Random.rand(0...59)
+          when :day   then return [23,0,1,2,3,4,5,6,7].sample.to_s + ':' + Random.rand(0...59).to_s
+        end
+        return at
       end
 
       def self.enumerate(item, detect_cron = true)
