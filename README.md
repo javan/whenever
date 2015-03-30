@@ -21,6 +21,23 @@ $ wheneverize .
 
 This will create an initial `config/schedule.rb` file for you.
 
+### The `whenever` command
+
+```sh
+$ cd /apps/my-great-project
+$ whenever
+```
+
+This will simply show you your `schedule.rb` file converted to cron syntax. It does not read or write your crontab file; you'll need to do this in order for your jobs to execute:
+
+```sh
+$ whenever --update-crontab
+```
+
+You can list installed cron jobs using `crontab -l`.
+
+Run `whenever --help` for a complete list of options for selecting the schedule to use, setting variables in the schedule, selecting a user as which to install the crontab, etc.
+
 ### Example schedule.rb file
 
 ```ruby
@@ -210,15 +227,6 @@ If your production environment uses RVM (Ruby Version Manager) you will run into
 `rvm_trust_rvmrcs_flag=1`
 
 This tells rvm to trust all rvmrc files.
-
-### The `whenever` command
-
-```sh
-$ cd /apps/my-great-project
-$ whenever
-```
-
-This will simply show you your `schedule.rb` file converted to cron syntax. It does not read or write your crontab file. Run `whenever --help` for a complete list of options.
 
 ### Credit
 
