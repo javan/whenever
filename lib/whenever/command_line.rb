@@ -9,9 +9,10 @@ module Whenever
     def initialize(options={})
       @options = options
 
-      @options[:file]       ||= 'config/schedule.rb'
-      @options[:cut]        ||= 0
-      @options[:identifier] ||= default_identifier
+      @options[:crontab_command] ||= 'crontab'
+      @options[:file]            ||= 'config/schedule.rb'
+      @options[:cut]             ||= 0
+      @options[:identifier]      ||= default_identifier
 
       if !File.exists?(@options[:file]) && @options[:clear].nil?
         warn("[fail] Can't find file: #{@options[:file]}")
@@ -57,7 +58,8 @@ module Whenever
     def read_crontab
       return @current_crontab if @current_crontab
 
-      command = ['crontab -l']
+      command = [@options[:crontab_command]]
+      command << '-l'
       command << "-u #{@options[:user]}" if @options[:user]
 
       command_results  = %x[#{command.join(' ')} 2> /dev/null]
@@ -65,7 +67,7 @@ module Whenever
     end
 
     def write_crontab(contents)
-      command = ['crontab']
+      command = [@options[:crontab_command]]
       command << "-u #{@options[:user]}" if @options[:user]
       command << "-"
 
