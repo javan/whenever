@@ -5,7 +5,7 @@ namespace :whenever do
     on roles fetch(:whenever_roles) do |host|
       args_for_host = block_given? ? args + Array(yield(host)) : args
       within release_path do
-        with fetch(:whenever_command_environment_variables) do
+        with fetch(:whenever_command_environment_variables).merge(rails_env: fetch(:rails_env, fetch(:stage))) do
           execute *args_for_host
         end
       end
