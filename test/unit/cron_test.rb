@@ -228,7 +228,7 @@ class CronParseRawTest < Whenever::TestCase
 
   should "return the same cron sytax" do
     crons = ['0 0 27-31 * *', '* * * * *', '2/3 1,9,22 11-26 1-6 *',
-             "*\t*\t*\t*\t*",
+             "*\t*\t*\t*\t*", '*/12 * * * *',
              '@reboot', '@yearly', '@annually', '@monthly', '@weekly',
              '@daily', '@midnight', '@hourly']
     crons.each do |cron|
