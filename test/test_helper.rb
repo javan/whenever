@@ -32,6 +32,10 @@ module Whenever::TestHelpers
       cron = parse_time(Whenever.seconds(2, :hours), 'some task', time)
       assert_equal expected, cron.split(' ')[0]
     end
+
+    def lines_without_empty_line(lines)
+      lines.map { |line| line.chomp }.reject { |line| line.empty? }
+    end
 end
 
 Whenever::TestCase.send(:include, Whenever::TestHelpers)
