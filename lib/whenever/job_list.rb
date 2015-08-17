@@ -166,7 +166,7 @@ module Whenever
         output << cron_jobs_of_time(time, jobs)
       end
 
-      @jobs.each do |mailto, time_and_jobs|
+      @jobs.sort.each do |mailto, time_and_jobs|
         output_jobs = []
 
         time_and_jobs.each do |time, jobs|
