@@ -114,14 +114,14 @@ If you want to change `MAILTO` per jobs, you can specify as below ways.
 
 ```ruby
 every 3.hours do
-  command "/usr/bin/my_super_command", mailto: 'my_super_command_output@example.com'
+  command "/usr/bin/my_super_command", :mailto => 'my_super_command_output@example.com'
 end
 ```
 
 or
 
 ```ruby
-every 3.hours, mailto: 'my_super_command@example.com'  do
+every 3.hours, :mailto => 'my_super_command_output@example.com'  do
   command "/usr/bin/my_super_command"
 end
 ```
