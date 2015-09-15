@@ -69,11 +69,11 @@ class OutputAtTest < Whenever::TestCase
       set :job_template, nil
       set :path, '/your/path'
       every "mon,wed,fri", :at => '5:02am, 3:02pm' do
-        runner "blahblah"
+        runner "Worker.perform_async(1.day.ago)"
       end
     file
 
-    assert_match %(2 5,15 * * 1,3,5 cd /your/path && script/runner -e production 'blahblah'), output
+    assert_match %(2 5,15 * * 1,3,5 cd /your/path && script/runner -e production 'Worker.perform_async(1.day.ago)'), output
   end
 
   test "various days at a various aligned times using a rake task" do
