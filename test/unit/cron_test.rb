@@ -192,8 +192,8 @@ class CronParseShortcutsTest < Whenever::TestCase
 
   should "convert time-based shortcuts to times" do
     assert_equal '0 0 1 * *',  parse_time(:month)
-    assert_equal '0 0 * * *',  parse_time(:day)
-    assert_equal '0 * * * *',  parse_time(:hour)
+    assert_match /^[1-5]?[0-9] ([1]?[0-9]|2[0-3])( \*){3}$/ , parse_time(:day)
+    assert_match /^[1-5]?[0-9]( \*){4}$/ ,                    parse_time(:hour)
     assert_equal '0 0 1 12 *', parse_time(:year)
     assert_equal '0 0 1,8,15,22 * *', parse_time(:week)
   end
