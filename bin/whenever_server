@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+require 'whenever'
+require 'redis'
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: whenever [options]"
+
+  opts.on('-f', '--load-file [schedule file]', 'Default: config/schedule.rb') do |file|
+    options[:file] = file if file
+  end
+end.parse!
+
+job_list = Whenever::JobList.new(file: options[:file] || 'config/schedule.rb')
+
+puts(false) unless job_list.redis_options
+
+redis = Redis.new(job_list.redis_options)
+
+# redis key
+lock = :whenever_server
+
+# get the server that has the lock
+whenever_server = redis.get lock
+
+# if there is no server with the lock, give the lock to the current server
+if whenever_server.nil?
+  redis.multi do
+    redis.setnx lock, Socket.gethostname
+    # expire hourly
+    redis.expire lock, 3600
+  end
+end
+
+# return true/false if the current server should be running the task or not
+puts redis.get(lock) == Socket.gethostname

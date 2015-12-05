@@ -21,6 +21,8 @@ module Whenever
         File.read(options[:file])
       end
 
+      @options = options
+
       instance_eval(setup, setup_file)
       instance_eval(schedule, options[:file] || '<eval>')
     end
@@ -48,6 +50,9 @@ module Whenever
       singleton_class_shim.class_eval do
         define_method(name) do |task, *args|
           options = { :task => task, :template => template }
+
+          options[:template] = "cd :path && if whenever_server #{ "-f #{@options[:file]}" if @options[:file] && @options[:file] != 'config/schedule.rb'} >> /dev/null ; then #{options[:template]} ; fi" if @redis_options
+
           options.merge!(args[0]) if args[0].is_a? Hash
 
           # :cron_log was an old option for output redirection, it remains for backwards compatibility

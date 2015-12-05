@@ -9,6 +9,9 @@ set :path, Whenever.path
 # http://blog.scoutapp.com/articles/2010/09/07/rvm-and-cron-in-production
 set :job_template, "/bin/bash -l -c ':job'"
 
+# Multiple servers support
+set :redis_options, nil
+
 set :runner_command, case
   when Whenever.bin_rails?
     "bin/rails runner"
