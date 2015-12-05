@@ -4,7 +4,7 @@ class OutputWheneverServer < Whenever::TestCase
   test 'command when the redis_options is set' do
     output = Whenever.cron \
     <<-file
-      set :redis_options, url: 'redis://localhost:6379/1'
+      set :redis_options, :url => 'redis://localhost:6379/1'
       every :hour do
         set :path, "/tmp"
         command "blahblah"
