@@ -1,15 +1,9 @@
 module Whenever
   class NumericSeconds
-    PATTERN = /(\d+)\.(seconds?|minutes?|hours?|days?|weeks?|months?|years?)/
-
     attr_reader :number
 
     def self.seconds(number, units)
       new(number).send(units)
-    end
-
-    def self.process_string(string)
-      string.gsub(PATTERN) { Whenever.seconds($1, $2) }
     end
 
     def initialize(number)
