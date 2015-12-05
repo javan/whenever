@@ -21,7 +21,7 @@ module Whenever
         File.read(options[:file])
       end
 
-      @file = options[:file]
+      @options = options
 
       instance_eval(Whenever::NumericSeconds.process_string(setup), setup_file)
       instance_eval(Whenever::NumericSeconds.process_string(schedule), options[:file] || '<eval>')
@@ -51,7 +51,7 @@ module Whenever
         define_method(name) do |task, *args|
           options = { :task => task, :template => template }
 
-          options[:template] = "cd :path && if whenever_server #{ "-f #{@file}" if @file && @file != 'config/schedule.rb'} >> /dev/null; then #{options[:template]} ; fi" if @redis_options
+          options[:template] = "cd :path && if whenever_server #{ "-f #{@options[:file]}" if @options[:file] && @options[:file] != 'config/schedule.rb'} >> /dev/null ; then #{options[:template]} ; fi" if @redis_options
 
           options.merge!(args[0]) if args[0].is_a? Hash
 
