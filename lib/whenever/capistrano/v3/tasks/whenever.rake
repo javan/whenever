@@ -24,20 +24,31 @@ namespace :whenever do
   task :clear_crontab do
     setup_whenever_task(fetch(:whenever_clear_flags))
   end
+  
+  task :add_default_hooks do
+    after "deploy:updated",  "whenever:update_crontab"
+    after "deploy:reverted", "whenever:update_crontab"
+  end
 
-  after "deploy:updated",  "whenever:update_crontab"
-  after "deploy:reverted", "whenever:update_crontab"
+  
+end
+
+namespace :deploy do
+  before :starting do
+    invoke 'whenever:add_default_hooks' if fetch(:whenever_default_hooks)
+  end
 end
 
 namespace :load do
   task :defaults do
-    set :whenever_roles,        ->{ :db }
-    set :whenever_command,      ->{ [:bundle, :exec, :whenever] }
+    set :whenever_roles,         ->{ :db }
+    set :whenever_default_hooks, -> { true }
+    set :whenever_command,       ->{ [:bundle, :exec, :whenever] }
     set :whenever_command_environment_variables, ->{ {} }
-    set :whenever_identifier,   ->{ fetch :application }
-    set :whenever_environment,  ->{ fetch :rails_env, fetch(:stage, "production") }
-    set :whenever_variables,    ->{ "environment=#{fetch :whenever_environment}" }
-    set :whenever_update_flags, ->{ "--update-crontab #{fetch :whenever_identifier} --set #{fetch :whenever_variables}" }
-    set :whenever_clear_flags,  ->{ "--clear-crontab #{fetch :whenever_identifier}" }
+    set :whenever_identifier,    ->{ fetch :application }
+    set :whenever_environment,   ->{ fetch :rails_env, fetch(:stage, "production") }
+    set :whenever_variables,     ->{ "environment=#{fetch :whenever_environment}" }
+    set :whenever_update_flags,  ->{ "--update-crontab #{fetch :whenever_identifier} --set #{fetch :whenever_variables}" }
+    set :whenever_clear_flags,   ->{ "--clear-crontab #{fetch :whenever_identifier}" }
   end
 end
