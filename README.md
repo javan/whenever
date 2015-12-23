@@ -221,6 +221,15 @@ $ whenever
 
 This will simply show you your `schedule.rb` file converted to cron syntax. It does not read or write your crontab file. Run `whenever --help` for a complete list of options.
 
+### ExceptionNotification
+ 
+If you are using the exception_notification gem (<https://github.com/smartinez87/exception_notification>), enable it for your "runner" cronjobs with:
+
+In your "schedule.rb" file:
+`set :runner_exception_notification, true`
+
+This will catch all commands defined as "runner", handle it with ExceptionNotification (and raise the exception nevertheless).
+
 ### Credit
 
 Whenever was created for use at Inkling (<http://inklingmarkets.com>). Their take on it: <http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html>

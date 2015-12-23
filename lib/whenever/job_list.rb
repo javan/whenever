@@ -54,6 +54,7 @@ module Whenever
           options[:output] = (options[:cron_log] || @cron_log) if defined?(@cron_log) || options.has_key?(:cron_log)
           # :output is the newer, more flexible option.
           options[:output] = @output if defined?(@output) && !options.has_key?(:output)
+          options[:job_type_name]   = name
 
           @jobs[@current_time_scope] ||= []
           @jobs[@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options))

@@ -33,6 +33,10 @@ module Whenever
         before_and_after = [$`[-1..-1], $'[0..0]]
         option = options[key.sub(':', '').to_sym] || key
 
+        if @options[:runner_exception_notification] && options[:job_type_name]==:runner  && key == ':task' 
+          option = 'begin; ' + option + '; rescue => e;   ExceptionNotifier.notify_exception(e); raise e; end'
+        end
+
         if before_and_after.all? { |c| c == "'" }
           escape_single_quotes(option)
         elsif before_and_after.all? { |c| c == '"' }
