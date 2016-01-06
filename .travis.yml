@@ -12,3 +12,5 @@ rvm:
   - jruby
   - jruby-18mode
   - jruby-19mode
+before_install:
+  - gem update bundler
