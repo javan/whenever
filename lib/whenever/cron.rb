@@ -43,6 +43,7 @@ module Whenever
       end
 
       def time_in_cron_syntax
+        @time = @time.to_i if @time.is_a?(Numeric) # Compatibility with `1.day` format using ruby 2.3 and activesupport
         case @time
           when REGEX  then @time # raw cron syntax given
           when Symbol then parse_symbol
