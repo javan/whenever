@@ -1,6 +1,10 @@
 require 'whenever'
 require 'test_case'
 require 'mocha/setup'
+begin
+  require 'active_support/core_ext/numeric/time' # When using custom gemfiles
+rescue LoadError
+end
 
 module Whenever::TestHelpers
   protected

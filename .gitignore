@@ -3,3 +3,5 @@ pkg
 doc
 .*.sw[a-z]
 Gemfile.lock
+.byebug_history
+gemfiles/*.lock

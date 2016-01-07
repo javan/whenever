@@ -213,6 +213,12 @@ class CronParseShortcutsTest < Whenever::TestCase
   end
 end
 
+class CronParseRubyTimeTest < Whenever::TestCase
+  should "process things like `1.day` correctly" do
+    assert_equal "0 0 * * *", parse_time(1.day)
+  end
+end
+
 class CronParseRawTest < Whenever::TestCase
   should "raise if cron-syntax string is too long" do
     assert_raises ArgumentError do
