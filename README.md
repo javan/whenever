@@ -141,7 +141,7 @@ require "whenever/capistrano"
 
 Take a look at the load:defaults (bottom of file) task for options you can set. <https://github.com/javan/whenever/blob/master/lib/whenever/capistrano/v3/tasks/whenever.rake>. For example, to namespace the crontab entries by application and stage do this.
 
-In your  in "config/deploy.rb" file:
+In your "config/deploy.rb" file:
 
 ```ruby
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
