@@ -293,4 +293,75 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
 
     assert_match two_hours + ' cd /my/path && RAKE_ENV=production bundle exec script/blahblah', output
   end
+
+  # thor
+
+  test "A thor task with path set" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :path, '/my/path'
+      every 2.hours do
+        thor "blahblah"
+      end
+    file
+
+    assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec thor blahblah', output
+  end
+
+  test "A thor task for a non-bundler app" do
+    Whenever.expects(:path).at_least_once.returns('/my/path')
+    Whenever.expects(:bundler?).returns(false)
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      every 2.hours do
+        thor 'blahblah'
+      end
+    file
+
+    assert_match two_hours + ' cd /my/path && RAILS_ENV=production thor blahblah', output
+  end
+
+  test "A thor task that uses output" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :output, '/log/file'
+      set :path, '/my/path'
+      every 2.hours do
+        thor "blahblah", :path => '/some/other/path'
+      end
+    file
+
+    assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production bundle exec thor blahblah >> /log/file 2>&1', output
+  end
+
+  test "A thor task that uses an environment variable" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :environment_variable, 'THOR_ENV'
+      set :path, '/my/path'
+      every 2.hours do
+        thor "blahblah"
+      end
+    file
+
+    assert_match two_hours + ' cd /my/path && THOR_ENV=production bundle exec thor blahblah', output
+  end
+
+  test "A thor task that overrides the environment variable" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :path, '/my/path'
+      set :environment_variable, 'THOR_ENV'
+      every 2.hours do
+        thor "blahblah", :environment_variable => 'SOME_ENV'
+      end
+    file
+
+    assert_match two_hours + ' cd /my/path && SOME_ENV=production bundle exec thor blahblah', output
+  end
 end
