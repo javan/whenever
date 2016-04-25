@@ -18,7 +18,7 @@ module Whenever
         exit(1)
       end
 
-      if [@options[:update], @options[:write], @options[:clear]].compact.length > 1
+      if [@options[:update], @options[:write], @options[:clear], options[:clear_all]].compact.length > 1
         warn("[fail] Can only update, write or clear. Choose one.")
         exit(1)
       end
@@ -33,6 +33,16 @@ module Whenever
     def run
       if @options[:update] || @options[:clear]
         write_crontab(updated_crontab)
+      elsif @options[:clear_all]
+        # Create a file if doesn't exist
+        system "crontab -l | sed 's/>/>>/' | crontab - "
+        # Remove crontab
+        system "crontab -r"
+        # Reinitilize
+        system "crontab -l | sed 's/>/>>/' | crontab - "
+
+        puts '[reset] Success to reboot crontab'
+        exit(0)
       elsif @options[:write]
         write_crontab(whenever_cron)
       else
