@@ -1,4 +1,5 @@
 require 'shellwords'
+require 'whenever/random_offset'
 
 module Whenever
   class Job
@@ -10,6 +11,7 @@ module Whenever
       @template                         = options.delete(:template)
       @job_template                     = options.delete(:job_template) || ":job"
       @roles                            = Array(options.delete(:roles))
+      @random_offset                    = options.delete(:random_offset) || 0
       @options[:output]                 = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output]).to_s : ''
       @options[:environment_variable] ||= "RAILS_ENV"
       @options[:environment]          ||= :production
@@ -19,6 +21,7 @@ module Whenever
     def output
       job = process_template(@template, @options)
       out = process_template(@job_template, @options.merge(:job => job))
+      out = apply_random_offset(out)
       out.gsub(/%/, '\%')
     end
 
@@ -27,6 +30,16 @@ module Whenever
     end
 
   protected
+
+    def apply_random_offset(templated_job)
+      if @random_offset > 0
+        random_sleep_expr = Whenever::RandomOffset.sleep_expression(@random_offset)
+        templated_sleep_job = process_template(@job_template, :job => random_sleep_expr)
+        [templated_sleep_job, templated_job].join(' && ')
+      else
+        templated_job
+      end
+    end
 
     def process_template(template, options)
       template.gsub(/:\w+/) do |key|

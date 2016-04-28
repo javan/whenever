@@ -13,6 +13,18 @@ class OutputAtTest < Whenever::TestCase
     assert_match '2 5 * * 1-5 blahblah', output
   end
 
+  test "weekday at a (single) given time with offset" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      every("weekday", :at => '5:02am').and_about(5.minutes) do
+        command "blahblah"
+      end
+    file
+
+    assert_match '2 5 * * 1-5 sleep $(expr $RANDOM \% 601) && blahblah', output
+  end
+
   test "weekday at a multiple diverse times, via an array" do
     output = Whenever.cron \
     <<-file
@@ -191,6 +203,30 @@ class OutputAtTest < Whenever::TestCase
     file
 
     assert_match '27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59 * * * * blahblah', output
+  end
+
+  test "every hour but staggered" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      every(1.hour).and_about(10.minutes) do
+        command "blahblah"
+      end
+    file
+
+    assert_match '0 * * * * sleep $(expr $RANDOM \% 1201) && blahblah', output
+  end
+
+  test "every week but staggered using random_offset syntax" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      every 1.week, random_offset: 1.day do
+        command "blahblah"
+      end
+    file
+
+    assert_match '0 0 1,8,15,22 * * sleep $(expr ($RANDOM * 6) \% 172801) && blahblah', output
   end
 
   test "using raw cron syntax" do

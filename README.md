@@ -42,6 +42,11 @@ every :sunday, :at => '12pm' do # Use any day of the week or :weekend, :weekday
   runner "Task.do_something_great"
 end
 
+every(3.hours).and_about(5.minutes) do # Add a random element to avoid having many instances fire at the same time
+# equivalently pass a :random_offset option
+	runner "CentralizedServer.pull_updates"
+end
+
 every '0 0 27-31 * *' do
   command "echo 'you can use raw cron syntax too'"
 end
