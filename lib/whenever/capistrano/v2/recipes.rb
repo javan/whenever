@@ -11,6 +11,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   _cset(:whenever_variables)    { "environment=#{fetch :whenever_environment}" }
   _cset(:whenever_update_flags) { "--update-crontab #{fetch :whenever_identifier} --set #{fetch :whenever_variables}" }
   _cset(:whenever_clear_flags)  { "--clear-crontab #{fetch :whenever_identifier}" }
+  _cset(:whenever_path)         { fetch :latest_release }
 
   namespace :whenever do
     desc "Update application's crontab entries using Whenever"
@@ -18,7 +19,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       args = {
         :command => fetch(:whenever_command),
         :flags   => fetch(:whenever_update_flags),
-        :path    => fetch(:latest_release)
+        :path    => fetch(:whenever_path)
       }
 
       if whenever_servers.any?
@@ -38,7 +39,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         args = {
           :command => fetch(:whenever_command),
           :flags   => fetch(:whenever_clear_flags),
-          :path    => fetch(:latest_release)
+          :path    => fetch(:whenever_path)
         }
 
         whenever_run_commands(args)
