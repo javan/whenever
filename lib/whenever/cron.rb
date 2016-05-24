@@ -4,7 +4,7 @@ module Whenever
   module Output
     class Cron
       KEYWORDS = [:reboot, :yearly, :annually, :monthly, :weekly, :daily, :midnight, :hourly]
-      REGEX = /^(@(#{KEYWORDS.join '|'})|(([\d\/,\-]+|\*)\s*){5})$/
+      REGEX = /^(@(#{KEYWORDS.join '|'})|((\*?[\d\/,\-]*)\s*){5})$/
 
       attr_accessor :time, :task
 
