@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CommandLineWriteTest < Whenever::TestCase
   setup do
-    File.expects(:exists?).with('config/schedule.rb').returns(true)
+    File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:write => true, :identifier => 'My identifier')
     @task = "#{two_hours} /my/command"
     Whenever.expects(:cron).returns(@task)
@@ -26,7 +26,7 @@ end
 
 class CommandLineUpdateTest < Whenever::TestCase
   setup do
-    File.expects(:exists?).with('config/schedule.rb').returns(true)
+    File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
     @task = "#{two_hours} /my/command"
     Whenever.expects(:cron).returns(@task)
@@ -90,7 +90,7 @@ class CommandLineUpdateWithBackslashesTest < Whenever::TestCase
 script/runner -e production 'puts '\\''hello'\\'''
 # End Whenever generated tasks for: My identifier
 EXISTING_CRON
-    File.expects(:exists?).with('config/schedule.rb').returns(true)
+    File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
     @command.expects(:read_crontab).at_least_once.returns(@existing)
     @command.expects(:whenever_cron).returns(@existing)
@@ -111,7 +111,7 @@ EXISTING_CRON
 # Begin Whenever generated tasks for: Whenever
 # End Whenever generated tasks for: Whenever
 NEW_CRON
-    File.expects(:exists?).with('config/schedule.rb').returns(true)
+    File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:update => true, :identifier => 'Whenever')
     @command.expects(:read_crontab).at_least_once.returns(@existing)
     @command.expects(:whenever_cron).returns(@new)
@@ -124,7 +124,7 @@ end
 
 class CommandLineClearTest < Whenever::TestCase
   setup do
-    File.expects(:exists?).with('config/schedule.rb').returns(true)
+    File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:clear => true, :identifier => 'My identifier')
     @task = "#{two_hours} /my/command"
   end
@@ -161,7 +161,7 @@ end
 
 class CommandLineClearWithNoScheduleTest < Whenever::TestCase
   setup do
-    File.expects(:exists?).with('config/schedule.rb').returns(false)
+    File.expects(:exist?).with('config/schedule.rb').returns(false)
     @command = Whenever::CommandLine.new(:clear => true, :identifier => 'My identifier')
   end
 
@@ -173,7 +173,7 @@ end
 
 class CommandLineUpdateWithNoIdentifierTest < Whenever::TestCase
   setup do
-    File.expects(:exists?).with('config/schedule.rb').returns(true)
+    File.expects(:exist?).with('config/schedule.rb').returns(true)
     Whenever::CommandLine.any_instance.expects(:default_identifier).returns('DEFAULT')
     @command = Whenever::CommandLine.new(:update => true, :file => @file)
   end
@@ -187,7 +187,7 @@ class CombinedParamsTest < Whenever::TestCase
   setup do
     Whenever::CommandLine.any_instance.expects(:exit)
     Whenever::CommandLine.any_instance.expects(:warn)
-    File.expects(:exists?).with('config/schedule.rb').returns(true)
+    File.expects(:exist?).with('config/schedule.rb').returns(true)
   end
 
   should "exit with write and clear" do
@@ -278,7 +278,7 @@ end
 
 class PreparingOutputTest < Whenever::TestCase
   setup do
-    File.expects(:exists?).with('config/schedule.rb').returns(true)
+    File.expects(:exist?).with('config/schedule.rb').returns(true)
   end
 
   should "not trim off the top lines of the file" do

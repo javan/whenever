@@ -20,14 +20,14 @@ module Whenever
   end
 
   def self.bin_rails?
-    File.exists?(File.join(path, 'bin', 'rails'))
+    File.exist?(File.join(path, 'bin', 'rails'))
   end
 
   def self.script_rails?
-    File.exists?(File.join(path, 'script', 'rails'))
+    File.exist?(File.join(path, 'script', 'rails'))
   end
 
   def self.bundler?
-    File.exists?(File.join(path, 'Gemfile'))
+    File.exist?(File.join(path, 'Gemfile'))
   end
 end

@@ -13,7 +13,7 @@ module Whenever
       @options[:cut]        ||= 0
       @options[:identifier] ||= default_identifier
 
-      if !File.exists?(@options[:file]) && @options[:clear].nil?
+      if !File.exist?(@options[:file]) && @options[:clear].nil?
         warn("[fail] Can't find file: #{@options[:file]}")
         exit(1)
       end

@@ -18,7 +18,7 @@ OptionParser.new do |opts|
 end
 
 unless ARGV.empty?
-  if !File.exists?(ARGV.first)
+  if !File.exist?(ARGV.first)
     abort "`#{ARGV.first}' does not exist."
   elsif !File.directory?(ARGV.first)
     abort "`#{ARGV.first}' is not a directory."
@@ -54,11 +54,11 @@ file = 'config/schedule.rb'
 base = ARGV.empty? ? '.' : ARGV.shift
 
 file = File.join(base, file)
-if File.exists?(file)
+if File.exist?(file)
   warn "[skip] `#{file}' already exists"
-elsif File.exists?(file.downcase)
+elsif File.exist?(file.downcase)
   warn "[skip] `#{file.downcase}' exists, which could conflict with `#{file}'"
-elsif !File.exists?(File.dirname(file))
+elsif !File.exist?(File.dirname(file))
   warn "[skip] directory `#{File.dirname(file)}' does not exist"
 else
   puts "[add] writing `#{file}'"
