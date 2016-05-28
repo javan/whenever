@@ -1,20 +1,13 @@
 module Whenever
+  require 'minitest/autorun'
   begin
-    require 'minitest/autorun'
-    begin
-      # 2.0.0
-      class TestCase < MiniTest::Test; end
-    rescue NameError
-      # 1.9.3
-      class TestCase < MiniTest::Unit::TestCase; end
-    end
-  rescue LoadError
-    # 1.8.7
-    require 'test/unit'
-    class TestCase < Test::Unit::TestCase
-      def default_test; end
-    end
+    # 2.0.0
+    class TestCase < MiniTest::Test; end
+  rescue NameError
+    # 1.9.3
+    class TestCase < MiniTest::Unit::TestCase; end
   end
+
 
   class TestCase
     class << self

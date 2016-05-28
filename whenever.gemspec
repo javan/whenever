@@ -16,10 +16,12 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- test/{functional,unit}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+  s.required_ruby_version = ">= 1.9.3"
 
   s.add_dependency "chronic", ">= 0.6.3"
 
-  s.add_development_dependency "mocha", ">= 0.9.5"
+  s.add_development_dependency "bundler"
   s.add_development_dependency "rake"
+  s.add_development_dependency "mocha", ">= 0.9.5"
   s.add_development_dependency "minitest"
 end
