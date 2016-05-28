@@ -45,7 +45,7 @@ module Whenever
     end
 
     def job_type(name, template)
-      singleton_class_shim.class_eval do
+      singleton_class.class_eval do
         define_method(name) do |task, *args|
           options = { :task => task, :template => template }
           options.merge!(args[0]) if args[0].is_a? Hash
@@ -66,17 +66,6 @@ module Whenever
     end
 
   private
-
-    # The Object#singleton_class method only became available in MRI 1.9.2, so
-    # we need this to maintain 1.8 compatibility. Once 1.8 support is dropped,
-    # this can be removed
-    def singleton_class_shim
-      if self.respond_to?(:singleton_class)
-        singleton_class
-      else
-        class << self; self; end
-      end
-    end
 
     #
     # Takes a string like: "variable1=something&variable2=somethingelse"
