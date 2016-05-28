@@ -5,6 +5,7 @@ require 'whenever/job'
 require 'whenever/command_line'
 require 'whenever/cron'
 require 'whenever/output_redirection'
+require 'whenever/os'
 
 module Whenever
   def self.cron(options)

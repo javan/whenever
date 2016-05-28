@@ -67,7 +67,8 @@ module Whenever
     def write_crontab(contents)
       command = ['crontab']
       command << "-u #{@options[:user]}" if @options[:user]
-      command << "-"
+      # Solaris/SmartOS cron does not support the - option to read from stdin.
+      command << "-" unless OS.solaris?
 
       IO.popen(command.join(' '), 'r+') do |crontab|
         crontab.write(contents)
