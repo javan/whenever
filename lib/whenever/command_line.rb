@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'whenever/os'
 
 module Whenever
   class CommandLine
@@ -57,6 +58,7 @@ module Whenever
     def read_crontab
       return @current_crontab if @current_crontab
 
+
       command = ['crontab -l']
       command << "-u #{@options[:user]}" if @options[:user]
 
@@ -67,7 +69,8 @@ module Whenever
     def write_crontab(contents)
       command = ['crontab']
       command << "-u #{@options[:user]}" if @options[:user]
-      command << "-"
+      # Solaris/SmartOS cron does not support the - option to read from stdin.
+      command << "-" unless OS.solaris?
 
       IO.popen(command.join(' '), 'r+') do |crontab|
         crontab.write(contents)
