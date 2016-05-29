@@ -30,8 +30,15 @@ module Whenever
       return if @pre_set_variables[variable]
 
       instance_variable_set("@#{variable}".to_sym, value)
-      self.class.send(:attr_reader, variable.to_sym)
       @set_variables[variable] = value
+    end
+
+    def method_missing(name, *args, &block)
+      @set_variables.has_key?(name) ? @set_variables[name] : super
+    end
+
+    def self.respond_to?(name, include_private = false)
+      @set_variables.has_key?(name) || super
     end
 
     def env(variable, value)
