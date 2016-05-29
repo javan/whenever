@@ -11,7 +11,7 @@ class OutputDefinedJobTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ before during after$/, output
+    assert_match(/^.+ .+ .+ .+ before during after$/, output)
   end
 
   test "defined job with a :task and some options" do
@@ -24,7 +24,7 @@ class OutputDefinedJobTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ before during after happy birthday$/, output
+    assert_match(/^.+ .+ .+ .+ before during after happy birthday$/, output)
   end
 
   test "defined job with a :task and an option where the option is set globally" do
@@ -38,7 +38,7 @@ class OutputDefinedJobTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ before during after happy$/, output
+    assert_match(/^.+ .+ .+ .+ before during after happy$/, output)
   end
 
   test "defined job with a :task and an option where the option is set globally and locally" do
@@ -52,7 +52,7 @@ class OutputDefinedJobTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ before during after local$/, output
+    assert_match(/^.+ .+ .+ .+ before during after local$/, output)
   end
 
   test "defined job with a :task and an option that is not set" do
@@ -65,7 +65,7 @@ class OutputDefinedJobTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ before during after :option1$/, output
+    assert_match(/^.+ .+ .+ .+ before during after :option1$/, output)
   end
 
   test "defined job that uses a :path where none is explicitly set" do
