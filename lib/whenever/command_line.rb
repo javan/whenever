@@ -55,7 +55,7 @@ module Whenever
     end
 
     def read_crontab
-      return @current_crontab if @current_crontab
+      return @current_crontab if instance_variable_defined?(:@current_crontab)
 
       command = ['crontab -l']
       command << "-u #{@options[:user]}" if @options[:user]
