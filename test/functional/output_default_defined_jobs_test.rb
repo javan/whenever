@@ -13,7 +13,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah$/, output)
   end
 
   test "A plain command with no job template set" do
@@ -24,7 +24,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ \/bin\/bash -l -c 'blahblah'$/, output
+    assert_match(/^.+ .+ .+ .+ \/bin\/bash -l -c 'blahblah'$/, output)
   end
 
   test "A plain command with a job_template using a normal parameter" do
@@ -37,7 +37,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ \/bin\/bash -l -c 'cd \/tmp \&\& blahblah'$/, output
+    assert_match(/^.+ .+ .+ .+ \/bin\/bash -l -c 'cd \/tmp \&\& blahblah'$/, output)
   end
 
   test "A plain command that overrides the job_template set" do
@@ -50,8 +50,8 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
     file
 
 
-    assert_match /^.+ .+ .+ .+ \/bin\/sh -l -c 'blahblah'$/, output
-    assert_no_match /bash/, output
+    assert_match(/^.+ .+ .+ .+ \/bin\/sh -l -c 'blahblah'$/, output)
+    assert_no_match(/bash/, output)
   end
 
   test "A plain command that overrides the job_template set using a parameter" do
@@ -65,8 +65,8 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
     file
 
 
-    assert_match /^.+ .+ .+ .+ \/bin\/sh -l -c 'cd \/tmp && blahblah'$/, output
-    assert_no_match /bash/, output
+    assert_match(/^.+ .+ .+ .+ \/bin\/sh -l -c 'cd \/tmp && blahblah'$/, output)
+    assert_no_match(/bash/, output)
   end
 
   test "A plain command that is conditional on default environent and path" do
@@ -81,7 +81,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match /blahblah/, output
+    assert_match(/blahblah/, output)
   end
 
   # runner

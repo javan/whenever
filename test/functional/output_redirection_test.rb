@@ -11,7 +11,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah >> \/dev\/null 2>&1$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah >> \/dev\/null 2>&1$/, output)
   end
 
 
@@ -25,7 +25,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah >> logfile.log 2>&1$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah >> logfile.log 2>&1$/, output)
   end
 
   test "command when the error and standard output is set by the command" do
@@ -37,7 +37,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah >> dev_null 2>> dev_err$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah >> dev_null 2>> dev_err$/, output)
   end
 
   test "command when the output is set and the comand overrides it" do
@@ -50,8 +50,8 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_no_match /.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, output
-    assert_match /^.+ .+ .+ .+ blahblah >> otherlog.log 2>&1$/, output
+    assert_no_match(/.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, output)
+    assert_match(/^.+ .+ .+ .+ blahblah >> otherlog.log 2>&1$/, output)
   end
 
   test "command when the output is set and the comand overrides with standard and error" do
@@ -64,8 +64,8 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_no_match /.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, output
-    assert_match /^.+ .+ .+ .+ blahblah >> dev_null 2>> dev_err$/, output
+    assert_no_match(/.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, output)
+    assert_match(/^.+ .+ .+ .+ blahblah >> dev_null 2>> dev_err$/, output)
   end
 
   test "command when the output is set and the comand rejects it" do
@@ -78,8 +78,8 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_no_match /.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, output
-    assert_match /^.+ .+ .+ .+ blahblah$/, output
+    assert_no_match(/.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, output)
+    assert_match(/^.+ .+ .+ .+ blahblah$/, output)
   end
 
   test "command when the output is set and is overridden by the :set option" do
@@ -92,8 +92,8 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_no_match /.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, output
-    assert_match /^.+ .+ .+ .+ blahblah >> otherlog.log 2>&1/, output
+    assert_no_match(/.+ .+ .+ .+ blahblah >> logfile.log 2>&1/, output)
+    assert_match(/^.+ .+ .+ .+ blahblah >> otherlog.log 2>&1/, output)
   end
 
   test "command when the error and standard output is set" do
@@ -106,7 +106,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah >> dev_null 2>> dev_err$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah >> dev_null 2>> dev_err$/, output)
   end
 
   test "command when error output is set" do
@@ -119,7 +119,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah 2>> dev_null$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah 2>> dev_null$/, output)
   end
 
   test "command when the standard output is set" do
@@ -132,7 +132,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah >> dev_out$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah >> dev_out$/, output)
   end
 
   test "command when error output is set by the command" do
@@ -144,7 +144,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah 2>> dev_err$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah 2>> dev_err$/, output)
   end
 
   test "command when standard output is set by the command" do
@@ -156,7 +156,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah >> dev_out$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah >> dev_out$/, output)
   end
 
   test "command when standard output is set to nil" do
@@ -168,7 +168,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah > \/dev\/null$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah > \/dev\/null$/, output)
   end
 
   test "command when standard error is set to nil" do
@@ -180,7 +180,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah 2> \/dev\/null$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah 2> \/dev\/null$/, output)
   end
 
   test "command when standard output and standard error is set to nil" do
@@ -192,7 +192,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah > \/dev\/null 2>&1$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah > \/dev\/null 2>&1$/, output)
   end
 
   test "command when standard output is set and standard error is set to nil" do
@@ -204,7 +204,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah >> my.log 2> \/dev\/null$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah >> my.log 2> \/dev\/null$/, output)
   end
 
   test "command when standard output is nil and standard error is set" do
@@ -216,7 +216,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah >> \/dev\/null 2>> my_error.log$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah >> \/dev\/null 2>> my_error.log$/, output)
   end
 
   test "command when the deprecated :cron_log is set" do
@@ -229,7 +229,7 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah >> cron.log 2>&1$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah >> cron.log 2>&1$/, output)
   end
 
 
@@ -243,6 +243,6 @@ class OutputRedirectionTest < Whenever::TestCase
       end
     file
 
-    assert_match /^.+ .+ .+ .+ blahblah 2>&1 | logger -t whenever_cron$/, output
+    assert_match(/^.+ .+ .+ .+ blahblah 2>&1 | logger -t whenever_cron$/, output)
   end
 end
