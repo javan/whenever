@@ -1,5 +1,9 @@
 language: ruby
 script: bundle exec rake
+
+before_install:
+  - gem install bundler
+
 rvm:
   - 1.9.3
   - 2.0.0
@@ -7,5 +11,8 @@ rvm:
   - 2.2.0
   - 2.3.0
   - jruby
-before_install:
-  - gem install bundler
+
+gemfile:
+  - Gemfile
+  - gemfiles/activesupport4.1.gemfile
+  - gemfiles/activesupport4.2.gemfile
