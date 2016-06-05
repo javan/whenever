@@ -211,6 +211,10 @@ If your production environment uses RVM (Ruby Version Manager) you will run into
 
 This tells rvm to trust all rvmrc files.
 
+### Heroku?
+
+No. Heroku does not support cron, instead providing [Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler). If you deploy to Heroku, you should use that rather than Whenever.
+
 ### The `whenever` command
 
 ```sh
