@@ -147,6 +147,12 @@ In your "config/deploy.rb" file:
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 ```
 
+By default Whenever will load the crontab as the deployment user. In cases where cron jobs need to be run as some other user, you can do:
+
+```ruby
+set :whenever_user, "myapp"
+```
+
 ### Capistrano roles
 
 The first thing to know about the new roles support is that it is entirely

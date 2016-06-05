@@ -4,11 +4,23 @@ namespace :whenever do
 
     on roles fetch(:whenever_roles) do |host|
       args_for_host = block_given? ? args + Array(yield(host)) : args
-      within release_path do
-        with fetch(:whenever_command_environment_variables) do
-          execute *args_for_host
+      as_whenever_user do
+        within release_path do
+          with fetch(:whenever_command_environment_variables) do
+            execute *args_for_host
+          end
         end
       end
+    end
+  end
+
+  def as_whenever_user(&block)
+    if user = fetch(:whenever_user)
+      as user do
+        yield
+      end
+    else
+      yield
     end
   end
 
@@ -37,6 +49,7 @@ namespace :load do
     set :whenever_identifier,   ->{ fetch :application }
     set :whenever_environment,  ->{ fetch :rails_env, fetch(:stage, "production") }
     set :whenever_variables,    ->{ "environment=#{fetch :whenever_environment}" }
+    set :whenever_user,         ->{ nil }
     set :whenever_update_flags, ->{ "--update-crontab #{fetch :whenever_identifier} --set #{fetch :whenever_variables}" }
     set :whenever_clear_flags,  ->{ "--clear-crontab #{fetch :whenever_identifier}" }
   end
