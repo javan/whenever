@@ -21,6 +21,16 @@ $ wheneverize .
 
 This will create an initial `config/schedule.rb` file for you.
 
+After creating your first scheduler, you'll need to create the actual cronjob by running
+
+```bash
+whenever --update-cron nameOfCronJob
+```
+
+You will see the output: `write crontab file updated` 
+
+Now you can see your current cronjobs by typing `crontab -l`
+
 ### Example schedule.rb file
 
 ```ruby
