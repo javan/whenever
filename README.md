@@ -156,13 +156,13 @@ In your "Capfile" file:
 require "whenever/capistrano"
 ```
 
-Take a look at the load:defaults (bottom of file) task for options you can set. <https://github.com/javan/whenever/blob/master/lib/whenever/capistrano/v3/tasks/whenever.rake>. For example, to namespace the crontab entries by application and stage do this.
-
-In your "config/deploy.rb" file:
+Take a look at the [load:defaults task](https://github.com/javan/whenever/blob/master/lib/whenever/capistrano/v3/tasks/whenever.rake) (bottom of file) for options you can set. For example, to namespace the crontab entries by application and stage do this in your "config/deploy.rb" file:
 
 ```ruby
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 ```
+
+The Capistrano integration by default expects the `:application` variable to be set in order to scope jobs in the crontab.
 
 ### Capistrano roles
 
