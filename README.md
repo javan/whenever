@@ -232,6 +232,10 @@ This tells rvm to trust all rvmrc files.
 
 No. Heroku does not support cron, instead providing [Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler). If you deploy to Heroku, you should use that rather than Whenever.
 
+### Testing
+
+[whenever-test](https://github.com/heartbits/whenever-test) is an extension to Whenever for testing a Whenever schedule.
+
 ### Credit
 
 Whenever was created for use at Inkling (<http://inklingmarkets.com>). Their take on it: <http://blog.inklingmarkets.com/2009/02/whenever-easy-way-to-do-cron-jobs-from.html>
