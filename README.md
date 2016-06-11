@@ -164,6 +164,8 @@ In your "config/deploy.rb" file:
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 ```
 
+**Note: Also make sure you've `:application` option set to prevent whenever appending rules in crontab. 
+
 ### Capistrano roles
 
 The first thing to know about the new roles support is that it is entirely
