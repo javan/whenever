@@ -169,6 +169,19 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
     assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec rake blahblah --silent', output
   end
 
+  test "A rake command with arguments" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :path, '/my/path'
+      every 2.hours do
+        rake "blahblah[foobar]"
+      end
+    file
+
+    assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec rake blahblah[foobar] --silent', output
+  end
+
   test "A rake for a non-bundler app" do
     Whenever.expects(:path).at_least_once.returns('/my/path')
     Whenever.expects(:bundler?).returns(false)
