@@ -1,5 +1,7 @@
 ### develop
 
+### 0.9.5 / June 12, 2016
+
 * Improve documentation [Ben Langfeld, Spencer Fry]
 
 * Properly support Solaris / SmartOS [Steven Williamson]
