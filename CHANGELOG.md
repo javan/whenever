@@ -1,3 +1,24 @@
+### develop
+
+* Improve documentation [Ben Langfeld, Spencer Fry]
+
+* Properly support Solaris / SmartOS [Steven Williamson]
+
+* Drop support for Ruby < 1.9.3. Test newer Ruby versions. [Javan Makhmali, Bartłomiej Kozal]
+
+* Suport Ruby 2.3.0 and Rails 4 [Vincent Boisard]
+
+* Set `RAILS_ENV` correctly in schedule when writing crontab from Capistrano [Ben Langfeld, Lorenzo Manacorda]
+
+* Minor refactoring, avoidance of Ruby warnings, etc [Ben Langfeld, DV Dasari]
+
+* Correctly pass through date expressions (e.g. `1.day`) inside job definitions [Rafael Sales]
+
+* Prevent writing invalid cron strings [Danny Fallon, Ben Langfeld]
+
+* Execute runner with `bundle exec` to ensure presence of app dependencies [Judith Roth]
+
+
 ### 0.9.4 / October 24, 2014
 
 * Fix duplicated command line arguments when deploying to multiple servers with Cap 3. [betesh]
