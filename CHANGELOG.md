@@ -1,5 +1,7 @@
 ### develop
 
+* Bypass symlinks when loading Capistrano v3 code, since these symlinks don't work in recent gem releases [Justin Ramos]
+
 ### 0.9.5 / June 12, 2016
 
 * Improve documentation [Ben Langfeld, Spencer Fry]
