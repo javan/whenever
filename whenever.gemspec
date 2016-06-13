@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Javan Makhmali"]
   s.email       = ["javan@javan.us"]
   s.license     = "MIT"
-  s.homepage    = ""
+  s.homepage    = "https://github.com/javan/whenever"
   s.summary     = %q{Cron jobs in ruby.}
   s.description = %q{Clean ruby syntax for writing and deploying cron jobs.}
   s.files         = `git ls-files`.split("\n")
