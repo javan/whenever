@@ -1,5 +1,7 @@
 ### develop
 
+### 0.9.7 / June 14, 2016
+
 * Restore compatibility with Capistrano v3; it has a bug which we have to work around [Ben Langfeld, Chris Gunther, Shohei Yamasaki]
 
 ### 0.9.6 / June 13, 2016
