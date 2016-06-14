@@ -7,7 +7,7 @@ namespace :whenever do
       within release_path do
         with rails_env: fetch(:whenever_environment) do
           with fetch(:whenever_command_environment_variables) do
-            execute *args_for_host
+            execute(*args_for_host)
           end
         end
       end
