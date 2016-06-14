@@ -5,10 +5,8 @@ namespace :whenever do
     on roles fetch(:whenever_roles) do |host|
       args_for_host = block_given? ? args + Array(yield(host)) : args
       within release_path do
-        with rails_env: fetch(:whenever_environment) do
-          with fetch(:whenever_command_environment_variables) do
-            execute(*args_for_host)
-          end
+        with fetch(:whenever_command_environment_variables) do
+          execute(*args_for_host)
         end
       end
     end
@@ -35,7 +33,7 @@ namespace :load do
   task :defaults do
     set :whenever_roles,        ->{ :db }
     set :whenever_command,      ->{ [:bundle, :exec, :whenever] }
-    set :whenever_command_environment_variables, ->{ {} }
+    set :whenever_command_environment_variables, ->{ { rails_env: fetch(:whenever_environment) } }
     set :whenever_identifier,   ->{ fetch :application }
     set :whenever_environment,  ->{ fetch :rails_env, fetch(:stage, "production") }
     set :whenever_variables,    ->{ "environment=#{fetch :whenever_environment}" }

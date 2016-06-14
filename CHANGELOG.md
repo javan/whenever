@@ -1,5 +1,7 @@
 ### develop
 
+* Restore compatibility with Capistrano v3; it has a bug which we have to work around [Ben Langfeld, Chris Gunther, Shohei Yamasaki]
+
 ### 0.9.6 / June 13, 2016
 
 * Bypass symlinks when loading Capistrano v3 code, since these symlinks don't work in recent gem releases [Justin Ramos]
