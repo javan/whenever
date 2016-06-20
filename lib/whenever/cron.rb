@@ -66,6 +66,7 @@ module Whenever
           when :month    then Whenever.seconds(1, :month)
           when :week     then Whenever.seconds(1, :week)
           when :hour     then Whenever.seconds(1, :hour)
+          when :minute   then Whenever.seconds(1, :minute)
         end
 
         if shortcut.is_a?(Numeric)
