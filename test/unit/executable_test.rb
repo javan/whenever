@@ -60,11 +60,13 @@ describe 'Executable' do
       path = File.join(dir, file)
 
       describe 'config file already exists' do
+        before do
+          FileUtils.mkdir(File.dirname(path))
+          FileUtils.touch(path)
+        end
+
         it 'prints STDOUT and STDERR' do
           begin
-            FileUtils.mkdir(File.dirname(path))
-            FileUtils.touch(path)
-
             out, err = capture_subprocess_io do
               system('wheneverize')
             end
@@ -92,10 +94,10 @@ describe 'Executable' do
       end
 
       describe 'config directory exists, but file does not' do
+        before { FileUtils.mkdir(File.dirname(path)) }
+
         it 'writes config file and prints STDOUT' do
           begin
-            FileUtils.mkdir(File.dirname(path))
-
             out, err = capture_subprocess_io do
               system('wheneverize')
             end
