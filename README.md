@@ -63,6 +63,10 @@ every '0 0 27-31 * *' do
   command "echo 'you can use raw cron syntax too'"
 end
 
+every 1.minute do
+  command "echo Hello Universe"
+end
+
 # run this task only on servers with the :app role in Capistrano
 # see Capistrano roles section below
 every :day, :at => '12:20am', :roles => [:app] do
