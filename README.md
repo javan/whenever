@@ -41,7 +41,7 @@ Run `whenever --help` for a complete list of options for selecting the schedule 
 ### Example schedule.rb file
 
 ```ruby
-every 3.hours do # 1.minute 1.week 1.month 1.year is also supported
+every 3.hours do # 1.minute 1.day 1.week 1.month 1.year is also supported
   runner "MyModel.some_process"
   rake "my:rake:task"
   command "/usr/bin/my_great_command"
@@ -62,7 +62,6 @@ end
 every '0 0 27-31 * *' do
   command "echo 'you can use raw cron syntax too'"
 end
-
 
 # run this task only on servers with the :app role in Capistrano
 # see Capistrano roles section below
