@@ -19,7 +19,7 @@ $ cd /apps/my-great-project
 $ wheneverize .
 ```
 
-This will create an initial `config/schedule.rb` file for you.
+This will create an initial `config/schedule.rb` file for you (as long as the config folder is already present in your project).
 
 ### The `whenever` command
 
