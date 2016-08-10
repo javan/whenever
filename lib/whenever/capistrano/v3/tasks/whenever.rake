@@ -16,11 +16,9 @@ namespace :whenever do
 
   def as_whenever_user(&block)
     if user = fetch(:whenever_user)
-      as user do
-        yield
-      end
+      as user, &block
     else
-      yield
+      block.call
     end
   end
 
