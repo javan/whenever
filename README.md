@@ -164,6 +164,13 @@ set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
 The Capistrano integration by default expects the `:application` variable to be set in order to scope jobs in the crontab.
 
+If your deploy user is different than your application user, you can specify to set the crontab user with:
+
+```ruby
+set :whenever_user, "appuser"
+```
+
+
 ### Capistrano roles
 
 The first thing to know about the new roles support is that it is entirely
