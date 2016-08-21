@@ -1,7 +1,5 @@
 ### develop
 
-### 0.10.0
-
 * Modify wheneverize to allow for the creating of 'config' directory when not present
 
 ### 0.9.7 / June 14, 2016
