@@ -54,12 +54,12 @@ file = 'config/schedule.rb'
 base = ARGV.empty? ? '.' : ARGV.shift
 
 file = File.join(base, file)
-dir = File.dirname(file)
 if File.exist?(file)
   warn "[skip] `#{file}' already exists"
 elsif File.exist?(file.downcase)
   warn "[skip] `#{file.downcase}' exists, which could conflict with `#{file}'"
 else
+  dir = File.dirname(file)
   if !File.exist?(dir)
     warn "[add] creating `#{dir}'"
     FileUtils.mkdir_p(dir)
