@@ -12,20 +12,21 @@ module Whenever
       @options[:file]       ||= 'config/schedule.rb'
       @options[:cut]        ||= 0
       @options[:identifier] ||= default_identifier
+      @options[:console]    = true if @options[:console].nil?
 
       if !File.exist?(@options[:file]) && @options[:clear].nil?
         warn("[fail] Can't find file: #{@options[:file]}")
-        exit(1)
+        return_or_exit(false)
       end
 
       if [@options[:update], @options[:write], @options[:clear]].compact.length > 1
         warn("[fail] Can only update, write or clear. Choose one.")
-        exit(1)
+        return_or_exit(false)
       end
 
       unless @options[:cut].to_s =~ /[0-9]*/
         warn("[fail] Can't cut negative lines from the crontab #{options[:cut]}")
-        exit(1)
+        return_or_exit(false)
       end
       @options[:cut] = @options[:cut].to_i
     end
@@ -39,7 +40,7 @@ module Whenever
         puts Whenever.cron(@options)
         puts "## [message] Above is your schedule file converted to cron syntax; your crontab file was not updated."
         puts "## [message] Run `whenever --help' for more options."
-        exit(0)
+        return_or_exit(true)
       end
     end
 
@@ -81,10 +82,10 @@ module Whenever
         action = 'written' if @options[:write]
         action = 'updated' if @options[:update]
         puts "[write] crontab file #{action}"
-        exit(0)
+        return_or_exit(true)
       else
         warn "[fail] Couldn't write crontab; try running `whenever' with no options to ensure your schedule file is valid."
-        exit(1)
+        return_or_exit(false)
       end
     end
 
@@ -92,10 +93,10 @@ module Whenever
       # Check for unopened or unclosed identifier blocks
       if read_crontab =~ Regexp.new("^#{comment_open}\s*$") && (read_crontab =~ Regexp.new("^#{comment_close}\s*$")).nil?
         warn "[fail] Unclosed indentifier; Your crontab file contains '#{comment_open}', but no '#{comment_close}'"
-        exit(1)
+        return_or_exit(false)
       elsif (read_crontab =~ Regexp.new("^#{comment_open}\s*$")).nil? && read_crontab =~ Regexp.new("^#{comment_close}\s*$")
         warn "[fail] Unopened indentifier; Your crontab file contains '#{comment_close}', but no '#{comment_open}'"
-        exit(1)
+        return_or_exit(false)
       end
 
       # If an existing identier block is found, replace it with the new cron entries
@@ -131,5 +132,18 @@ module Whenever
     def comment_close
       "# End #{comment_base}"
     end
+
+  private
+
+    def return_or_exit success
+      result = 1
+      result = 0 if success
+      if @options[:console]
+        exit(result)
+      else
+        result
+      end
+    end
+
   end
 end
