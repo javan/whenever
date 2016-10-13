@@ -206,6 +206,13 @@ set :whenever_identifier, defer { "#{application}_#{stage}" }
 require "whenever/capistrano"
 ```
 
+If you use a schedule at an alternative path, you may configure it like so:
+
+```ruby
+set :whenever_load_file, defer { "#{release_path}/somewhere/else/schedule.rb" }
+require "whenever/capistrano"
+```
+
 ### Capistrano V3 Integration
 
 In your "Capfile" file:

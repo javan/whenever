@@ -12,17 +12,28 @@ namespace :whenever do
     end
   end
 
+  def load_file
+    file = fetch(:whenever_load_file)
+    if file
+      "-f #{file}"
+    else
+      ''
+    end
+  end
+
   desc "Update application's crontab entries using Whenever"
   task :update_crontab do
     setup_whenever_task do |host|
       roles = host.roles_array.join(",")
-      [fetch(:whenever_update_flags),  "--roles=#{roles}"]
+      [fetch(:whenever_update_flags), "--roles=#{roles}", load_file]
     end
   end
 
   desc "Clear application's crontab entries using Whenever"
   task :clear_crontab do
-    setup_whenever_task(fetch(:whenever_clear_flags))
+    setup_whenever_task do |host|
+      [fetch(:whenever_clear_flags), load_file]
+    end
   end
 
   after "deploy:updated",  "whenever:update_crontab"
@@ -37,6 +48,7 @@ namespace :load do
     set :whenever_identifier,   ->{ fetch :application }
     set :whenever_environment,  ->{ fetch :rails_env, fetch(:stage, "production") }
     set :whenever_variables,    ->{ "environment=#{fetch :whenever_environment}" }
+    set :whenever_load_file,    ->{ nil }
     set :whenever_update_flags, ->{ "--update-crontab #{fetch :whenever_identifier} --set #{fetch :whenever_variables}" }
     set :whenever_clear_flags,  ->{ "--clear-crontab #{fetch :whenever_identifier}" }
     set :whenever_path,         ->{ fetch :release_path }
