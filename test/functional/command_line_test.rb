@@ -175,7 +175,7 @@ class CommandLineUpdateWithNoIdentifierTest < Whenever::TestCase
   setup do
     File.expects(:exist?).with('config/schedule.rb').returns(true)
     Whenever::CommandLine.any_instance.expects(:default_identifier).returns('DEFAULT')
-    @command = Whenever::CommandLine.new(:update => true, :file => @file)
+    @command = Whenever::CommandLine.new(:update => true)
   end
 
   should "use the default identifier" do
