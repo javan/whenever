@@ -2,6 +2,8 @@
 
 * Modify wheneverize to allow for the creating of 'config' directory when not present
 
+* Add --crontab-command to whenever binary for overriding the crontab command. [Martin Grandrath]
+
 ### 0.9.7 / June 14, 2016
 
 * Restore compatibility with Capistrano v3; it has a bug which we have to work around [Ben Langfeld, Chris Gunther, Shohei Yamasaki]
