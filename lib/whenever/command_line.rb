@@ -38,7 +38,7 @@ module Whenever
         system "crontab -l | sed 's/>/>>/' | crontab - "
         # Remove crontab
         system "crontab -r"
-        # Reinitilize
+        # Reinitialize
         system "crontab -l | sed 's/>/>>/' | crontab - "
 
         puts '[reset] Success to reboot crontab'
