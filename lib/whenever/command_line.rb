@@ -19,7 +19,7 @@ module Whenever
       end
 
       if [@options[:update], @options[:write], @options[:clear], options[:clear_all]].compact.length > 1
-        warn("[fail] Can only update, write or clear. Choose one.")
+        warn("[fail] Can only update, write, clear or clear_all. Choose one.")
         exit(1)
       end
 
