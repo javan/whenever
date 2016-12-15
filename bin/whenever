@@ -20,7 +20,7 @@ OptionParser.new do |opts|
     options[:clear] = true
     options[:identifier] = identifier if identifier
   end
-  opts.on('-a', '--clear-all-flags-crontab') do |identifier|
+  opts.on('-p', '--purge') do |identifier|
     options[:clear_all] = true
   end
   opts.on('-s', '--set [variables]', 'Example: --set \'environment=staging&path=/my/sweet/path\'') do |set|
