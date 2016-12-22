@@ -120,6 +120,13 @@ Or set the job_template to nil to have your jobs execute normally.
 set :job_template, nil
 ```
 
+If you're trying to use an executable that isn't in your PATH, you can add it
+by overriding your `:job_template` like this:
+
+```ruby
+set :job_template, "bash -l -c 'export PATH=$PATH:/usr/local/bin ; :job'"
+```
+
 ### Capistrano integration
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys. For Capistrano V3, see the next section.
