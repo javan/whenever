@@ -86,7 +86,7 @@ describe 'Executable' do
               system('wheneverize')
             end
 
-            assert_match(%r{\[add\] creating `#{File.dirname(path)}'\n}, err)
+            assert_match(/\[add\] creating `#{File.dirname(path)}'\n/, err)
             assert_match(/\[done\] wheneverized!/, out)
           ensure
             FileUtils.rm_rf(File.dirname(path))
