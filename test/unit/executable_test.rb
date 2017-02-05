@@ -81,15 +81,16 @@ describe 'Executable' do
 
       describe 'config directory does not exist' do
         it 'prints STDOUT and STDERR' do
-          out, err = capture_subprocess_io do
-            system('wheneverize')
-          end
+          begin
+            out, err = capture_subprocess_io do
+              system('wheneverize')
+            end
 
-          assert_match(/\[done\] wheneverized!/, out)
-          assert_match(
-            %r{\[skip\] directory `#{File.dirname(path)}' does not exist},
-            err
-          )
+            assert_match(%r{\[add\] creating `#{File.dirname(path)}'\n}, err)
+            assert_match(/\[done\] wheneverized!/, out)
+          ensure
+            FileUtils.rm_rf(File.dirname(path))
+          end
         end
       end
 
