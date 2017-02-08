@@ -123,7 +123,7 @@ module Whenever
     end
 
     def comment_base
-      "Whenever generated tasks for: #{@options[:identifier]}"
+      "Whenever generated tasks"
     end
 
     def comment_open
