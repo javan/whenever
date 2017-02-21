@@ -10,9 +10,9 @@ module Whenever
 
       def initialize(time = nil, task = nil, at = nil)
         @at_given = at
-        @time = time
+        @time = @time_given = time
         @task = task
-        @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
+        @at   = at.is_a?(String) ? (Chronic.parse(at, {:guess => :begin}) || 0) : (at || 0)
       end
 
       def self.enumerate(item, detect_cron = true)
@@ -109,7 +109,9 @@ module Whenever
             else
               @at.zero? ? 1 : @at
             end
-            timing[3] = comma_separated_timing(month_frequency, 12, 1)
+            timing[3] = @time_given.eql?(:year) ? 
+              (@at.is_a?(Time) ? @at.month : 1) : 
+              comma_separated_timing(month_frequency, 12, 1)
           else
             return parse_as_string
         end

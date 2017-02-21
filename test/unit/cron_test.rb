@@ -140,6 +140,22 @@ class CronParseMonthsTest < Whenever::TestCase
   end
 end
 
+class CronParseYearsTest < Whenever::TestCase
+  should "parse correctly when given an 'at' with year's days, hours, minutes as a Time" do
+    # first param is an array with [month, days, hours, minutes]
+    assert_years_and_days_and_hours_and_minutes_equals %w(1 1 0 0),  'year'
+    assert_years_and_days_and_hours_and_minutes_equals %w(7 14 0 0),  'July 14th'
+    assert_years_and_days_and_hours_and_minutes_equals %w(2 11 23 0), 'Feb 11 11PM'
+    assert_years_and_days_and_hours_and_minutes_equals %w(4 23 0 0), 'april 22nd at midnight' # looks like midnight means the next day
+  end
+
+  should "parse correctly when given an 'at' with days as an Integer" do
+    # first param is an array with [days, hours, minutes]
+    assert_years_and_days_and_hours_and_minutes_equals %w(1 1 0 0),  1
+    assert_years_and_days_and_hours_and_minutes_equals %w(1 17 0 0), 17
+  end
+end
+
 class CronParseDaysOfWeekTest < Whenever::TestCase
   should "parse days of the week correctly" do
     {
@@ -194,7 +210,7 @@ class CronParseShortcutsTest < Whenever::TestCase
     assert_equal '0 0 1 * *',  parse_time(:month)
     assert_equal '0 0 * * *',  parse_time(:day)
     assert_equal '0 * * * *',  parse_time(:hour)
-    assert_equal '0 0 1 12 *', parse_time(:year)
+    assert_equal '0 0 1 1 *', parse_time(:year)
     assert_equal '0 0 1,8,15,22 * *', parse_time(:week)
   end
 
