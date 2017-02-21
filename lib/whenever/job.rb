@@ -2,7 +2,7 @@ require 'shellwords'
 
 module Whenever
   class Job
-    attr_reader :at, :roles
+    attr_reader :at, :roles, :description
 
     def initialize(options = {})
       @options = options
@@ -10,6 +10,7 @@ module Whenever
       @template                         = options.delete(:template)
       @job_template                     = options.delete(:job_template) || ":job"
       @roles                            = Array(options.delete(:roles))
+      @description                      = options.delete(:description)
       @options[:output]                 = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output]).to_s : ''
       @options[:environment_variable] ||= "RAILS_ENV"
       @options[:environment]          ||= :production

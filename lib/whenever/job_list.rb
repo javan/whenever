@@ -145,6 +145,7 @@ module Whenever
             job.has_role?(r)
           end
           Whenever::Output::Cron.output(time, job) do |cron|
+            cron.prepend "##{job.description}\n" unless job.description.to_s.empty?
             cron << "\n\n"
 
             if cron[0,1] == "@"
