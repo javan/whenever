@@ -120,6 +120,36 @@ Or set the job_template to nil to have your jobs execute normally.
 set :job_template, nil
 ```
 
+### Customize `MAILTO` environment variable
+
+You can specify `MAILTO` environment variable, which is recipient address of the email that contains output from the jobs.
+
+For example:
+
+```ruby
+env 'MAILTO', 'output_of_cron@example.com'
+
+every 3.hours do
+  command "/usr/bin/my_great_command"
+end
+```
+
+If you want to change `MAILTO` per jobs, you can specify as below ways.
+
+```ruby
+every 3.hours do
+  command "/usr/bin/my_super_command", :mailto => 'my_super_command_output@example.com'
+end
+```
+
+or
+
+```ruby
+every 3.hours, :mailto => 'my_super_command_output@example.com'  do
+  command "/usr/bin/my_super_command"
+end
+```
+
 ### Capistrano integration
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys. For Capistrano V3, see the next section.
