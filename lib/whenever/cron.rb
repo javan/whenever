@@ -95,11 +95,13 @@ module Whenever
             hour_frequency = (@time / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min : @at
             timing[1] = comma_separated_timing(hour_frequency, 23)
+            raise ArgumentError, "Minute must be between 0-59, #{timing[0]} given" unless (0..59).include?(timing[0])
           when Whenever.seconds(1, :day)...Whenever.seconds(1, :month)
             day_frequency = (@time / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
             timing[1] = @at.is_a?(Time) ? @at.hour : @at
             timing[2] = comma_separated_timing(day_frequency, 31, 1)
+            raise ArgumentError, "Hour must be between 0-23, #{timing[1]} given" unless (0..23).include?(timing[1])
           when Whenever.seconds(1, :month)..Whenever.seconds(12, :months)
             month_frequency = (@time / 30  / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
@@ -110,6 +112,7 @@ module Whenever
               @at.zero? ? 1 : @at
             end
             timing[3] = comma_separated_timing(month_frequency, 12, 1)
+            raise ArgumentError, "Day must be between 1-31, #{timing[2]} given" unless (1..31).include?(timing[2])
           else
             return parse_as_string
         end
