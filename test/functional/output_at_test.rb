@@ -204,4 +204,43 @@ class OutputAtTest < Whenever::TestCase
 
     assert_match '0 0 27,31 * * blahblah', output
   end
+
+  test "using custom Chronic configuration to specify time using 24 hour clock" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :chronic_options, :hours24 => true
+      every 1.day, :at => '03:00' do
+        command "blahblah"
+      end
+    file
+
+    assert_match '0 3 * * * blahblah', output
+  end
+
+  test "using custom Chronic configuration to specify date using little endian preference" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :chronic_options, :endian_precedence => :little
+      every 1.month, :at => '02/03 10:15' do
+        command "blahblah"
+      end
+    file
+
+    assert_match '15 10 2 * * blahblah', output
+  end
+
+  test "using custom Chronic configuration to specify time using 24 hour clock and date using little endian preference" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :chronic_options, :hours24 => true, :endian_precedence => :little
+      every 1.month, :at => '01/02 04:30' do
+        command "blahblah"
+      end
+    file
+
+    assert_match '30 4 1 * * blahblah', output
+  end
 end

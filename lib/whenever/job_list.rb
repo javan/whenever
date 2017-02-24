@@ -144,7 +144,7 @@ module Whenever
           next unless output_all || roles.any? do |r|
             job.has_role?(r)
           end
-          Whenever::Output::Cron.output(time, job) do |cron|
+          Whenever::Output::Cron.output(time, job, :chronic_options => @chronic_options) do |cron|
             cron << "\n\n"
 
             if cron[0,1] == "@"
