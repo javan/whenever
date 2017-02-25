@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CommandLineWriteTest < Whenever::TestCase
   setup do
-    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+00:00'))
+    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+01:00'))
     File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:write => true, :identifier => 'My identifier')
     @task = "#{two_hours} /my/command"
@@ -11,9 +11,9 @@ class CommandLineWriteTest < Whenever::TestCase
 
   should "output the cron job with identifier blocks" do
     output = <<-EXPECTED
-# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 #{@task}
-# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 EXPECTED
 
     assert_equal output, @command.send(:whenever_cron)
@@ -27,7 +27,7 @@ end
 
 class CommandLineUpdateTest < Whenever::TestCase
   setup do
-    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+00:00'))
+    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+01:00'))
     File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
     @task = "#{two_hours} /my/command"
@@ -41,9 +41,9 @@ class CommandLineUpdateTest < Whenever::TestCase
     new_cron = <<-EXPECTED
 #{existing}
 
-# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 #{@task}
-# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 EXPECTED
 
     assert_equal new_cron, @command.send(:updated_crontab)
@@ -60,21 +60,53 @@ EXPECTED
 My whenever job that was already here
 # End Whenever generated tasks for: My identifier at: 2017-01-03 08:22:22 +0500
 
-# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 This shouldn't get replaced
-# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 EXISTING_CRON
 
     new_cron = <<-NEW_CRON
 # Something
 
-# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 #{@task}
-# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 
-# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 This shouldn't get replaced
-# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
+NEW_CRON
+
+    @command.expects(:read_crontab).at_least_once.returns(existing)
+    assert_equal new_cron, @command.send(:updated_crontab)
+
+    @command.expects(:write_crontab).with(new_cron).returns(true)
+    assert @command.run
+  end
+
+  should "replace an existing block if the identifier matches and the UTC timestamp doesn't" do
+    existing = <<-EXISTING_CRON
+# Something
+
+# Begin Whenever generated tasks for: My identifier at: 2017-01-03 08:02:22 UTC
+My whenever job that was already here
+# End Whenever generated tasks for: My identifier at: 2017-01-03 08:22:22 UTC
+
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
+This shouldn't get replaced
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
+EXISTING_CRON
+
+    new_cron = <<-NEW_CRON
+# Something
+
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
+#{@task}
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
+
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
+This shouldn't get replaced
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 NEW_CRON
 
     @command.expects(:read_crontab).at_least_once.returns(existing)
@@ -92,21 +124,21 @@ NEW_CRON
 My whenever job that was already here
 # End Whenever generated tasks for: My identifier
 
-# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 This shouldn't get replaced
-# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 EXISTING_CRON
 
     new_cron = <<-NEW_CRON
 # Something
 
-# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 #{@task}
-# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 
-# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 This shouldn't get replaced
-# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 NEW_CRON
 
     @command.expects(:read_crontab).at_least_once.returns(existing)
@@ -119,11 +151,11 @@ end
 
 class CommandLineUpdateWithBackslashesTest < Whenever::TestCase
   setup do
-    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+00:00'))
+    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+01:00'))
     @existing = <<-EXISTING_CRON
-# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 script/runner -e production 'puts '\\''hello'\\'''
-# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 EXISTING_CRON
     File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
@@ -139,12 +171,12 @@ end
 class CommandLineUpdateToSimilarCrontabTest < Whenever::TestCase
   setup do
     @existing = <<-EXISTING_CRON
-# Begin Whenever generated tasks for: WheneverExisting at: 2017-02-24 16:21:30 +0000
-# End Whenever generated tasks for: WheneverExisting at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: WheneverExisting at: 2017-02-24 16:21:30 +0100
+# End Whenever generated tasks for: WheneverExisting at: 2017-02-24 16:21:30 +0100
 EXISTING_CRON
     @new = <<-NEW_CRON
-# Begin Whenever generated tasks for: Whenever at: 2017-02-24 16:21:30 +0000
-# End Whenever generated tasks for: Whenever at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: Whenever at: 2017-02-24 16:21:30 +0100
+# End Whenever generated tasks for: Whenever at: 2017-02-24 16:21:30 +0100
 NEW_CRON
     File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:update => true, :identifier => 'Whenever')
@@ -159,7 +191,7 @@ end
 
 class CommandLineClearTest < Whenever::TestCase
   setup do
-    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+00:00'))
+    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+01:00'))
     File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:clear => true, :identifier => 'My identifier')
     @task = "#{two_hours} /my/command"
@@ -173,9 +205,9 @@ class CommandLineClearTest < Whenever::TestCase
 My whenever job that was already here
 # End Whenever generated tasks for: My identifier at: 2017-01-03 08:20:02 +0500
 
-# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 This shouldn't get replaced
-# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 EXISTING_CRON
 
     @command.expects(:read_crontab).at_least_once.returns(existing)
@@ -183,9 +215,38 @@ EXISTING_CRON
     new_cron = <<-NEW_CRON
 # Something
 
-# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 This shouldn't get replaced
-# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
+NEW_CRON
+
+    assert_equal new_cron, @command.send(:updated_crontab)
+
+    @command.expects(:write_crontab).with(new_cron).returns(true)
+    assert @command.run
+  end
+
+  should "clear an existing block if the identifier matches and the UTC timestamp doesn't" do
+    existing = <<-EXISTING_CRON
+# Something
+
+# Begin Whenever generated tasks for: My identifier at: 2017-01-03 08:20:02 UTC
+My whenever job that was already here
+# End Whenever generated tasks for: My identifier at: 2017-01-03 08:20:02 UTC
+
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
+This shouldn't get replaced
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
+EXISTING_CRON
+
+    @command.expects(:read_crontab).at_least_once.returns(existing)
+
+    new_cron = <<-NEW_CRON
+# Something
+
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
+This shouldn't get replaced
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 NEW_CRON
 
     assert_equal new_cron, @command.send(:updated_crontab)
@@ -202,9 +263,9 @@ NEW_CRON
 My whenever job that was already here
 # End Whenever generated tasks for: My identifier
 
-# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 This shouldn't get replaced
-# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 EXISTING_CRON
 
     @command.expects(:read_crontab).at_least_once.returns(existing)
@@ -212,9 +273,9 @@ EXISTING_CRON
     new_cron = <<-NEW_CRON
 # Something
 
-# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 This shouldn't get replaced
-# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: Other identifier at: 2017-02-24 16:21:30 +0100
 NEW_CRON
 
     assert_equal new_cron, @command.send(:updated_crontab)
@@ -238,14 +299,14 @@ end
 
 class CommandLineUpdateWithNoIdentifierTest < Whenever::TestCase
   setup do
-    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+00:00'))
+    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+01:00'))
     File.expects(:exist?).with('config/schedule.rb').returns(true)
     Whenever::CommandLine.any_instance.expects(:default_identifier).returns('DEFAULT')
     @command = Whenever::CommandLine.new(:update => true)
   end
 
   should "use the default identifier" do
-    assert_equal "Whenever generated tasks for: DEFAULT at: 2017-02-24 16:21:30 +0000", @command.send(:comment_base)
+    assert_equal "Whenever generated tasks for: DEFAULT at: 2017-02-24 16:21:30 +0100", @command.send(:comment_base)
   end
 end
 
@@ -353,9 +414,9 @@ class PreparingOutputTest < Whenever::TestCase
 # Useless Comments
 # at the top of the file
 
-# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 My whenever job that was already here
-# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 EXISTING_CRON
 
     assert_equal existing, @command.send(:prepare, existing)
@@ -367,15 +428,15 @@ EXISTING_CRON
 # Useless Comments
 # at the top of the file
 
-# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 My whenever job that was already here
-# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 EXISTING_CRON
 
     new_cron = <<-NEW_CRON
-# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 My whenever job that was already here
-# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 NEW_CRON
 
     assert_equal new_cron, @command.send(:prepare, existing)
@@ -384,9 +445,9 @@ NEW_CRON
   should "preserve terminating newlines in files" do
     @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
     existing = <<-EXISTING_CRON
-# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# Begin Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 My whenever job that was already here
-# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0000
+# End Whenever generated tasks for: My identifier at: 2017-02-24 16:21:30 +0100
 
 # A non-Whenever task
 My non-whenever job that was already here

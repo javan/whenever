@@ -149,7 +149,7 @@ module Whenever
     end
 
     def timestamp_regex
-      " at: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} [+-]\\d{4}"
+      " at: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} ([+-]\\d{4}|UTC)"
     end
   end
 end
