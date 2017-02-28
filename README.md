@@ -58,6 +58,7 @@ every 1.day, :at => '4:30 am' do
   runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
 end
 
+# Note: If you use the Symbol-Shortcut (:hour or :day at the moment) and leave the at-argument blank, the exact time of execution will be randomized
 every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
   runner "SomeModel.ladeeda"
 end
@@ -274,6 +275,15 @@ No. Heroku does not support cron, instead providing [Heroku Scheduler](https://d
 ### Testing
 
 [whenever-test](https://github.com/heartbits/whenever-test) is an extension to Whenever for testing a Whenever schedule.
+
+### ExceptionNotification
+ 
+If you are using the exception_notification gem (<https://github.com/smartinez87/exception_notification>), enable it for your "runner" cronjobs with:
+
+In your "schedule.rb" file:
+`set :runner_exception_notification, true`
+
+This will catch all commands defined as "runner", handle it with ExceptionNotification (and raise the exception nevertheless).
 
 ### Credit
 

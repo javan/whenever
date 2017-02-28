@@ -60,6 +60,7 @@ class OutputJobsForRolesTest < Whenever::TestCase
     file
 
     assert_match two_hours + " /bin/bash -l -c 'role1_cmd'", output
-    assert_match "0 * * * * /bin/bash -l -c 'role2_cmd'", output
+    #assert_match "0 * * * * /bin/bash -l -c 'role2_cmd'", output
+    assert_match /^[1-5]?[0-9]( \*){4} \/bin\/bash -l -c 'role2_cmd'$/ ,                output
   end
 end
