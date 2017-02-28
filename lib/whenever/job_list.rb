@@ -57,13 +57,16 @@ module Whenever
           options = { :task => task, :template => template }
           options.merge!(args[0]) if args[0].is_a? Hash
 
+          options[:mailto] ||= @options.fetch(:mailto, :default_mailto)
+
           # :cron_log was an old option for output redirection, it remains for backwards compatibility
           options[:output] = (options[:cron_log] || @cron_log) if defined?(@cron_log) || options.has_key?(:cron_log)
           # :output is the newer, more flexible option.
           options[:output] = @output if defined?(@output) && !options.has_key?(:output)
 
-          @jobs[@current_time_scope] ||= []
-          @jobs[@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options))
+          @jobs[options.fetch(:mailto)] ||= {}
+          @jobs[options.fetch(:mailto)][@current_time_scope] ||= []
+          @jobs[options.fetch(:mailto)][@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options))
         end
       end
     end
@@ -132,31 +135,51 @@ module Whenever
       entries.map { |entry| entry.join(' ') }
     end
 
-    def cron_jobs
-      return if @jobs.empty?
+    def cron_jobs_of_time(time, jobs)
+      shortcut_jobs, regular_jobs = [], []
 
-      shortcut_jobs = []
-      regular_jobs = []
+      jobs.each do |job|
+        next unless roles.empty? || roles.any? do |r|
+          job.has_role?(r)
+        end
+        Whenever::Output::Cron.output(time, job) do |cron|
+          cron << "\n\n"
 
-      output_all = roles.empty?
-      @jobs.each do |time, jobs|
-        jobs.each do |job|
-          next unless output_all || roles.any? do |r|
-            job.has_role?(r)
-          end
-          Whenever::Output::Cron.output(time, job) do |cron|
-            cron << "\n\n"
-
-            if cron[0,1] == "@"
-              shortcut_jobs << cron
-            else
-              regular_jobs << cron
-            end
+          if cron[0,1] == "@"
+            shortcut_jobs << cron
+          else
+            regular_jobs << cron
           end
         end
       end
 
       shortcut_jobs.join + combine(regular_jobs).join
+    end
+
+    def cron_jobs
+      return if @jobs.empty?
+
+      output = []
+
+      # jobs with default mailto's must be output before the ones with non-default mailto's.
+      @jobs.delete(:default_mailto) { Hash.new }.each do |time, jobs|
+        output << cron_jobs_of_time(time, jobs)
+      end
+
+      @jobs.each do |mailto, time_and_jobs|
+        output_jobs = []
+
+        time_and_jobs.each do |time, jobs|
+          output_jobs << cron_jobs_of_time(time, jobs)
+        end
+
+        output_jobs.reject! { |output_job| output_job.empty? }
+
+        output << "MAILTO=#{mailto}\n\n" unless output_jobs.empty?
+        output << output_jobs
+      end
+
+      output.join
     end
   end
 end
