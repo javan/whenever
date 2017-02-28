@@ -120,11 +120,13 @@ Or set the job_template to nil to have your jobs execute normally.
 set :job_template, nil
 ```
 
-### Customize `MAILTO` environment variable
+### Customize email recipient with the `MAILTO` environment variable
 
-You can specify `MAILTO` environment variable, which is recipient address of the email that contains output from the jobs.
+Output from the jobs is sent to the email address configured in the `MAILTO` environment variable.
 
-For example:
+There are many ways to further configure the recipient.
+
+Example: A global configuration, overriding the environment's value:
 
 ```ruby
 env 'MAILTO', 'output_of_cron@example.com'
@@ -134,19 +136,19 @@ every 3.hours do
 end
 ```
 
-If you want to change `MAILTO` per jobs, you can specify as below ways.
-
-```ruby
-every 3.hours do
-  command "/usr/bin/my_super_command", mailto: 'my_super_command_output@example.com'
-end
-```
-
-or
+Example: A `MAILTO` configured for all the jobs in an interval block:
 
 ```ruby
 every 3.hours, mailto: 'my_super_command@example.com'  do
   command "/usr/bin/my_super_command"
+end
+```
+
+Example: A `MAILTO` configured for a single job:
+
+```ruby
+every 3.hours do
+  command "/usr/bin/my_super_command", mailto: 'my_super_command_output@example.com'
 end
 ```
 
@@ -177,7 +179,7 @@ require "whenever/capistrano"
 
 The capistrano variable `:stage` should be the one holding your environment name. This will make the correct `:environment` available in your `schedule.rb`.
 
-If both your environments are on the same server you'll want to namespace them or they'll overwrite each other when you deploy:
+If both your environments are on the same server you'll want to namespace them, or they'll overwrite each other when you deploy:
 
 ```ruby
 set :whenever_environment, defer { stage }
@@ -209,10 +211,10 @@ different servers in your capistrano deployment, then you can safely stop readin
 now and everything should just work the same way it always has.
 
 When you define a job in your schedule.rb file, by default it will be deployed to
-all servers in the whenever_roles list (which defaults to [:db]).
+all servers in the whenever_roles list (which defaults to `[:db]`).
 
 However, if you want to restrict certain jobs to only run on subset of servers,
-you can add a :roles => [...] argument to their definitions. **Make sure to add
+you can add a `:roles => [...]` argument to their definitions. **Make sure to add
 that role to the whenever_roles list in your deploy.rb.**
 
 When you run `cap deploy`, jobs with a :roles list specified will only be added to
@@ -221,8 +223,8 @@ the crontabs on servers with one or more of the roles in that list.
 Jobs with no :roles argument will be deployed to all servers in the whenever_roles
 list. This is to maintain backward compatibility with previous releases of whenever.
 
-So, for example, with the default whenever_roles of [:db], a job like this would be
-deployed to all servers with the :db role:
+So, for example, with the default whenever_roles of `[:db]`, a job like this would be
+deployed to all servers with the `:db` role:
 
 ```ruby
 every :day, :at => '12:20am' do
@@ -230,7 +232,7 @@ every :day, :at => '12:20am' do
 end
 ```
 
-If we set whenever_roles to [:db, :app] in deploy.rb, and have the following
+If we set whenever_roles to `[:db, :app]` in deploy.rb, and have the following
 jobs in schedule.rb:
 
 ```ruby
