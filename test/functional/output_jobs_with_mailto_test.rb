@@ -163,6 +163,6 @@ class OutputJobsWithMailtoForRolesTest < Whenever::TestCase
 
     assert_equal 'MAILTO=default@example.com', output_without_empty_line.shift
     assert_equal two_hours + " /bin/bash -l -c 'blahblah'", output_without_empty_line.shift
-    assert_equal nil, output_without_empty_line.shift
+    assert_nil output_without_empty_line.shift
   end
 end
