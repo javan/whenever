@@ -124,7 +124,9 @@ set :job_template, nil
 
 Output from the jobs is sent to the email address configured in the `MAILTO` environment variable.
 
-For example: a global configuration.
+There are many ways to further configure the recipient.
+
+Example: A global configuration, overriding the environment's value:
 
 ```ruby
 env 'MAILTO', 'output_of_cron@example.com'
@@ -134,7 +136,7 @@ every 3.hours do
 end
 ```
 
-Example: `MAILTO` configured for an interval block:
+Example: A `MAILTO` configured for all the jobs in an interval block:
 
 ```ruby
 every 3.hours, mailto: 'my_super_command@example.com'  do
@@ -142,7 +144,7 @@ every 3.hours, mailto: 'my_super_command@example.com'  do
 end
 ```
 
-Example: `MAILTO` configured per-job:
+Example: A `MAILTO` configured for a single job:
 
 ```ruby
 every 3.hours do
