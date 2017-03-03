@@ -128,7 +128,7 @@ module Whenever
             else
               @at.zero? ? 1 : @at
             end
-            raise ArgumentError, "Month must be between 1-12, #{timing[2]} given" unless (1..12).include?(timing[3])
+            raise ArgumentError, "Month must be between 1-12, #{timing[3]} given" unless (1..12).include?(timing[3])
           else
             return parse_as_string
         end
