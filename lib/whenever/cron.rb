@@ -63,7 +63,7 @@ module Whenever
       def parse_symbol
         shortcut = case @time
           when *KEYWORDS then "@#{@time}" # :reboot => '@reboot'
-          when :year     then Whenever.seconds(12, :months)
+          when :year     then Whenever.seconds(1, :year)
           when :day      then Whenever.seconds(1, :day)
           when :month    then Whenever.seconds(1, :month)
           when :week     then Whenever.seconds(1, :week)
@@ -104,8 +104,8 @@ module Whenever
             timing[1] = @at.is_a?(Time) ? @at.hour : @at
             timing[2] = comma_separated_timing(day_frequency, 31, 1)
             raise ArgumentError, "Hour must be between 0-23, #{timing[1]} given" unless (0..23).include?(timing[1])
-          when Whenever.seconds(1, :month)..Whenever.seconds(12, :months)
-            month_frequency = (@time / 30  / 24 / 60 / 60).round
+          when Whenever.seconds(1, :month)...Whenever.seconds(1, :year)
+            month_frequency = (@time / 30 / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
             timing[1] = @at.is_a?(Time) ? @at.hour : 0
             timing[2] = if @at.is_a?(Time)
@@ -115,6 +115,20 @@ module Whenever
             end
             timing[3] = comma_separated_timing(month_frequency, 12, 1)
             raise ArgumentError, "Day must be between 1-31, #{timing[2]} given" unless (1..31).include?(timing[2])
+          when Whenever.seconds(1, :year)
+            timing[0] = @at.is_a?(Time) ? @at.min  : 0
+            timing[1] = @at.is_a?(Time) ? @at.hour : 0
+            timing[2] = if @at.is_a?(Time)
+              day_given? ? @at.day : 1
+            else
+              1
+            end
+            timing[3] = if @at.is_a?(Time)
+              day_given? ? @at.month : 1
+            else
+              @at.zero? ? 1 : @at
+            end
+            raise ArgumentError, "Month must be between 1-12, #{timing[2]} given" unless (1..12).include?(timing[3])
           else
             return parse_as_string
         end

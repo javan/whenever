@@ -208,6 +208,63 @@ class CronParseMonthsTest < Whenever::TestCase
   end
 end
 
+class CronParseYearTest < Whenever::TestCase
+  should "parse correctly" do
+    assert_equal '0 0 1 1 *', parse_time(Whenever.seconds(1, :year))
+  end
+
+  should "parse year with a date and/or time" do
+    # should set the day and month to 1 if no date is given
+    assert_equal '0 17 1 1 *', parse_time(Whenever.seconds(1, :year), nil, "5pm")
+    # should use the date if one is given
+    assert_equal '0 2 23 2 *', parse_time(Whenever.seconds(1, :year), nil, "February 23rd at 2am")
+    # should use an iteger as the month
+    assert_equal '0 0 1 5 *', parse_time(Whenever.seconds(1, :year), nil, 5)
+  end
+
+  should "parse correctly when given an 'at' with days, hours, minutes as a Time" do
+    # first param is an array with [months, days, hours, minutes]
+    assert_months_and_days_and_hours_and_minutes_equals %w(1 1 3 45),  'January 1st 3:45am'
+    assert_months_and_days_and_hours_and_minutes_equals %w(2 11 23 0), 'Feb 11 11PM'
+    assert_months_and_days_and_hours_and_minutes_equals %w(3 22 1 1),  'march 22nd at 1:01 am'
+    assert_months_and_days_and_hours_and_minutes_equals %w(3 23 0 0),  'march 22nd at midnight' # looks like midnight means the next day
+  end
+
+  should "parse correctly when given an 'at' with days, hours, minutes as a Time and custom Chronic options are set" do
+    # first param is an array with [months, days, hours, minutes]
+    assert_months_and_days_and_hours_and_minutes_equals %w(2 22 15 45), 'February 22nd 3:45'
+    assert_months_and_days_and_hours_and_minutes_equals %w(2 22 15 45), '02/22 3:45'
+    assert_months_and_days_and_hours_and_minutes_equals %w(2 22 3 45),  'February 22nd 3:45', :chronic_options => { :hours24 => true }
+    assert_months_and_days_and_hours_and_minutes_equals %w(2 22 15 45), 'February 22nd 3:45', :chronic_options => { :hours24 => false }
+
+    assert_months_and_days_and_hours_and_minutes_equals %w(2 3 8 15), '02/03 8:15'
+    assert_months_and_days_and_hours_and_minutes_equals %w(2 3 8 15), '02/03 8:15', :chronic_options => { :endian_precedence => :middle }
+    assert_months_and_days_and_hours_and_minutes_equals %w(3 2 8 15), '02/03 8:15', :chronic_options => { :endian_precedence => :little }
+
+    assert_months_and_days_and_hours_and_minutes_equals %w(3 4 4 50),  '03/04 4:50', :chronic_options => { :endian_precedence => :middle, :hours24 => true }
+    assert_months_and_days_and_hours_and_minutes_equals %w(3 4 16 50), '03/04 4:50', :chronic_options => { :endian_precedence => :middle, :hours24 => false }
+    assert_months_and_days_and_hours_and_minutes_equals %w(4 3 4 50),  '03/04 4:50', :chronic_options => { :endian_precedence => :little, :hours24 => true }
+    assert_months_and_days_and_hours_and_minutes_equals %w(4 3 16 50), '03/04 4:50', :chronic_options => { :endian_precedence => :little, :hours24 => false }
+  end
+
+  should "parse correctly when given an 'at' with month as an Integer" do
+    # first param is an array with [months, days, hours, minutes]
+    assert_months_and_days_and_hours_and_minutes_equals %w(1 1 0 0),  1
+    assert_months_and_days_and_hours_and_minutes_equals %w(5 1 0 0),  5
+    assert_months_and_days_and_hours_and_minutes_equals %w(12 1 0 0), 12
+  end
+
+  should "raise an exception when given an 'at' with an invalid month value" do
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :year), nil, 13)
+    end
+
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :year), nil, -1)
+    end
+  end
+end
+
 class CronParseDaysOfWeekTest < Whenever::TestCase
   should "parse days of the week correctly" do
     {
@@ -259,10 +316,10 @@ class CronParseShortcutsTest < Whenever::TestCase
   end
 
   should "convert time-based shortcuts to times" do
-    assert_equal '0 0 1 * *',  parse_time(:month)
-    assert_equal '0 0 * * *',  parse_time(:day)
-    assert_equal '0 * * * *',  parse_time(:hour)
-    assert_equal '0 0 1 12 *', parse_time(:year)
+    assert_equal '0 0 1 * *', parse_time(:month)
+    assert_equal '0 0 * * *', parse_time(:day)
+    assert_equal '0 * * * *', parse_time(:hour)
+    assert_equal '0 0 1 1 *', parse_time(:year)
     assert_equal '0 0 1,8,15,22 * *', parse_time(:week)
   end
 
