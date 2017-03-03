@@ -16,6 +16,12 @@ module Whenever::TestHelpers
       "0 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
     end
 
+    def assert_months_and_days_and_hours_and_minutes_equals(expected, time, options = {})
+      cron = parse_time(Whenever.seconds(1, :year), 'some task', time, options)
+      minutes, hours, days, months = cron.split(' ')
+      assert_equal expected, [months, days, hours, minutes]
+    end
+
     def assert_days_and_hours_and_minutes_equals(expected, time, options = {})
       cron = parse_time(Whenever.seconds(2, :months), 'some task', time, options)
       minutes, hours, days, _ = cron.split(' ')
