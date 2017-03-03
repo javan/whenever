@@ -5,6 +5,10 @@ set :environment, "production"
 # Path defaults to the directory `whenever` was run from
 set :path, Whenever.path
 
+# Custom Chronic configuration for time parsing, empty by default
+# Full list of options at: https://github.com/mojombo/chronic/blob/master/lib/chronic/parser.rb
+set :chronic_options, {}
+
 # All jobs are wrapped in this template.
 # http://blog.scoutapp.com/articles/2010/09/07/rvm-and-cron-in-production
 set :job_template, "/bin/bash -l -c ':job'"

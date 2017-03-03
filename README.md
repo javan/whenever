@@ -120,6 +120,25 @@ Or set the job_template to nil to have your jobs execute normally.
 set :job_template, nil
 ```
 
+### Parsing dates and times
+
+Whenever uses the [Chronic](https://github.com/mojombo/chronic) gem to parse the specified dates and times.
+
+You can set your custom Chronic configuration if the defaults don't fit you.
+
+For example, to assume a 24 hour clock instead of the default 12 hour clock:
+
+```ruby
+set :chronic_options, :hours24 => true
+
+# By default this would run the job every day at 3pm
+every 1.day, :at => '3:00' do
+  runner "MyModel.nightly_archive_job"
+end
+```
+
+You can see a list of all available options here: <https://github.com/mojombo/chronic/blob/master/lib/chronic/parser.rb>
+
 ### Customize email recipient with the `MAILTO` environment variable
 
 Output from the jobs is sent to the email address configured in the `MAILTO` environment variable.

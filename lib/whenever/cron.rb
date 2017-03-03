@@ -8,11 +8,13 @@ module Whenever
 
       attr_accessor :time, :task
 
-      def initialize(time = nil, task = nil, at = nil)
+      def initialize(time = nil, task = nil, at = nil, options = {})
+        chronic_options = options[:chronic_options] || {}
+
         @at_given = at
         @time = time
         @task = task
-        @at   = at.is_a?(String) ? (Chronic.parse(at) || 0) : (at || 0)
+        @at   = at.is_a?(String) ? (Chronic.parse(at, chronic_options) || 0) : (at || 0)
       end
 
       def self.enumerate(item, detect_cron = true)
@@ -30,10 +32,10 @@ module Whenever
         items
       end
 
-      def self.output(times, job)
+      def self.output(times, job, options = {})
         enumerate(times).each do |time|
           enumerate(job.at, false).each do |at|
-            yield new(time, job.output, at).output
+            yield new(time, job.output, at, options).output
           end
         end
       end
@@ -55,7 +57,7 @@ module Whenever
     protected
       def day_given?
         months = %w(jan feb mar apr may jun jul aug sep oct nov dec)
-        @at_given.is_a?(String) && months.any? { |m| @at_given.downcase.index(m) }
+        @at_given.is_a?(String) && (months.any? { |m| @at_given.downcase.index(m) } || @at_given[/\d\/\d/])
       end
 
       def parse_symbol

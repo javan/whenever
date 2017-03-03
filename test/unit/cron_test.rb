@@ -68,6 +68,16 @@ class CronParseHoursTest < Whenever::TestCase
     assert_minutes_equals "59", '13:59'
   end
 
+  should "parse correctly when given an 'at' with minutes as a Time and custom Chronic options are set" do
+    assert_minutes_equals "15", '3:15'
+    assert_minutes_equals "15", '3:15', :chronic_options => { :hours24 => true }
+    assert_minutes_equals "15", '3:15', :chronic_options => { :hours24 => false }
+
+    assert_minutes_equals "30", '6:30'
+    assert_minutes_equals "30", '6:30', :chronic_options => { :hours24 => true }
+    assert_minutes_equals "30", '6:30', :chronic_options => { :hours24 => false }
+  end
+
   should "raise an exception when given an 'at' with an invalid minute value" do
     assert_raises ArgumentError do
       parse_time(Whenever.seconds(1, :hour), nil, 60)
@@ -98,6 +108,17 @@ class CronParseDaysTest < Whenever::TestCase
     assert_hours_and_minutes_equals %w(0 0),   'midnight'
     assert_hours_and_minutes_equals %w(1 23),  '1:23 AM'
     assert_hours_and_minutes_equals %w(23 59), 'March 21 11:59 pM'
+  end
+
+  should "parse correctly when given an 'at' with hours, minutes as a Time and custom Chronic options are set" do
+    # first param is an array with [hours, minutes]
+    assert_hours_and_minutes_equals %w(15 15), '3:15'
+    assert_hours_and_minutes_equals %w(3 15),  '3:15', :chronic_options => { :hours24 => true }
+    assert_hours_and_minutes_equals %w(15 15), '3:15', :chronic_options => { :hours24 => false }
+
+    assert_hours_and_minutes_equals %w(6 30),  '6:30'
+    assert_hours_and_minutes_equals %w(6 30),  '6:30', :chronic_options => { :hours24 => true }
+    assert_hours_and_minutes_equals %w(6 30),  '6:30', :chronic_options => { :hours24 => false }
   end
 
   should "parse correctly when given an 'at' with hours as an Integer" do
@@ -150,6 +171,23 @@ class CronParseMonthsTest < Whenever::TestCase
     assert_days_and_hours_and_minutes_equals %w(11 23 0), 'Feb 11 11PM'
     assert_days_and_hours_and_minutes_equals %w(22 1 1), 'march 22nd at 1:01 am'
     assert_days_and_hours_and_minutes_equals %w(23 0 0), 'march 22nd at midnight' # looks like midnight means the next day
+  end
+
+  should "parse correctly when given an 'at' with days, hours, minutes as a Time and custom Chronic options are set" do
+    # first param is an array with [days, hours, minutes]
+    assert_days_and_hours_and_minutes_equals %w(22 15 45), 'February 22nd 3:45'
+    assert_days_and_hours_and_minutes_equals %w(22 15 45), '02/22 3:45'
+    assert_days_and_hours_and_minutes_equals %w(22 3 45),  'February 22nd 3:45', :chronic_options => { :hours24 => true }
+    assert_days_and_hours_and_minutes_equals %w(22 15 45), 'February 22nd 3:45', :chronic_options => { :hours24 => false }
+
+    assert_days_and_hours_and_minutes_equals %w(3 8 15), '02/03 8:15'
+    assert_days_and_hours_and_minutes_equals %w(3 8 15), '02/03 8:15', :chronic_options => { :endian_precedence => :middle }
+    assert_days_and_hours_and_minutes_equals %w(2 8 15), '02/03 8:15', :chronic_options => { :endian_precedence => :little }
+
+    assert_days_and_hours_and_minutes_equals %w(4 4 50),  '03/04 4:50', :chronic_options => { :endian_precedence => :middle, :hours24 => true }
+    assert_days_and_hours_and_minutes_equals %w(4 16 50), '03/04 4:50', :chronic_options => { :endian_precedence => :middle, :hours24 => false }
+    assert_days_and_hours_and_minutes_equals %w(3 4 50),  '03/04 4:50', :chronic_options => { :endian_precedence => :little, :hours24 => true }
+    assert_days_and_hours_and_minutes_equals %w(3 16 50), '03/04 4:50', :chronic_options => { :endian_precedence => :little, :hours24 => false }
   end
 
   should "parse correctly when given an 'at' with days as an Integer" do
