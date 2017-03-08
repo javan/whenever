@@ -6,9 +6,20 @@ namespace :whenever do
       args_for_host = block_given? ? args + Array(yield(host)) : args
       within release_path do
         with fetch(:whenever_command_environment_variables) do
-          execute(*args_for_host)
+          as_whenever_user do
+            execute(*args_for_host)
+          end
         end
       end
+    end
+  end
+
+  def as_whenever_user(&block)
+    user = fetch(:whenever_user)
+    if user
+      as(user, &block)
+    else
+      block.call
     end
   end
 
@@ -31,6 +42,7 @@ end
 
 namespace :load do
   task :defaults do
+    set :whenever_user,         -> { nil }
     set :whenever_roles,        ->{ :db }
     set :whenever_command,      ->{ [:bundle, :exec, :whenever] }
     set :whenever_command_environment_variables, ->{ { rails_env: fetch(:whenever_environment) } }
