@@ -22,7 +22,10 @@ namespace :whenever do
 
   desc "Clear application's crontab entries using Whenever"
   task :clear_crontab do
-    setup_whenever_task(fetch(:whenever_clear_flags))
+    setup_whenever_task do |host|
+      roles = host.roles_array.join(",")
+      [fetch(:whenever_clear_flags),  "--roles=#{roles}"]
+    end
   end
 
   after "deploy:updated",  "whenever:update_crontab"
