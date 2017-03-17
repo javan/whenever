@@ -53,6 +53,11 @@ FILE
 file = 'config/schedule.rb'
 base = ARGV.empty? ? '.' : ARGV.shift
 
+if !File.exists?(File.dirname(file))
+ puts "[reconfiguring] `#{File.dirname(file)}' does not exist. Creating schedule.rb here"
+ file= 'schedule.rb'
+end
+
 file = File.join(base, file)
 if File.exist?(file)
   warn "[skip] `#{file}' already exists"
