@@ -306,8 +306,8 @@ For general discussion and questions, please use the google group: <http://group
 
 If you've found a genuine bug or issue, please use the Issues section on github: <http://github.com/javan/whenever/issues>
 
-Ryan Bates created a great Railscast about Whenever: <http://railscasts.com/episodes/164-cron-in-ruby>
-It's a little bit dated now, but remains a good introduction.
+Ryan Bates created a great Railscast about Whenever: <http://railscasts.com/episodes/164-cron-in-ruby-revised>.
+It's a good introduction.
 
 ----
 
