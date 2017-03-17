@@ -11,7 +11,16 @@ set :chronic_options, {}
 
 # All jobs are wrapped in this template.
 # http://blog.scoutapp.com/articles/2010/09/07/rvm-and-cron-in-production
-set :job_template, "/bin/bash -l -c ':job'"
+
+shell = "/bash"
+ENV['PATH'].split(':').each do |folder| 
+    if File.exists?(folder + shell) && File.executable?(folder + shell)
+        shell = folder + shell
+        break
+    end
+end
+
+set :job_template, shell + " -l -c ':job'"
 
 set :runner_command, case
   when Whenever.bin_rails?
