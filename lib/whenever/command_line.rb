@@ -87,7 +87,7 @@ module Whenever
         puts "[write] crontab file #{action}"
         exit(0)
       else
-        warn "[fail] Couldn't write crontab; try running `whenever' with no options to ensure your schedule file is valid."
+        warn "[fail] Couldn't write crontab; try running `whenever' with no options to ensure your schedule file is valid, be sure to check the output for valid cron syntax"
         exit(1)
       end
     end
