@@ -171,6 +171,43 @@ every 3.hours do
 end
 ```
 
+### Running cron jobs in different environments
+
+You may have some cron tasks that you only want to run in certain environments.  You can do this using the following example:
+
+if environment == "production"
+  every 1.day do
+    rake "do:something:in:prod"
+  end
+end
+
+if environment == "staging"
+  every 1.day, :at => "3:26am" do
+    rake "do:something:in:staging"
+  end
+end
+
+### Passing information into your cron tasks
+
+You can use the --set key=value command line argument to pass information into your whenever script.
+
+For example:
+    whenever --set foo=bar
+
+will allow you to do the following in your whenever script:
+
+if foo == 'bar'
+  every 1.day, :at => "3:26am" do
+    rake "do:something:when:foo:equals:bar"
+  end
+end
+
+You can also use this to test to see what your cron jobs will look like in different environments.  For example:
+
+    whenever --set environment=test
+
+will set the RAILS_ENV=test and the environment accessor to 'test'.
+
 ### Capistrano integration
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys. For Capistrano V3, see the next section.
