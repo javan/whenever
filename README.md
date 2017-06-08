@@ -45,6 +45,14 @@ You can list installed cron jobs using `crontab -l`.
 
 Run `whenever --help` for a complete list of options for selecting the schedule to use, setting variables in the schedule, etc.
 
+### Convert your crontab to schedule.rb
+
+Whenever ships with converter for crontab to schedule.rb.
+
+```sh
+$ crontab -l | convert2whenever > config/my_schedule.rb
+```
+
 ### Example schedule.rb file
 
 ```ruby
