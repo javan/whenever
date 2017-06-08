@@ -1,0 +1,12 @@
+#! /bin/sh
+exec ruby -anl -S -x $0 "$@"
+#! ruby
+if $F[0] =~ /^[0-9*]/
+  schedule = $F[0..4];
+  command = $F[5..-1];
+  print "every '" + schedule.join(" ") + "' do";
+  print "  command \"" + command.join(" ") + "\"";
+  print "end";
+else
+  print $_;
+end
