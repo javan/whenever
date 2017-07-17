@@ -85,7 +85,7 @@ module Whenever
     def pre_set(variable_string = nil)
       return if variable_string.nil? || variable_string == ""
 
-      pairs = variable_string.split(/&(?!&|\s)/)
+      pairs = variable_string.split(/(?<!&)&(?!&)/)
       pairs.each do |pair|
         next unless pair.index('=')
         variable, value = *pair.split('=')
