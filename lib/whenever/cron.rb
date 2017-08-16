@@ -58,8 +58,7 @@ module Whenever
 
     protected
       def day_given?
-        months = %w(jan feb mar apr may jun jul aug sep oct nov dec)
-        @at_given.is_a?(String) && (months.any? { |m| @at_given.downcase.index(m) } || @at_given[/\d\/\d/])
+        @at_given.is_a?(String) && (MONTHS.any? { |m| @at_given.downcase.index(m) } || @at_given[/\d\/\d/])
       end
 
       def parse_symbol
@@ -148,7 +147,7 @@ module Whenever
         return (timing << '1-5') * " " if string.downcase.index('weekday')
         return (timing << '6,0') * " " if string.downcase.index('weekend')
 
-        %w(sun mon tue wed thu fri sat).each_with_index do |day, i|
+        DAYS.each_with_index do |day, i|
           return (timing << i) * " " if string.downcase.index(day)
         end
 
