@@ -131,7 +131,7 @@ For example, to assume a 24 hour clock instead of the default 12 hour clock:
 ```ruby
 set :chronic_options, :hours24 => true
 
-# By default this would run the job every day at 3pm
+# By default this would run the job every day at 3am
 every 1.day, :at => '3:00' do
   runner "MyModel.nightly_archive_job"
 end
