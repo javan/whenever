@@ -25,13 +25,15 @@ namespace :whenever do
     setup_whenever_task(fetch(:whenever_clear_flags))
   end
 
-  after "deploy:updated",  "whenever:update_crontab"
+  # [FIX ME] Override whenever default hook to execute cron tab update as needed by us.
+  after "deploy:publishing",  "whenever:update_crontab"
   after "deploy:reverted", "whenever:update_crontab"
 end
 
 namespace :load do
   task :defaults do
-    set :whenever_roles,        ->{ :db }
+    # [FIX ME] Override whenever default role and use cron role
+    set :whenever_roles,        ->{ :cron }
     set :whenever_command,      ->{ [:bundle, :exec, :whenever] }
     set :whenever_command_environment_variables, ->{ { rails_env: fetch(:whenever_environment) } }
     set :whenever_identifier,   ->{ fetch :application }
