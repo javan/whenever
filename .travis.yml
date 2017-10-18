@@ -1,5 +1,4 @@
 language: ruby
-script: bundle exec rake
 
 before_install:
   - gem install bundler
@@ -17,3 +16,6 @@ gemfile:
   - Gemfile
   - gemfiles/activesupport4.1.gemfile
   - gemfiles/activesupport4.2.gemfile
+env:
+  global:
+    - JRUBY_OPTS=--debug
