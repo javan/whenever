@@ -8,6 +8,8 @@
 
 * Allow the use of string literals for month and day-of-week in raw cron syntax.. [Potamianos Gregory](https://github.com/javan/whenever/pull/711)
 
+* Include Capistrano default environment variables when executing Whenever. [Karl Li](https://github.com/javan/whenever/pull/719)
+
 ### 0.9.7 / June 14, 2016
 
 * Restore compatibility with Capistrano v3; it has a bug which we have to work around [Ben Langfeld, Chris Gunther, Shohei Yamasaki]
