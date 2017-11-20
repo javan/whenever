@@ -1,5 +1,7 @@
 ### develop
 
+### 0.10.0 / November 19, 2017
+
 * Modify wheneverize to allow for the creating of 'config' directory when not present
 
 * Add --crontab-command to whenever binary for overriding the crontab command. [Martin Grandrath]
