@@ -152,7 +152,7 @@ module Whenever
 
       def range_or_integer(at, valid_range, name)
         must_be_between = "#{name} must be between #{valid_range.min}-#{valid_range.max}"
-        unless at.is_a?(Range)
+        if !at.is_a?(Range)
           raise ArgumentError, "#{must_be_between}, #{at} given" unless valid_range.include?(at)
           return at
         end
