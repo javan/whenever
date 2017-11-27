@@ -14,6 +14,8 @@
 
 * Allow configuring an alternative schedule file in Capistrano. [Shinichi Okamoto](https://github.com/javan/whenever/pull/666)
 
+* Add customizing email recipient option with the MAILTO environment variable. [Chikahiro Tokoro](https://github.com/javan/whenever/pull/678)
+
 ### 0.9.7 / June 14, 2016
 
 * Restore compatibility with Capistrano v3; it has a bug which we have to work around [Ben Langfeld, Chris Gunther, Shohei Yamasaki]
