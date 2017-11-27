@@ -78,6 +78,10 @@ class CronParseHoursTest < Whenever::TestCase
     assert_minutes_equals "30", '6:30', :chronic_options => { :hours24 => false }
   end
 
+  should "parse correctly when given an 'at' with minutes as a Range" do
+    assert_minutes_equals "15-30", 15..30
+  end
+
   should "raise an exception when given an 'at' with an invalid minute value" do
     assert_raises ArgumentError do
       parse_time(Whenever.seconds(1, :hour), nil, 60)
@@ -85,6 +89,14 @@ class CronParseHoursTest < Whenever::TestCase
 
     assert_raises ArgumentError do
       parse_time(Whenever.seconds(1, :hour), nil, -1)
+    end
+
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :hour), nil, 0..60)
+    end
+
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :hour), nil, -1..59)
     end
   end
 end
@@ -130,6 +142,10 @@ class CronParseDaysTest < Whenever::TestCase
     assert_hours_and_minutes_equals %w(23 0), 23
   end
 
+  should "parse correctly when given an 'at' with hours as a Range" do
+    assert_hours_and_minutes_equals %w(3-23 0), 3..23
+  end
+
   should "raise an exception when given an 'at' with an invalid hour value" do
     assert_raises ArgumentError do
       parse_time(Whenever.seconds(1, :day), nil, 24)
@@ -137,6 +153,14 @@ class CronParseDaysTest < Whenever::TestCase
 
     assert_raises ArgumentError do
       parse_time(Whenever.seconds(1, :day), nil, -1)
+    end
+
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :day), nil, 0..24)
+    end
+
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :day), nil, -1..23)
     end
   end
 end
@@ -197,6 +221,10 @@ class CronParseMonthsTest < Whenever::TestCase
     assert_days_and_hours_and_minutes_equals %w(29 0 0), 29
   end
 
+  should "parse correctly when given an 'at' with days as a Range" do
+    assert_days_and_hours_and_minutes_equals %w(1-7 0 0), 1..7
+  end
+
   should "raise an exception when given an 'at' with an invalid day value" do
     assert_raises ArgumentError do
       parse_time(Whenever.seconds(1, :month), nil, 32)
@@ -204,6 +232,14 @@ class CronParseMonthsTest < Whenever::TestCase
 
     assert_raises ArgumentError do
       parse_time(Whenever.seconds(1, :month), nil, -1)
+    end
+
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :month), nil, 0..30)
+    end
+
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :month), nil, 1..32)
     end
   end
 end
@@ -254,6 +290,10 @@ class CronParseYearTest < Whenever::TestCase
     assert_months_and_days_and_hours_and_minutes_equals %w(12 1 0 0), 12
   end
 
+  should "parse correctly when given an 'at' with month as a Range" do
+    assert_months_and_days_and_hours_and_minutes_equals %w(1-3 1 0 0), 1..3
+  end
+
   should "raise an exception when given an 'at' with an invalid month value" do
     assert_raises ArgumentError do
       parse_time(Whenever.seconds(1, :year), nil, 13)
@@ -261,6 +301,14 @@ class CronParseYearTest < Whenever::TestCase
 
     assert_raises ArgumentError do
       parse_time(Whenever.seconds(1, :year), nil, -1)
+    end
+
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :year), nil, 0..12)
+    end
+
+    assert_raises ArgumentError do
+      parse_time(Whenever.seconds(1, :year), nil, 1..13)
     end
   end
 end
