@@ -152,13 +152,13 @@ module Whenever
 
       def range_or_integer(at, valid_range, name)
         must_be_between = "#{name} must be between #{valid_range.min}-#{valid_range.max}"
-        if !at.is_a?(Range)
-          raise ArgumentError, "#{must_be_between}, #{at} given" unless valid_range.include?(at)
-          return at
+        if at.is_a?(Range)
+          raise ArgumentError, "#{must_be_between}, #{at.min} given" unless valid_range.include?(at.min)
+          raise ArgumentError, "#{must_be_between}, #{at.max} given" unless valid_range.include?(at.max)
+          return "#{at.min}-#{at.max}"
         end
-        raise ArgumentError, "#{must_be_between}, #{at.min} given" unless valid_range.include?(at.min)
-        raise ArgumentError, "#{must_be_between}, #{at.max} given" unless valid_range.include?(at.max)
-        "#{at.min}-#{at.max}"
+        raise ArgumentError, "#{must_be_between}, #{at} given" unless valid_range.include?(at)
+        at
       end
 
       def comma_separated_timing(frequency, max, start = 0)
