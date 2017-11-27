@@ -1,5 +1,7 @@
 ### develop
 
+* Add support for mapping Range objects to cron range syntax [Tim Craft](https://github.com/javan/whenever/pull/725)
+
 ### 0.10.0 / November 19, 2017
 
 * Modify wheneverize to allow for the creating of 'config' directory when not present
