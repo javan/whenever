@@ -96,15 +96,13 @@ module Whenever
             timing[0] = comma_separated_timing(minute_frequency, 59, @at || 0)
           when Whenever.seconds(1, :hour)...Whenever.seconds(1, :day)
             hour_frequency = (@time / 60 / 60).round
-            timing[0] = @at.is_a?(Time) ? @at.min : @at
+            timing[0] = @at.is_a?(Time) ? @at.min : range_or_integer(@at, 0..59, 'Minute')
             timing[1] = comma_separated_timing(hour_frequency, 23)
-            raise ArgumentError, "Minute must be between 0-59, #{timing[0]} given" unless (0..59).include?(timing[0])
           when Whenever.seconds(1, :day)...Whenever.seconds(1, :month)
             day_frequency = (@time / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
-            timing[1] = @at.is_a?(Time) ? @at.hour : @at
+            timing[1] = @at.is_a?(Time) ? @at.hour : range_or_integer(@at, 0..23, 'Hour')
             timing[2] = comma_separated_timing(day_frequency, 31, 1)
-            raise ArgumentError, "Hour must be between 0-23, #{timing[1]} given" unless (0..23).include?(timing[1])
           when Whenever.seconds(1, :month)...Whenever.seconds(1, :year)
             month_frequency = (@time / 30 / 24 / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
@@ -112,10 +110,9 @@ module Whenever
             timing[2] = if @at.is_a?(Time)
               day_given? ? @at.day : 1
             else
-              @at.zero? ? 1 : @at
+              @at == 0 ? 1 : range_or_integer(@at, 1..31, 'Day')
             end
             timing[3] = comma_separated_timing(month_frequency, 12, 1)
-            raise ArgumentError, "Day must be between 1-31, #{timing[2]} given" unless (1..31).include?(timing[2])
           when Whenever.seconds(1, :year)
             timing[0] = @at.is_a?(Time) ? @at.min  : 0
             timing[1] = @at.is_a?(Time) ? @at.hour : 0
@@ -127,9 +124,8 @@ module Whenever
             timing[3] = if @at.is_a?(Time)
               day_given? ? @at.month : 1
             else
-              @at.zero? ? 1 : @at
+              @at == 0 ? 1 : range_or_integer(@at, 1..12, 'Month')
             end
-            raise ArgumentError, "Month must be between 1-12, #{timing[3]} given" unless (1..12).include?(timing[3])
           else
             return parse_as_string
         end
@@ -152,6 +148,17 @@ module Whenever
         end
 
         raise ArgumentError, "Couldn't parse: #{@time}"
+      end
+
+      def range_or_integer(at, valid_range, name)
+        must_be_between = "#{name} must be between #{valid_range.min}-#{valid_range.max}"
+        if at.is_a?(Range)
+          raise ArgumentError, "#{must_be_between}, #{at.min} given" unless valid_range.include?(at.min)
+          raise ArgumentError, "#{must_be_between}, #{at.max} given" unless valid_range.include?(at.max)
+          return "#{at.min}-#{at.max}"
+        end
+        raise ArgumentError, "#{must_be_between}, #{at} given" unless valid_range.include?(at)
+        at
       end
 
       def comma_separated_timing(frequency, max, start = 0)
