@@ -4,6 +4,8 @@
 
 * Bugfix: Avoid modifying Capistrano `default_env` when setting the whenever environment. [ta1kt0me](https://github.com/javan/whenever/pull/728)
 
+* Clearer ArgumentError re: inability to escape trailing spaces [kamillamagna](https://github.com/javan/whenever/pull/730)
+
 ### 0.10.0 / November 19, 2017
 
 * Modify wheneverize to allow for the creating of 'config' directory when not present
