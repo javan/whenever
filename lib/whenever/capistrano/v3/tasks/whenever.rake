@@ -51,6 +51,6 @@ namespace :load do
     set :whenever_load_file,    ->{ nil }
     set :whenever_update_flags, ->{ "--update-crontab #{fetch :whenever_identifier} --set #{fetch :whenever_variables}" }
     set :whenever_clear_flags,  ->{ "--clear-crontab #{fetch :whenever_identifier}" }
-    set :whenever_path,         ->{ fetch :release_path }
+    set :whenever_path,         ->{ release_path }
   end
 end
