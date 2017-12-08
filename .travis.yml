@@ -7,15 +7,17 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.10
-  - 2.2.6
-  - 2.3.3
-  - 2.4.0
+  - 2.2.8
+  - 2.3.5
+  - 2.4.2
   - jruby-9.1.9.0
 
 gemfile:
-  - Gemfile
   - gemfiles/activesupport4.1.gemfile
   - gemfiles/activesupport4.2.gemfile
+  - gemfiles/activesupport5.0.gemfile
+  - gemfiles/activesupport5.1.gemfile
+  - gemfiles/activesupport5.2.gemfile
 env:
   global:
     - JRUBY_OPTS=--debug
