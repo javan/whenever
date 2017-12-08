@@ -3,6 +3,8 @@ language: ruby
 before_install:
   - gem install bundler
 
+sudo: false
+
 rvm:
   - 1.9.3
   - 2.0.0
@@ -11,6 +13,29 @@ rvm:
   - 2.3.5
   - 2.4.2
   - jruby-9.1.9.0
+matrix:
+  exclude:
+    # activesupport 5 only supports ruby 2.2.2 and later
+    - gemfile: gemfiles/activesupport5.0.gemfile
+      rvm: 1.9.3
+    - gemfile: gemfiles/activesupport5.1.gemfile
+      rvm: 1.9.3
+    - gemfile: gemfiles/activesupport5.2.gemfile
+      rvm: 1.9.3
+
+    - gemfile: gemfiles/activesupport5.0.gemfile
+      rvm: 2.0.0
+    - gemfile: gemfiles/activesupport5.1.gemfile
+      rvm: 2.0.0
+    - gemfile: gemfiles/activesupport5.2.gemfile
+      rvm: 2.0.0
+
+    - gemfile: gemfiles/activesupport5.0.gemfile
+      rvm: 2.1.10
+    - gemfile: gemfiles/activesupport5.1.gemfile
+      rvm: 2.1.10
+    - gemfile: gemfiles/activesupport5.2.gemfile
+      rvm: 2.1.10
 
 gemfile:
   - gemfiles/activesupport4.1.gemfile
@@ -18,6 +43,7 @@ gemfile:
   - gemfiles/activesupport5.0.gemfile
   - gemfiles/activesupport5.1.gemfile
   - gemfiles/activesupport5.2.gemfile
+
 env:
   global:
     - JRUBY_OPTS=--debug
