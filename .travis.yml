@@ -2,9 +2,7 @@ language: ruby
 
 before_install:
   - gem install bundler
-
-sudo: false
-
+  - unset _JAVA_OPTIONS
 rvm:
   - 1.9.3
   - 2.0.0
