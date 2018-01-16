@@ -58,7 +58,7 @@ every 1.day, at: '4:30 am' do
   runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
 end
 
-every 1.day, at: ['4:30 am', '6:00 pm'] do # Also you can run in 1 hour for every five minutes: (0..60).step(5).map { |minute| "4:#{minute.to_s.rjust(2, '0')} am" }
+every 1.day, at: ['4:30 am', '6:00 pm'] do
   runner "Mymodel.task_to_run_in_two_times_every_day"
 end
 
