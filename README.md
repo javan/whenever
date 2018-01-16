@@ -9,7 +9,7 @@ $ gem install whenever
 Or with Bundler in your Gemfile.
 
 ```ruby
-gem 'whenever', :require => false
+gem 'whenever', require: false
 ```
 
 ### Getting started
@@ -54,15 +54,19 @@ every 3.hours do # 1.minute 1.day 1.week 1.month 1.year is also supported
   command "/usr/bin/my_great_command"
 end
 
-every 1.day, :at => '4:30 am' do
+every 1.day, at: '4:30 am' do
   runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
+end
+
+every 1.day, at: ['4:30 am', '6:00 pm'] do # Also you can run in 1 hour for every five minutes: (0..60).step(5).map { |minute| "4:#{minute.to_s.rjust(2, '0')} am" }
+  runner "Mymodel.task_to_run_in_two_times_every_day"
 end
 
 every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
   runner "SomeModel.ladeeda"
 end
 
-every :sunday, :at => '12pm' do # Use any day of the week or :weekend, :weekday
+every :sunday, at: '12pm' do # Use any day of the week or :weekend, :weekday
   runner "Task.do_something_great"
 end
 
@@ -72,7 +76,7 @@ end
 
 # run this task only on servers with the :app role in Capistrano
 # see Capistrano roles section below
-every :day, :at => '12:20am', :roles => [:app] do
+every :day, at: '12:20am', roles: [:app] do
   rake "app_server:task"
 end
 ```
@@ -87,7 +91,7 @@ For example:
 job_type :awesome, '/usr/local/bin/awesome :task :fun_level'
 
 every 2.hours do
-  awesome "party", :fun_level => "extreme"
+  awesome "party", fun_level: "extreme"
 end
 ```
 
@@ -129,10 +133,10 @@ You can set your custom Chronic configuration if the defaults don't fit you.
 For example, to assume a 24 hour clock instead of the default 12 hour clock:
 
 ```ruby
-set :chronic_options, :hours24 => true
+set :chronic_options, hours24: true
 
 # By default this would run the job every day at 3am
-every 1.day, :at => '3:00' do
+every 1.day, at: '3:00' do
   runner "MyModel.nightly_archive_job"
 end
 ```
@@ -240,7 +244,7 @@ When you define a job in your schedule.rb file, by default it will be deployed t
 all servers in the whenever_roles list (which defaults to `[:db]`).
 
 However, if you want to restrict certain jobs to only run on subset of servers,
-you can add a `:roles => [...]` argument to their definitions. **Make sure to add
+you can add a `roles: [...]` argument to their definitions. **Make sure to add
 that role to the whenever_roles list in your deploy.rb.**
 
 When you run `cap deploy`, jobs with a :roles list specified will only be added to
@@ -253,7 +257,7 @@ So, for example, with the default whenever_roles of `[:db]`, a job like this wou
 deployed to all servers with the `:db` role:
 
 ```ruby
-every :day, :at => '12:20am' do
+every :day, at: '12:20am' do
   rake 'foo:bar'
 end
 ```
@@ -262,15 +266,15 @@ If we set whenever_roles to `[:db, :app]` in deploy.rb, and have the following
 jobs in schedule.rb:
 
 ```ruby
-every :day, :at => '1:37pm', :roles => [:app] do
+every :day, at: '1:37pm', roles: [:app] do
   rake 'app:task' # will only be added to crontabs of :app servers
 end
 
-every :hour, :roles => [:db] do
+every :hour, roles: [:db] do
   rake 'db:task' # will only be added to crontabs of :db servers
 end
 
-every :day, :at => '12:02am' do
+every :day, at: '12:02am' do
   command "run_this_everywhere" # will be deployed to :db and :app servers
 end
 ```
