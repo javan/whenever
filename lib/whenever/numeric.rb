@@ -1,4 +1,4 @@
-class Numeric
+Numeric.class_eval do
   def respond_to?(method, include_private = false)
     super || Whenever::NumericSeconds.public_method_defined?(method)
   end
