@@ -147,7 +147,7 @@ module Whenever
           return (timing << i) * " " if string.downcase.index(day)
         end
 
-        raise ArgumentError, "Couldn't parse: #{@time}"
+        raise ArgumentError, "Couldn't parse: \"#{@time}\""
       end
 
       def range_or_integer(at, valid_range, name)
