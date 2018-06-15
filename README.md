@@ -322,7 +322,7 @@ It's a little bit dated now, but remains a good introduction.
 
 ----
 
-[![Build Status](https://secure.travis-ci.org/javan/whenever.png)](http://travis-ci.org/javan/whenever)
+[![Build Status](https://secure.travis-ci.org/javan/whenever.svg)](http://travis-ci.org/javan/whenever)
 
 ----
 
