@@ -12,7 +12,6 @@ module Whenever
       @options[:crontab_command] ||= 'crontab'
       @options[:file]            ||= 'config/schedule.rb'
       @options[:cut]             ||= 0
-      @options[:identifier]      ||= default_identifier
 
       if !File.exist?(@options[:file]) && @options[:clear].nil?
         warn("[fail] Can't find file: #{@options[:file]}")
@@ -52,9 +51,21 @@ module Whenever
       File.expand_path(@options[:file])
     end
 
+    def identifier
+      @options[:identifier] ||
+        whenever_job_list.respond_to?(:identifier) && whenever_job_list.identifier ||
+        default_identifier
+    end
+
     def whenever_cron
       return '' if @options[:clear]
-      @whenever_cron ||= [comment_open, Whenever.cron(@options), comment_close].compact.join("\n") + "\n"
+      @whenever_cron ||= [
+        comment_open, whenever_job_list.generate_cron_output, comment_close
+      ].compact.join("\n") + "\n"
+    end
+
+    def whenever_job_list
+      @whenever_job_list ||= Whenever.job_list(@options)
     end
 
     def read_crontab
@@ -126,9 +137,9 @@ module Whenever
 
     def comment_base(include_timestamp = true)
       if include_timestamp
-        "Whenever generated tasks for: #{@options[:identifier]} at: #{@timestamp}"
+        "Whenever generated tasks for: #{identifier} at: #{@timestamp}"
       else
-        "Whenever generated tasks for: #{@options[:identifier]}"
+        "Whenever generated tasks for: #{identifier}"
       end
     end
 

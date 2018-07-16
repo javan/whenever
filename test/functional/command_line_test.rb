@@ -1,12 +1,23 @@
 require 'test_helper'
 
+class WheneverJobListMock
+  def initialize(task)
+    @task = task
+  end
+
+  def generate_cron_output
+    @task
+  end
+end
+
 class CommandLineWriteTest < Whenever::TestCase
   setup do
     Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+01:00'))
     File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:write => true, :identifier => 'My identifier')
     @task = "#{two_hours} /my/command"
-    Whenever.expects(:cron).returns(@task)
+    job_list_mock = WheneverJobListMock.new(@task)
+    Whenever.expects(:job_list).returns(job_list_mock)
   end
 
   should "output the cron job with identifier blocks" do
@@ -31,7 +42,8 @@ class CommandLineUpdateTest < Whenever::TestCase
     File.expects(:exist?).with('config/schedule.rb').returns(true)
     @command = Whenever::CommandLine.new(:update => true, :identifier => 'My identifier')
     @task = "#{two_hours} /my/command"
-    Whenever.expects(:cron).returns(@task)
+    job_list_mock = WheneverJobListMock.new(@task)
+    Whenever.expects(:job_list).returns(job_list_mock)
   end
 
   should "add the cron to the end of the file if there is no existing identifier block" do
@@ -301,6 +313,7 @@ class CommandLineUpdateWithNoIdentifierTest < Whenever::TestCase
   setup do
     Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+01:00'))
     File.expects(:exist?).with('config/schedule.rb').returns(true)
+    Whenever.expects(:job_list).returns(Object.new)
     Whenever::CommandLine.any_instance.expects(:default_identifier).returns('DEFAULT')
     @command = Whenever::CommandLine.new(:update => true)
   end

@@ -8,8 +8,12 @@ require 'whenever/output_redirection'
 require 'whenever/os'
 
 module Whenever
+  def self.job_list(options)
+    Whenever::JobList.new(options)
+  end
+
   def self.cron(options)
-    Whenever::JobList.new(options).generate_cron_output
+    job_list(options).generate_cron_output
   end
 
   def self.seconds(number, units)
