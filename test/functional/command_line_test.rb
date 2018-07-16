@@ -473,7 +473,7 @@ end
 class IdentifierInSchedule < Whenever::TestCase
   setup do
     Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+01:00'))
-    @test_schedule_path = File.expand_path('../test-schedules/schedule.rb', __dir__)
+    @test_schedule_path = File.expand_path('../../test-schedules/schedule.rb', __FILE__)
   end
 
   should "use schedule.rb's identifier" do
