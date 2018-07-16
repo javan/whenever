@@ -469,3 +469,35 @@ EXISTING_CRON
     assert_equal existing, @command.send(:prepare, existing)
   end
 end
+
+class IdentifierInSchedule < Whenever::TestCase
+  setup do
+    Time.stubs(:now).returns(Time.new(2017, 2, 24, 16, 21, 30, '+01:00'))
+    @test_schedule_path = File.expand_path('../test-schedules/schedule.rb', __dir__)
+  end
+
+  should "use schedule.rb's identifier" do
+    command = Whenever::CommandLine.new(update: true, file: @test_schedule_path)
+    expected = <<-EXPECTED
+# Begin Whenever generated tasks for: Identifier Defined In Schedule.rb at: 2017-02-24 16:21:30 +0100
+
+# End Whenever generated tasks for: Identifier Defined In Schedule.rb at: 2017-02-24 16:21:30 +0100
+EXPECTED
+
+    assert_equal expected, command.send(:whenever_cron)
+  end
+
+  should "user commandline option over in-schedule option" do
+    command = Whenever::CommandLine.new(
+      update: true,
+      file: @test_schedule_path,
+      identifier: 'Identifier From CommandLine'
+    )
+    expected = <<-EXPECTED
+# Begin Whenever generated tasks for: Identifier From CommandLine at: 2017-02-24 16:21:30 +0100
+
+# End Whenever generated tasks for: Identifier From CommandLine at: 2017-02-24 16:21:30 +0100
+EXPECTED
+    assert_equal expected, command.send(:whenever_cron)
+  end
+end
