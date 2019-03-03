@@ -301,6 +301,12 @@ This tells rvm to trust all rvmrc files.
 
 No. Heroku does not support cron, instead providing [Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler). If you deploy to Heroku, you should use that rather than Whenever.
 
+### Docker
+
+If you want to use `whenever' in you dockerized rails app, be sure that you have installed `cron` if not add the following line to you `Dockerfile`
+
+`apt-get install -y cron`
+
 ### Testing
 
 [whenever-test](https://github.com/heartbits/whenever-test) is an extension to Whenever for testing a Whenever schedule.
