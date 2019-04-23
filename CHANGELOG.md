@@ -1,5 +1,7 @@
 ### develop
 
+* Removes support for versions of Ruby which are no longer supported by the Ruby project.
+
 ### 0.11.0 / April 23, 2019
 
 * Add support for mapping Range objects to cron range syntax [Tim Craft](https://github.com/javan/whenever/pull/725)
