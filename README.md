@@ -175,6 +175,26 @@ every 3.hours do
 end
 ```
 
+### Adding comments to crontab
+
+A description can be added to a job that will be included in the crontab as a comment above the cron entry.
+
+Example: A single line description:
+
+```ruby
+every 1.hours, desc: "My job description" do
+  command "/usr/bin/my_great_command"
+end
+```
+
+Example: A multi line description:
+
+```ruby
+every 1.hours, desc: "My job description\nhas multiple lines" do
+  command "/usr/bin/my_great_command"
+end
+```
+
 ### Capistrano integration
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys. For Capistrano V3, see the next section.

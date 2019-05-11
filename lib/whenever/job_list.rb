@@ -144,6 +144,7 @@ module Whenever
         end
         Whenever::Output::Cron.output(time, job, :chronic_options => @chronic_options) do |cron|
           cron << "\n\n"
+          cron = (job.desc.strip + "\n").gsub(/^(.*)$/, '# \1') + cron unless job.desc.to_s.empty?
 
           if cron[0,1] == "@"
             shortcut_jobs << cron
