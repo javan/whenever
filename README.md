@@ -38,7 +38,7 @@ Other commonly used options include:
 ```sh
 $ whenever --user app # set a user as which to install the crontab
 $ whenever --load-file config/my_schedule.rb # set the schedule file
-$ whenever --crontab-command 'sudo crontab` # override the crontab command
+$ whenever --crontab-command 'sudo crontab' # override the crontab command
 ```
 
 You can list installed cron jobs using `crontab -l`.
