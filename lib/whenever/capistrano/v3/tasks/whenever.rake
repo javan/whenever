@@ -3,6 +3,7 @@ namespace :whenever do
     args = Array(fetch(:whenever_command)) + args
 
     on roles fetch(:whenever_roles) do |host|
+      next if host.nil?
       args_for_host = block_given? ? args + Array(yield(host)) : args
       within fetch(:whenever_path) do
         with fetch(:whenever_command_environment_variables) do
