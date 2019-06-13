@@ -1,5 +1,9 @@
 ### unreleased
 
+### 1.0.0 / Jun 13, 2019
+
+* First stable release per SemVer.
+
 * Removes support for versions of Ruby which are no longer supported by the Ruby project.
 
 ### 0.11.0 / April 23, 2019
