@@ -1,7 +1,7 @@
 language: ruby
 
 before_install:
-  - gem install bundler
+  - gem list -i bundler || gem install bundler
   - unset _JAVA_OPTIONS
 rvm:
   - 1.9.3
