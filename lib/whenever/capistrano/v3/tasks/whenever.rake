@@ -2,7 +2,7 @@ namespace :whenever do
   def setup_whenever_task(*args, &block)
     args = Array(fetch(:whenever_command)) + args
 
-    on roles fetch(:whenever_roles) do |host|
+    on roles *fetch(:whenever_roles) do |host|
       args_for_host = block_given? ? args + Array(yield(host)) : args
       within fetch(:whenever_path) do
         with fetch(:whenever_command_environment_variables) do
