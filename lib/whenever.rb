@@ -8,7 +8,7 @@ require 'whenever/output_redirection'
 require 'whenever/os'
 
 module Whenever
-  def self.add_cron(task, id)
+  def self.add_or_update_cron(task, id)
     options = {}
     options[:string] = task
     options[:update] = true
