@@ -16,7 +16,7 @@ gem 'whenever', require: false
 
 ```sh
 $ cd /apps/my-great-project
-$ wheneverize .
+$ bundle exec wheneverize .
 ```
 
 This will create an initial `config/schedule.rb` file for you (as long as the config folder is already present in your project).
@@ -25,7 +25,7 @@ This will create an initial `config/schedule.rb` file for you (as long as the co
 
 ```sh
 $ cd /apps/my-great-project
-$ whenever
+$ bundle exec whenever
 ```
 
 This will simply show you your `schedule.rb` file converted to cron syntax. It does not read or write your crontab file; you'll need to do this in order for your jobs to execute:
