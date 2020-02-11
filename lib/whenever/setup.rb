@@ -1,7 +1,7 @@
 # Environment variable defaults to RAILS_ENV
 set :environment_variable, "RAILS_ENV"
 # Environment defaults to Rails environment
-set :environment, Rails.env
+set :environment, ::Rails.env
 # Path defaults to the directory `whenever` was run from
 set :path, Whenever.path
 
