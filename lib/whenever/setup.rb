@@ -1,7 +1,7 @@
 # Environment variable defaults to RAILS_ENV
 set :environment_variable, "RAILS_ENV"
-# Environment defaults to production
-set :environment, "production"
+# Environment defaults to production unless RAILS_ENV is set
+set :environment, ENV['RAILS_ENV'] ||= "production"
 # Path defaults to the directory `whenever` was run from
 set :path, Whenever.path
 
