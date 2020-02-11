@@ -74,7 +74,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
     output = Whenever.cron \
     <<-file
       set :job_template, nil
-      if environment == 'production' && path == '/what/you/want'
+      if environment == 'test' && path == '/what/you/want'
         every 2.hours do
           command "blahblah"
         end
@@ -96,7 +96,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + %( cd /my/path && bundle exec script/runner -e production 'blahblah'), output
+    assert_match two_hours + %( cd /my/path && bundle exec script/runner -e test 'blahblah'), output
   end
 
   test "A runner that overrides the path set" do
@@ -109,7 +109,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + %( cd /some/other/path && bundle exec script/runner -e production 'blahblah'), output
+    assert_match two_hours + %( cd /some/other/path && bundle exec script/runner -e test 'blahblah'), output
   end
 
   test "A runner for a non-bundler app" do
@@ -123,7 +123,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + %( cd /my/path && script/runner -e production 'blahblah'), output
+    assert_match two_hours + %( cd /my/path && script/runner -e test 'blahblah'), output
   end
 
   test "A runner for an app with bin/rails" do
@@ -137,7 +137,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + %( cd /my/path && bin/rails runner -e production 'blahblah'), output
+    assert_match two_hours + %( cd /my/path && bin/rails runner -e test 'blahblah'), output
   end
 
   test "A runner for an app with script/rails" do
@@ -151,7 +151,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + %( cd /my/path && script/rails runner -e production 'blahblah'), output
+    assert_match two_hours + %( cd /my/path && script/rails runner -e test 'blahblah'), output
   end
 
   # rake
@@ -166,7 +166,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec rake blahblah --silent', output
+    assert_match two_hours + ' cd /my/path && RAILS_ENV=test bundle exec rake blahblah --silent', output
   end
 
   test "A rake command with arguments" do
@@ -179,7 +179,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec rake blahblah[foobar] --silent', output
+    assert_match two_hours + ' cd /my/path && RAILS_ENV=test bundle exec rake blahblah[foobar] --silent', output
   end
 
   test "A rake for a non-bundler app" do
@@ -193,7 +193,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /my/path && RAILS_ENV=production rake blahblah --silent', output
+    assert_match two_hours + ' cd /my/path && RAILS_ENV=test rake blahblah --silent', output
   end
 
   test "A rake command that overrides the path set" do
@@ -206,7 +206,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production bundle exec rake blahblah --silent', output
+    assert_match two_hours + ' cd /some/other/path && RAILS_ENV=test bundle exec rake blahblah --silent', output
   end
 
   test "A rake command that sets the environment variable" do
@@ -220,7 +220,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /my/path && RAKE_ENV=production bundle exec rake blahblah --silent', output
+    assert_match two_hours + ' cd /my/path && RAKE_ENV=test bundle exec rake blahblah --silent', output
   end
 
   test "A rake command that overrides the environment variable" do
@@ -234,7 +234,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /my/path && SOME_ENV=production bundle exec rake blahblah --silent', output
+    assert_match two_hours + ' cd /my/path && SOME_ENV=test bundle exec rake blahblah --silent', output
   end
 
     # script
@@ -249,7 +249,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /my/path && RAILS_ENV=production bundle exec script/blahblah', output
+    assert_match two_hours + ' cd /my/path && RAILS_ENV=test bundle exec script/blahblah', output
   end
 
   test "A script command for a non-bundler app" do
@@ -263,7 +263,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /my/path && RAILS_ENV=production script/blahblah', output
+    assert_match two_hours + ' cd /my/path && RAILS_ENV=test script/blahblah', output
   end
 
   test "A script command that uses output" do
@@ -277,7 +277,7 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production bundle exec script/blahblah >> /log/file 2>&1', output
+    assert_match two_hours + ' cd /some/other/path && RAILS_ENV=test bundle exec script/blahblah >> /log/file 2>&1', output
   end
 
   test "A script command that uses an environment variable" do
@@ -291,6 +291,6 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
       end
     file
 
-    assert_match two_hours + ' cd /my/path && RAKE_ENV=production bundle exec script/blahblah', output
+    assert_match two_hours + ' cd /my/path && RAKE_ENV=test bundle exec script/blahblah', output
   end
 end

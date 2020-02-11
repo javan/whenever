@@ -1,14 +1,7 @@
 # Environment variable defaults to RAILS_ENV
 set :environment_variable, "RAILS_ENV"
 # Environment defaults to Rails environment
-set :environment, case
-  when Whenever.bin_rails?
-    "bin/rails runner 'puts Rails.env'"
-  when Whenever.script_rails?
-    "script/rails runner 'puts Rails.env'"
-  else
-    "script/runner 'puts Rails.env'"
-  end
+set :environment, Rails.env
 # Path defaults to the directory `whenever` was run from
 set :path, Whenever.path
 
