@@ -8,15 +8,21 @@ options = {}
 
 OptionParser.new do |opts|
   opts.banner = "Usage: whenever [options]"
-  opts.on('-i', '--update-crontab [identifier]', 'Default: full path to schedule.rb file') do |identifier|
+  opts.on('-i', '--update-crontab [schedule]',
+          'Install the schedule to crontab.',
+          '  Default: full path to schedule.rb file') do |identifier|
     options[:update] = true
     options[:identifier] = identifier if identifier
   end
-  opts.on('-w', '--write-crontab [identifier]', 'Default: full path to schedule.rb file') do |identifier|
+  opts.on('-w', '--write-crontab [schedule]',
+          'Clear current crontab, and overwrite it with only the given schedule.',
+          '  Default: full path to schedule.rb file') do |identifier|
      options[:write] = true
      options[:identifier] = identifier if identifier
   end
-  opts.on('-c', '--clear-crontab [identifier]') do |identifier|
+  opts.on('-c', '--clear-crontab [schedule]',
+          'Uninstall the schedule from crontab.',
+          '  Default: full path to schedule.rb file') do |identifier|    
     options[:clear] = true
     options[:identifier] = identifier if identifier
   end
