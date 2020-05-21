@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/javan/whenever"
   s.summary     = %q{Cron jobs in ruby.}
   s.description = %q{Clean ruby syntax for writing and deploying cron jobs.}
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- test/{functional,unit}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files         = Dir.glob("**/*")
+  s.test_files    = Dir.glob("test/{functional,test}/*")
+  s.executables   = Dir.glob("bin/*").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   s.required_ruby_version = ">= 1.9.3"
 
