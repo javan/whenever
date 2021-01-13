@@ -1,5 +1,7 @@
 ### unreleased
 
+* Allows special characters like L, W, # and ?, which are natively supported by corn
+
 * Add note in README that cron is generated with the current user. [Raquel Queiroz]
 
 ### 1.0.0 / Jun 13, 2019
