@@ -6,7 +6,7 @@ module Whenever
       DAYS = %w(sun mon tue wed thu fri sat)
       MONTHS = %w(jan feb mar apr may jun jul aug sep oct nov dec)
       KEYWORDS = [:reboot, :yearly, :annually, :monthly, :weekly, :daily, :midnight, :hourly]
-      REGEX = /^(@(#{KEYWORDS.join '|'})|((\*?[\d\/,\-]*)\s){3}(\*?([\d\/,\-]|(#{MONTHS.join '|'}))*\s)(\*?([\d\/,\-]|(#{DAYS.join '|'}))*))$/i
+      REGEX = /^(@(#{KEYWORDS.join '|'})|((\*?[\d\/,\-]*)\s){2}((\*|\?)?[\d\/,\-LW]*)\s(\*?([\d\/,\-]|(#{MONTHS.join '|'}))*\s)(\*?([\d\/,\-\#\?L]|(#{DAYS.join '|'}))*))$/i
 
       attr_accessor :time, :task
 
