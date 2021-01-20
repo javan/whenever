@@ -8,6 +8,21 @@ require 'whenever/output_redirection'
 require 'whenever/os'
 
 module Whenever
+  def self.add_or_update_cron(task, id)
+    options = {}
+    options[:string] = task
+    options[:update] = true
+    options[:identifier] = id
+    Whenever::CommandLine.execute(options)
+  end
+
+  def self.remove_cron(id)
+    options = {}
+    options[:clear] = true
+    options[:identifier] = id
+    Whenever::CommandLine.execute(options)
+  end
+
   def self.cron(options)
     Whenever::JobList.new(options).generate_cron_output
   end
