@@ -60,6 +60,15 @@ class JobTest < Whenever::TestCase
 
     assert_equal "before newline -> <- newline space -> <- space after", job.output
   end
+
+  should "eval when proc/lambda is passed" do
+    job = new_job(
+      :template => 'before :dynamic_foo after',
+      :foo => "percent -> % <- percent",
+      :dynamic_foo => proc { @options[:foo] }
+    )
+    assert_equal %q(before percent -> \% <- percent after), job.output
+  end
 end
 
 
@@ -83,6 +92,15 @@ class JobWithQuotesTest < Whenever::TestCase
   end
 
   should "output escaped double quotes when it's wrapped in them" do
+    job = new_job(
+      :template => 'before ":dynamic_foo" after',
+      :foo => 'quote -> " <- quote',
+      :dynamic_foo => proc { @options[:foo] }
+    )
+    assert_equal %q(before "quote -> \" <- quote" after), job.output
+  end
+
+  should "eval when proc/lambda is passed" do
     job = new_job(
       :template => 'before ":foo" after',
       :foo => 'quote -> " <- quote'
@@ -109,6 +127,16 @@ class JobWithJobTemplateTest < Whenever::TestCase
 
   should "escape double quotes" do
     job = new_job(:template => 'before ":task" after', :task => 'quote -> " <- quote', :job_template => 'left ":job" right')
+    assert_equal %q(left "before \"quote -> \\\" <- quote\" after" right), job.output
+  end
+
+  should "eval when proc/lambda is passed" do
+    job = new_job(
+      :template => 'before ":dynamic_task" after', 
+      :task => 'quote -> " <- quote', 
+      :job_template => 'left ":job" right',
+      :dynamic_task => proc { @options[:task] }
+    )
     assert_equal %q(left "before \"quote -> \\\" <- quote\" after" right), job.output
   end
 end
