@@ -180,11 +180,23 @@ every 3.hours do
 end
 ```
 
-### Capistrano integration
+### Capistrano Integration
+
+In your `Capfile` file:
+
+```ruby
+require "whenever/capistrano"
+```
+
+Take a look at the [load:defaults task](https://github.com/javan/whenever/blob/master/lib/whenever/capistrano/v3/tasks/whenever.rake) (bottom of file) for options you can set.
+
+The Capistrano integration by default expects the `:application` variable to be set in order to scope jobs in the crontab.
+
+### Capistrano V2 integration
 
 Use the built-in Capistrano recipe for easy crontab updates with deploys. For Capistrano V3, see the next section.
 
-In your "config/deploy.rb" file:
+In your `config/deploy.rb` file:
 
 ```ruby
 require "whenever/capistrano"
@@ -221,22 +233,6 @@ If you use a schedule at an alternative path, you may configure it like so:
 set :whenever_load_file, defer { "#{release_path}/somewhere/else/schedule.rb" }
 require "whenever/capistrano"
 ```
-
-### Capistrano V3 Integration
-
-In your "Capfile" file:
-
-```ruby
-require "whenever/capistrano"
-```
-
-Take a look at the [load:defaults task](https://github.com/javan/whenever/blob/master/lib/whenever/capistrano/v3/tasks/whenever.rake) (bottom of file) for options you can set. For example, to namespace the crontab entries by application and stage do this in your "config/deploy.rb" file:
-
-```ruby
-set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
-```
-
-The Capistrano integration by default expects the `:application` variable to be set in order to scope jobs in the crontab.
 
 ### Capistrano roles
 
