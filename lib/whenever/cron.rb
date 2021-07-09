@@ -7,6 +7,10 @@ module Whenever
       MONTHS = %w(jan feb mar apr may jun jul aug sep oct nov dec)
       KEYWORDS = [:reboot, :yearly, :annually, :monthly, :weekly, :daily, :midnight, :hourly]
       REGEX = /^(@(#{KEYWORDS.join '|'})|((\*?[\d\/,\-]*)\s){3}(\*?([\d\/,\-]|(#{MONTHS.join '|'}))*\s)(\*?([\d\/,\-]|(#{DAYS.join '|'}))*))$/i
+      RANGE_FOR_RANDOM_BY_TIME_UNIT = {
+        minute: (0...60).to_a,
+        hour:   %w[22 23 00 01 02 03 04 05 06 07]
+      }.freeze
 
       attr_accessor :time, :task
 
@@ -16,6 +20,7 @@ module Whenever
         @at_given = at
         @time = time
         @task = task
+        at    = Cron.randomize_at_by_task(at, time, task) if options[:randomize]
         @at   = at.is_a?(String) ? (Chronic.parse(at, chronic_options) || 0) : (at || 0)
       end
 
@@ -40,6 +45,28 @@ module Whenever
             yield new(time, job.output, at, options).output
           end
         end
+      end
+
+      # pseudo-random: same at for same task, useful for debugging across several deploys
+      def self.randomize_at_by_task(at, time, task)
+        return at unless at.nil?
+        
+        # atm, the randomizing-feature works only for symbols :hour and :day
+        # return at unless time.is_a?(Symbol) && [:hour, :day].include?(time)
+        case time
+        when :hour
+          random_by_task(task, :minute)
+        when :day
+          random_by_task(task, :hour) + ':' + random_by_task(task, :minute).to_s
+        else
+          at
+        end
+        
+      end
+
+      def self.random_by_task(task, time_unit)
+        array = RANGE_FOR_RANDOM_BY_TIME_UNIT[time_unit]
+        array[task.sum % array.length]
       end
 
       def output
