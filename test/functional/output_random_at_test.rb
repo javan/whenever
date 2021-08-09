@@ -15,6 +15,16 @@ class OutputRandomAtTest < Whenever::TestCase
     output = Whenever.cron \
     <<-file
       set :job_template, nil
+      set :randomize, true
+      every :day do
+        runner "blahblah"
+      end
+    file
+    assert_match(/\A34 2 * * */, output)
+
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
       every :day, randomize: true do
         command "blah"
       end

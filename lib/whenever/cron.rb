@@ -20,7 +20,7 @@ module Whenever
         @at_given = at
         @time = time
         @task = task
-        at    = Cron.randomize_at_by_task(at, time, task) if options[:randomize]
+        at    = Cron.randomize_at_by_task(at, time, options[:task]) if options[:randomize]
         @at   = at.is_a?(String) ? (Chronic.parse(at, chronic_options) || 0) : (at || 0)
       end
 
@@ -50,7 +50,7 @@ module Whenever
       # pseudo-random: same at for same task, useful for debugging across several deploys
       def self.randomize_at_by_task(at, time, task)
         return at unless at.nil?
-        
+
         # atm, the randomizing-feature works only for symbols :hour and :day
         # return at unless time.is_a?(Symbol) && [:hour, :day].include?(time)
         case time
