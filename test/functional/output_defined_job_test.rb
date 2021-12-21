@@ -55,6 +55,34 @@ class OutputDefinedJobTest < Whenever::TestCase
     assert_match(/^.+ .+ .+ .+ before during after local$/, output)
   end
 
+  test "defined job with a :task and an option where the option is set globally and on the group" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      job_type :some_job, "before :task after :option1"
+      set :option1, 'global'
+      every 2.hours, :option1 => 'group' do
+        some_job "during"
+      end
+    file
+
+    assert_match(/^.+ .+ .+ .+ before during after group$/, output)
+  end
+
+  test "defined job with a :task and an option where the option is set globally, on the group, and locally" do
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      job_type :some_job, "before :task after :option1"
+      set :option1, 'global'
+      every 2.hours, :option1 => 'group' do
+        some_job "during", :option1 => 'local'
+      end
+    file
+
+    assert_match(/^.+ .+ .+ .+ before during after local$/, output)
+  end
+
   test "defined job with a :task and an option that is not set" do
     output = Whenever.cron \
     <<-file
