@@ -38,7 +38,9 @@ module Whenever
     end
 
     def self.respond_to?(name, include_private = false)
-      @set_variables.has_key?(name) || super
+      if @set_variables
+        @set_variables.has_key?(name)
+      end || super
     end
 
     def env(variable, value)
