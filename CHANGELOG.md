@@ -2,6 +2,10 @@
 
 * Add note in README that cron is generated with the current user. [Raquel Queiroz]
 
+### 1.0.1 / Jan 21, 2023
+
+*  Set the environment for cron jobs based off the currently set RAILS_ENV env variable. If RAILS_ENV is not set it defaults to production
+
 ### 1.0.0 / Jun 13, 2019
 
 * First stable release per SemVer.
