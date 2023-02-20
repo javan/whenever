@@ -1,8 +1,9 @@
 module Whenever
   module Output
     class Redirection
-      def initialize(output)
+      def initialize(output, task)
         @output = output
+        @task = task
       end
       
       def to_s
@@ -11,7 +12,7 @@ module Whenever
           when String   then redirect_from_string
           when Hash     then redirect_from_hash
           when NilClass then ">> /dev/null 2>&1"
-          when Proc     then @output.call
+          when Proc     then @output.lambda? ? @output.call : @output.call(@task)
           else ''
         end 
       end
