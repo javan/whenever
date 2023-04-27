@@ -37,10 +37,8 @@ module Whenever
       @set_variables.has_key?(name) ? @set_variables[name] : super
     end
 
-    def self.respond_to?(name, include_private = false)
-      if @set_variables
-        @set_variables.has_key?(name)
-      end || super
+    def respond_to?(name, include_private = false)
+      @set_variables.has_key?(name) || super
     end
 
     def env(variable, value)
