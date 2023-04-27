@@ -209,6 +209,20 @@ class OutputDefaultDefinedJobsTest < Whenever::TestCase
     assert_match two_hours + ' cd /some/other/path && RAILS_ENV=production bundle exec rake blahblah --silent', output
   end
 
+  test "A rake command that uses the default environment variable when RAILS_ENV is set" do
+    ENV.expects(:fetch).with("RAILS_ENV", "production").returns("development")
+    output = Whenever.cron \
+    <<-file
+      set :job_template, nil
+      set :path, '/my/path'
+      every 2.hours do
+        rake "blahblah"
+      end
+    file
+
+    assert_match two_hours + ' cd /my/path && RAILS_ENV=development bundle exec rake blahblah --silent', output
+  end
+
   test "A rake command that sets the environment variable" do
     output = Whenever.cron \
     <<-file

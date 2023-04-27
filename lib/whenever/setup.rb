@@ -1,7 +1,8 @@
 # Environment variable defaults to RAILS_ENV
 set :environment_variable, "RAILS_ENV"
-# Environment defaults to production
-set :environment, "production"
+# Environment defaults to the value of RAILS_ENV in the current environment if
+# it's set or production otherwise
+set :environment, ENV.fetch("RAILS_ENV", "production")
 # Path defaults to the directory `whenever` was run from
 set :path, Whenever.path
 
