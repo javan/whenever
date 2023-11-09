@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos]
+        os: [ubuntu-latest, macos-latest]
         ruby-version: [ '2.4.6', '2.5.5', '2.6.3', 'jruby-9.2.16.0']
     steps:
       - uses: actions/checkout@v4
