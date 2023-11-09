@@ -5,11 +5,11 @@ on:
     branches: [ main ]
 jobs:
   test:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu, macos]
+        os: [ubuntu-latest, macos]
         ruby-version: [ '2.4.6', '2.5.5', '2.6.3', 'jruby-9.2.6.0']
-    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
         name: Set up Ruby ${{ matrix.ruby-version }}
@@ -20,6 +20,6 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Run tests
-        run: bundle exec rake test
+        run: bundle exec rake tesu
         env:
           JRUBY_OPTS: "--debug"
