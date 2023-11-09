@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos]
-        ruby-version: [ '2.4.6', '2.5.5', '2.6.3', 'jruby-9.2.6.0']
+        ruby-version: [ '2.4.6', '2.5.5', '2.6.3', 'jruby-9.2.16.0']
     steps:
       - uses: actions/checkout@v4
         name: Set up Ruby ${{ matrix.ruby-version }}
