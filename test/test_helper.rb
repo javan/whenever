@@ -1,6 +1,6 @@
 require 'whenever'
 require 'test_case'
-require 'mocha/setup'
+require 'mocha/minitest'
 
 module Whenever::TestHelpers
   protected
