@@ -1,0 +1,25 @@
+name: Ruby CI
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        ruby-version: [ '2.4.6', '2.5.5', '2.6.3', 'jruby-9.2.16.0']
+    steps:
+      - uses: actions/checkout@v4
+        name: Set up Ruby ${{ matrix.ruby-version }}
+      - uses: ruby/setup-ruby@v1
+        env:
+          JRUBY_OPTS: "--debug"
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Run tests
+        run: bundle exec rake test
+        env:
+          JRUBY_OPTS: "--debug"
