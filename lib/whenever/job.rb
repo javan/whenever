@@ -2,7 +2,7 @@ require 'shellwords'
 
 module Whenever
   class Job
-    attr_reader :at, :roles, :mailto
+    attr_reader :at, :roles, :mailto, :options
 
     def initialize(options = {})
       @options = options
