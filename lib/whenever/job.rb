@@ -33,6 +33,7 @@ module Whenever
       template.gsub(/:\w+/) do |key|
         before_and_after = [$`[-1..-1], $'[0..0]]
         option = options[key.sub(':', '').to_sym] || key
+        option = instance_eval(&option) if option.respond_to? :call
 
         if before_and_after.all? { |c| c == "'" }
           escape_single_quotes(option)
