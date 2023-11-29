@@ -10,6 +10,9 @@ Gem::Specification.new do |s|
   s.email       = ["javan@javan.us"]
   s.license     = "MIT"
   s.homepage    = "https://github.com/javan/whenever"
+  s.metadata      = {
+    "changelog_uri" => "https://github.com/javan/whenever/blob/master/CHANGELOG.md"
+  }
   s.summary     = %q{Cron jobs in ruby.}
   s.description = %q{Clean ruby syntax for writing and deploying cron jobs.}
   s.files         = `git ls-files`.split("\n")
