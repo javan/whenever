@@ -75,6 +75,10 @@ module Whenever
       [environment_variables, cron_jobs].compact.join
     end
 
+    def generate_yaml_output
+      puts yaml_cron_jobs
+    end
+
   private
 
     #
@@ -156,6 +160,46 @@ module Whenever
       shortcut_jobs.join + combine(regular_jobs).join
     end
 
+    # def yaml_cron_jobs_of_time(time, jobs)
+    #   crons = Hash.new
+
+    #   jobs.each do |job|
+    #     next unless roles.empty? || roles.any? do |r|
+    #       job.has_role?(r)
+    #     end
+    #     Whenever::Output::Cron.yaml_output(time, job, :chronic_options => @chronic_options) do |time, command|
+    #         crons[command] = time
+    #     end
+    #   end
+    #   crons
+    # end
+
+def yaml_cron_jobs_of_time(time, jobs)
+      list=[]
+      jobs.each do |job|
+        next unless roles.empty? || roles.any? do |r|
+          job.has_role?(r)
+        end
+        Whenever::Output::Cron.xtal_output(time, job, :chronic_options => @chronic_options) do |time, command|
+            # TODO
+            if command.include?"bundle exec rails runner"
+              next
+            end
+            command.slice! "/bin/bash -l -c 'cd /var/sites/skroutz_cap/current && RAILS_ENV=production "
+            command.slice! " --silent > /dev/null'"
+            command.slice!"/bin/bash -l -c 'cd /var/sites/skroutz_cap/current && RAILS_RUNNER_NAME="
+            list.append({'command'=> command, 'time'=> time})
+
+          # if cron[0,1] == "@"
+          #   shortcut_jobs << cron
+          # else
+          #   regular_jobs << cron
+          # end
+        end
+      end
+      list
+    end
+
     def cron_jobs
       return if @jobs.empty?
 
@@ -181,5 +225,47 @@ module Whenever
 
       output.join
     end
+
+    def yaml_cron_jobs
+      return if @jobs.empty?
+
+      output = []
+      @jobs.each do |mailto, time_and_jobs|
+        output_jobs = []
+
+        time_and_jobs.each do |time, jobs|
+        output_jobs << xtal_cron_jobs_of_time(time, jobs)
+        end
+
+        output_jobs.reject! { |output_job| output_job.empty? }
+
+        # output << "MAILTO=#{mailto}\n\n" unless output_jobs.empty?
+        output << output_jobs
+      end
+
+      puts output[0][0].to_yaml
+      File.open('values.yml', 'w') {|f| f.write output[0][0].to_yaml }
+    end
+
+    # def yaml_cron_jobs
+    #   return if @jobs.empty?
+
+    #   output = []
+
+    #   @jobs.each do |mailto, time_and_jobs|
+    #     output_jobs = []
+
+    #     time_and_jobs.each do |time, jobs|
+    #       output_jobs << yaml_cron_jobs_of_time(time, jobs)
+    #     end
+
+    #     output_jobs.reject! { |output_job| output_job.empty? }
+
+    #     output << "MAILTO=#{mailto}\n\n" unless output_jobs.empty?
+    #     output << output_jobs
+    #   end
+
+    #   output.join
+    # end
   end
 end

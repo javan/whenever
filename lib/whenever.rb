@@ -8,6 +8,10 @@ require 'whenever/output_redirection'
 require 'whenever/os'
 
 module Whenever
+  def self.cron_yaml(options)
+    Whenever::JobList.new(options).generate_yaml_output
+  end
+
   def self.cron(options)
     Whenever::JobList.new(options).generate_cron_output
   end

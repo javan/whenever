@@ -45,6 +45,9 @@ OptionParser.new do |opts|
     options[:crontab_command] = crontab_command if crontab_command
   end
   opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
+  opts.on("-y", "--yaml", "YAML Output") do |y|
+    options[:yaml] = y
+  end
 end.parse!
 
 Whenever::CommandLine.execute(options)

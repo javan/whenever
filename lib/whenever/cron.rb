@@ -46,6 +46,18 @@ module Whenever
         [time_in_cron_syntax, task].compact.join(' ').strip
       end
 
+      def self.yaml_output(times, job, options = {})
+      enumerate(times).each do |time|
+        enumerate(job.at, false).each do |at|
+          yield new(time, job.output, at, options).yaml_output
+        end
+      end
+    end
+
+    def yaml_output
+      [time_in_cron_syntax, task]
+    end
+
       def time_in_cron_syntax
         @time = @time.to_i if @time.is_a?(Numeric) # Compatibility with `1.day` format using ruby 2.3 and activesupport
         case @time

@@ -38,6 +38,8 @@ module Whenever
         write_crontab(updated_crontab)
       elsif @options[:write]
         write_crontab(whenever_cron)
+      elsif @options[:yaml]
+        Whenever.cron_yaml(@options)
       else
         puts Whenever.cron(@options)
         puts "## [message] Above is your schedule file converted to cron syntax; your crontab file was not updated."
