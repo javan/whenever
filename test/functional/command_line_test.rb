@@ -398,7 +398,7 @@ class EnvironmentOverwrittenWithoutValueTest < Whenever::TestCase
     file
   end
 
-  should "output the runner using the original environmnet" do
+  should "output the runner using the original environment" do
     assert_match two_hours + %( cd /silly/path && bundle exec script/runner -e silly 'blahblah'), @output
   end
 end
