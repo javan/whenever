@@ -245,4 +245,20 @@ class OutputRedirectionTest < Whenever::TestCase
 
     assert_match(/^.+ .+ .+ .+ blahblah 2>&1 | logger -t whenever_cron$/, output)
   end
+
+  test 'a command when the standard output is set to a proc' do
+    output = Whenever.cron \
+    <<-file
+      # :output must be escaped so that eval can be executed
+      set :job_template, nil
+      set :output, proc { |task| "2>&1 | " + task.sub(/\\..+$/, '') + ".log" }
+      every 2.hours do
+        command "/path/to/file_a.rb"
+        command "/path/to/file_b"
+      end
+    file
+
+    assert_match(%r{^.+ .+ .+ .+ /path/to/file_a.rb 2>&1 | /path/to/file_a.log$}, output)
+    assert_match(%r{^.+ .+ .+ .+ /path/to/file_b 2>&1 | /path/to/file_b.log$}, output)
+  end
 end

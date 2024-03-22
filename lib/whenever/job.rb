@@ -11,7 +11,7 @@ module Whenever
       @mailto                           = options.fetch(:mailto, :default_mailto)
       @job_template                     = options.delete(:job_template) || ":job"
       @roles                            = Array(options.delete(:roles))
-      @options[:output]                 = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output]).to_s : ''
+      @options[:output]                 = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output], options[:task]).to_s : ''
       @options[:environment_variable] ||= "RAILS_ENV"
       @options[:environment]          ||= :production
       @options[:path]                   = Shellwords.shellescape(@options[:path] || Whenever.path)

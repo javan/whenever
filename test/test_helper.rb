@@ -1,6 +1,13 @@
 require 'whenever'
 require 'test_case'
-require 'mocha/setup'
+
+begin
+  require 'mocha/setup'
+rescue LoadError => e
+  raise unless e.message =~ %r{mocha/setup}
+
+  require 'mocha/minitest'
+end
 
 module Whenever::TestHelpers
   protected
