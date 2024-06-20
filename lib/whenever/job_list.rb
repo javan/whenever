@@ -88,7 +88,7 @@ module Whenever
       pairs = variable_string.split('&')
       pairs.each do |pair|
         next unless pair.index('=')
-        variable, value = *pair.split('=')
+        variable, value = *pair.split('=', 2)
         unless variable.nil? || variable == "" || value.nil? || value == ""
           variable = variable.strip.to_sym
           set(variable, value.strip)
