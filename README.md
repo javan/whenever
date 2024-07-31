@@ -59,6 +59,14 @@ every 3.hours do # 1.minute 1.day 1.week 1.month 1.year is also supported
   command "/usr/bin/my_great_command"
 end
 
+every 3.hours, sequential: true do
+  # Jobs in this block that don't set their own sequence will default to run in the same sequence (not in parallel)
+  runner "MyModel.some_process"
+  rake "my:rake:task"
+  command "/usr/bin/my_great_command", sequence: nil # This job runs in parallel with other jobs that are not part of a sequence
+  runner "MyModel.task_to_run_at_four_thirty_in_the_morning", sequence: 'other' # This job runs sequentially with other jobs in the sequence called 'other'
+end
+
 every 1.day, at: '4:30 am' do
   runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
 end

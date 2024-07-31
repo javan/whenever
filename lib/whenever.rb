@@ -1,6 +1,7 @@
 require 'whenever/numeric'
 require 'whenever/numeric_seconds'
 require 'whenever/job_list'
+require 'whenever/job_sequence'
 require 'whenever/job'
 require 'whenever/command_line'
 require 'whenever/cron'
