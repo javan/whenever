@@ -12,7 +12,7 @@ class OutputJobsWithSequenceTest < Whenever::TestCase
     file
 
     output_without_empty_line = lines_without_empty_line(output.lines)
-    assert_equal two_hours + " /bin/bash -l -c 'blahblah' && /bin/bash -l -c 'foofoo'", output_without_empty_line.shift
+    assert_equal two_hours + " /bin/bash -l -c 'blahblah' ; /bin/bash -l -c 'foofoo'", output_without_empty_line.shift
     assert_equal two_hours + " /bin/bash -l -c 'barbar'", output_without_empty_line.shift
   end
 
@@ -21,6 +21,19 @@ class OutputJobsWithSequenceTest < Whenever::TestCase
     <<-file
       every 2.hours, sequence: 'backups' do
         command "blahblah"
+        command "foofoo"
+      end
+    file
+
+    output_without_empty_line = lines_without_empty_line(output.lines)
+    assert_equal two_hours + " /bin/bash -l -c 'blahblah' ; /bin/bash -l -c 'foofoo'", output_without_empty_line.shift
+  end
+
+  test "defined jobs with a sequence argument and a job that halts the sequence on failure" do
+    output = Whenever.cron \
+    <<-file
+      every 2.hours, sequence: 'backups' do
+        command "blahblah", halt_sequence_on_failure: true
         command "foofoo"
       end
     file
@@ -42,9 +55,9 @@ class OutputJobsWithSequenceTest < Whenever::TestCase
     file
 
     output_without_empty_line = lines_without_empty_line(output.lines)
-    assert_equal two_hours + " /bin/bash -l -c 'blahblah' && /bin/bash -l -c 'foofoo'", output_without_empty_line.shift
+    assert_equal two_hours + " /bin/bash -l -c 'blahblah' ; /bin/bash -l -c 'foofoo'", output_without_empty_line.shift
     assert_equal two_hours + " /bin/bash -l -c 'barbar'", output_without_empty_line.shift
-    assert_equal two_hours + " /bin/bash -l -c 'bazbaz' && /bin/bash -l -c 'buzzbuzz'", output_without_empty_line.shift
+    assert_equal two_hours + " /bin/bash -l -c 'bazbaz' ; /bin/bash -l -c 'buzzbuzz'", output_without_empty_line.shift
   end
 
   test "defined jobs with a multiple groups with sequences specified on the group and jobs" do
@@ -63,9 +76,9 @@ class OutputJobsWithSequenceTest < Whenever::TestCase
     file
 
     output_without_empty_line = lines_without_empty_line(output.lines)
-    assert_equal two_hours + " /bin/bash -l -c 'blahblah' && /bin/bash -l -c 'foofoo'", output_without_empty_line.shift
+    assert_equal two_hours + " /bin/bash -l -c 'blahblah' ; /bin/bash -l -c 'foofoo'", output_without_empty_line.shift
     assert_equal two_hours + " /bin/bash -l -c 'barbar'", output_without_empty_line.shift
-    assert_equal two_hours + " /bin/bash -l -c 'bazbaz' && /bin/bash -l -c 'buzzbuzz'", output_without_empty_line.shift
+    assert_equal two_hours + " /bin/bash -l -c 'bazbaz' ; /bin/bash -l -c 'buzzbuzz'", output_without_empty_line.shift
   end
 
   test "defined jobs with a multiple groups with sequences specified on the group and jobs" do
@@ -119,7 +132,7 @@ class OutputJobsWithSequentialTest < Whenever::TestCase
     file
 
     output_without_empty_line = lines_without_empty_line(output.lines)
-    assert_equal two_hours + " /bin/bash -l -c 'blahblah' && /bin/bash -l -c 'foofoo'", output_without_empty_line.shift
+    assert_equal two_hours + " /bin/bash -l -c 'blahblah' ; /bin/bash -l -c 'foofoo'", output_without_empty_line.shift
   end
 
   test "defined jobs with a sequential argument" do

@@ -15,7 +15,7 @@ module Whenever
     end
 
     def output
-      @jobs.map(&:output).join(' && ')
+      @jobs.map { |job| [job.output, job.halt_sequence_on_failure ?  ' && ' : ' ; '] }.flatten[0..-2].join
     end
 
     def has_role?(role)

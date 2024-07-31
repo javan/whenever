@@ -61,7 +61,7 @@ end
 
 every 3.hours, sequential: true do
   # Jobs in this block that don't set their own sequence will default to run in the same sequence (not in parallel)
-  runner "MyModel.some_process"
+  runner "MyModel.some_process", halt_sequence_on_failure: true # If this job fails, subsequent jobs will not run (defaults to false)
   rake "my:rake:task"
   command "/usr/bin/my_great_command", sequence: nil # This job runs in parallel with other jobs that are not part of a sequence
   runner "MyModel.task_to_run_at_four_thirty_in_the_morning", sequence: 'other' # This job runs sequentially with other jobs in the sequence called 'other'
