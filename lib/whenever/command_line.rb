@@ -78,6 +78,8 @@ module Whenever
       IO.popen(command.join(' '), 'r+') do |crontab|
         crontab.write(contents)
         crontab.close_write
+        stdout = crontab.read
+        puts stdout unless stdout == ''
       end
 
       success = $?.exitstatus.zero?
