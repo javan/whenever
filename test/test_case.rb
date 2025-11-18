@@ -2,10 +2,10 @@ module Whenever
   require 'minitest/autorun'
   begin
     # 2.0.0
-    class TestCase < MiniTest::Test; end
+    class TestCase < Minitest::Test; end
   rescue NameError
     # 1.9.3
-    class TestCase < MiniTest::Unit::TestCase; end
+    class TestCase < Minitest::Unit::TestCase; end
   end
 
 
