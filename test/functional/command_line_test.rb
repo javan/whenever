@@ -456,3 +456,19 @@ EXISTING_CRON
     assert_equal existing, @command.send(:prepare, existing)
   end
 end
+
+class PreservingEqualsInSetValuesTest < Whenever::TestCase
+  setup do
+    @output = Whenever.cron :set => 'password=ABC=123&user=admin', :string => \
+    <<-file
+      job_type :my_job, 'USER=:user PASSWORD=:password'
+      every 2.hours do
+        my_job 'foobar'
+      end
+    file
+  end
+
+  should "preserve any equals signs that occur in set values" do
+    assert_match "USER=admin PASSWORD=ABC=123", @output
+  end
+end
