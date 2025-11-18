@@ -1,31 +1,34 @@
-# -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "whenever/version"
+# frozen_string_literal: true
 
-Gem::Specification.new do |s|
-  s.name        = "whenever"
-  s.version     = Whenever::VERSION
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Javan Makhmali"]
-  s.email       = ["javan@javan.us"]
-  s.license     = "MIT"
-  s.homepage    = "https://github.com/javan/whenever"
-  s.metadata      = {
-    "changelog_uri" => "https://github.com/javan/whenever/blob/main/CHANGELOG.md"
-  }
-  s.summary     = %q{Cron jobs in ruby.}
-  s.description = %q{Clean ruby syntax for writing and deploying cron jobs.}
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- test/{functional,unit}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
-  s.required_ruby_version = ">= 1.9.3"
+require_relative "lib/whenever/version"
 
-  s.add_dependency "chronic", ">= 0.6.3"
+Gem::Specification.new do |spec|
+  spec.name        = "whenever"
+  spec.version     = Whenever::VERSION
+  spec.platform    = Gem::Platform::RUBY
+  spec.authors     = ["Javan Makhmali"]
+  spec.email       = ["javan@javan.us"]
 
-  s.add_development_dependency "bundler"
-  s.add_development_dependency "rake"
-  s.add_development_dependency "mocha"
-  s.add_development_dependency "minitest"
-  s.add_development_dependency "appraisal"
+  spec.summary     = %q{Cron jobs in ruby.}
+  spec.description = %q{Clean ruby syntax for writing and deploying cron jobs.}
+  spec.homepage    = "https://github.com/javan/whenever"
+  spec.license     = "MIT"
+  spec.required_ruby_version = ">= 1.9.3"
+
+  spec.metadata["homepage_uri"] = spec.homepage
+  spec.metadata["source_code_uri"] = "https://github.com/javan/whenever"
+  spec.metadata["changelog_uri"] = "https://github.com/javan/whenever/blob/main/CHANGELOG.md"
+
+  spec.files         = `git ls-files`.split("\n")
+  spec.test_files    = `git ls-files -- test/{functional,unit}/*`.split("\n")
+  spec.executables   = spec.files.grep(%r{\Abin/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
+
+  spec.add_dependency "chronic", ">= 0.6.3"
+
+  spec.add_development_dependency "bundler"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "mocha"
+  spec.add_development_dependency "minitest"
+  spec.add_development_dependency "appraisal"
 end
