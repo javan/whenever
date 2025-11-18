@@ -2,7 +2,6 @@
 
 require 'optparse'
 require 'whenever'
-require 'whenever/version'
 
 options = {}
 

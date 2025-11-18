@@ -1,3 +1,4 @@
+require "whenever/version"
 require 'whenever/numeric'
 require 'whenever/numeric_seconds'
 require 'whenever/job_list'
