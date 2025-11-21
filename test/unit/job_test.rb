@@ -62,7 +62,6 @@ class JobTest < Whenever::TestCase
   end
 end
 
-
 class JobWithQuotesTest < Whenever::TestCase
   should "output the :task if it's in single quotes" do
     job = new_job(:template => "':task'", :task => 'abc123')
