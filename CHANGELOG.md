@@ -1,8 +1,41 @@
 ### unreleased
 
-* Add note in README that cron is generated with the current user. [Raquel Queiroz]
 
-* Set the environment for cron jobs based off the currently set RAILS_ENV env variable. If RAILS_ENV is not set it defaults to production
+### 1.1.0 / Nov 21, 2025
+
+* Splat whenever_roles when passing to roles https://github.com/javan/whenever/pull/777
+
+* Update README.md https://github.com/javan/whenever/pull/785
+
+* Clarify in README that tasks are run in parallel https://github.com/javan/whenever/pull/787
+
+* Add note in README that cron is generated with the current user. [Raquel Queiroz] https://github.com/javan/whenever/pull/788
+
+* Clarify options and warn about overwriting https://github.com/javan/whenever/pull/791
+
+* Set the environment for cron jobs based off the currently set RAILS_ENV env variable. If RAILS_ENV is not set it defaults to production https://github.com/javan/whenever/pull/832
+
+* [CHORE] DX: easify getting started contributing https://github.com/javan/whenever/pull/846
+
+* CI: Replace travis-ci by Github-Actions https://github.com/javan/whenever/pull/847
+
+* Added capability for updating cron without cmd https://github.com/javan/whenever/pull/515
+
+* CI: Add Ruby 2.7-3.4 to the CI matrix https://github.com/javan/whenever/pull/858
+
+* CI: Add dependabot config for bundler / github-actions https://github.com/javan/whenever/pull/862
+
+* Handle crontab output to prevent SIGPIPE when running on CentOS Stream 10 https://github.com/javan/whenever/pull/861
+
+* CI: Bump actions/checkout from 4 to 5 https://github.com/javan/whenever/pull/863
+
+* Fix typo In test https://github.com/javan/whenever/pull/851
+
+* Add changelog_uri to metadata to easily link from rubygems.org https://github.com/javan/whenever/pull/786
+
+* Update gemspec format to match Bundler v3.x gemspec template https://github.com/javan/whenever/pull/864
+
+* Add to require `whenever/version` https://github.com/javan/whenever/pull/865
 
 ### 1.0.0 / Jun 13, 2019
 
