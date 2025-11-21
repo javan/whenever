@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/javan/whenever"
   spec.metadata["changelog_uri"] = "https://github.com/javan/whenever/blob/main/CHANGELOG.md"
+  spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files         = `git ls-files`.split("\n")
   spec.test_files    = `git ls-files -- test/{functional,unit}/*`.split("\n")
