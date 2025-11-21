@@ -7,6 +7,7 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
         ruby-version: [ '2.4', '2.5', '2.6', '2.7', '3.0', '3.0', '3.2', '3.3', '3.4', 'jruby-9', 'jruby-10']
@@ -34,3 +35,50 @@ jobs:
         run: bundle exec rake test
         env:
           JRUBY_OPTS: "--debug"
+
+  # Test with activesupport
+  test-activesupport:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: ['2.7', '3.0', '3.0', '3.2', '3.3', '3.4']
+        rails-version: ['6.0', '6.1', '7.0', '7.1', '7.2', '8.0', '8.1']
+        include:
+          - ruby-version: 2.7
+            rails-version: '5.0'
+          - ruby-version: 2.7
+            rails-version: '5.1'
+          - ruby-version: 2.7
+            rails-version: '5.2'
+        exclude:
+          # rails 8.1: support ruby 3.2+
+          - ruby-version: 2.7
+            rails-version: '8.1'
+          - ruby-version: 3.0
+            rails-version: '8.1'
+          - ruby-version: 3.1
+            rails-version: '8.1'
+          # rails 8.0: support ruby 3.2+
+          - ruby-version: 2.7
+            rails-version: '8.0'
+          - ruby-version: 3.0
+            rails-version: '8.0'
+          - ruby-version: 3.1
+            rails-version: '8.0'
+          # rails 7.2: support ruby 3.1+
+          - ruby-version: 2.7
+            rails-version: '7.2'
+          - ruby-version: 3.0
+            rails-version: '7.2'
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/activesupport${{ matrix.rails-version }}.gemfile
+    steps:
+      - uses: actions/checkout@v5
+        name: Set up Ruby ${{ matrix.ruby-version }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake test
