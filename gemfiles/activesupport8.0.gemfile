@@ -6,6 +6,6 @@ gem "rake"
 gem "mocha"
 gem "minitest"
 gem "appraisal"
-gem "activesupport", "~> 5.0.0"
+gem "activesupport", "~> 8.0.0"
 
 gemspec path: "../"

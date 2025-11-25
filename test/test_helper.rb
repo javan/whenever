@@ -1,6 +1,10 @@
 require 'whenever'
 require 'test_case'
 require 'mocha/minitest'
+begin
+  require 'active_support/all'
+rescue LoadError
+end
 
 module Whenever::TestHelpers
   protected

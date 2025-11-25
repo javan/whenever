@@ -5,7 +5,7 @@
 /doc/
 /pkg/
 /spec/reports/
-/tmp/
+tmp/
 
 /Gemfile.lock
 gemfiles/*.lock
