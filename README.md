@@ -190,7 +190,7 @@ In your "config/deploy.rb" file:
 require "whenever/capistrano"
 ```
 
-Take a look at the recipe for options you can set. <https://github.com/javan/whenever/blob/master/lib/whenever/capistrano/v2/recipes.rb>
+Take a look at the recipe for options you can set. <https://github.com/javan/whenever/blob/main/lib/whenever/capistrano/v2/recipes.rb>
 For example, if you're using bundler do this:
 
 ```ruby
@@ -230,7 +230,7 @@ In your "Capfile" file:
 require "whenever/capistrano"
 ```
 
-Take a look at the [load:defaults task](https://github.com/javan/whenever/blob/master/lib/whenever/capistrano/v3/tasks/whenever.rake) (bottom of file) for options you can set. For example, to namespace the crontab entries by application and stage do this in your "config/deploy.rb" file:
+Take a look at the [load:defaults task](https://github.com/javan/whenever/blob/main/lib/whenever/capistrano/v3/tasks/whenever.rake) (bottom of file) for options you can set. For example, to namespace the crontab entries by application and stage do this in your "config/deploy.rb" file:
 
 ```ruby
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
@@ -324,10 +324,6 @@ If you've found a genuine bug or issue, please use the Issues section on github:
 
 Ryan Bates created a great Railscast about Whenever: <http://railscasts.com/episodes/164-cron-in-ruby>
 It's a little bit dated now, but remains a good introduction.
-
-----
-
-[![Build Status](https://secure.travis-ci.org/javan/whenever.svg)](http://travis-ci.org/javan/whenever)
 
 ----
 
