@@ -66,7 +66,7 @@ module Whenever
 
           @jobs[options.fetch(:mailto)] ||= {}
           @jobs[options.fetch(:mailto)][@current_time_scope] ||= []
-          @jobs[options.fetch(:mailto)][@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options))
+          @jobs[options.fetch(:mailto)][@current_time_scope] << Whenever::Job.new(@set_variables.merge(@options).merge(options))
         end
       end
     end
