@@ -1,6 +1,18 @@
 ### unreleased
 
 
+### 1.1.1 / Dec 8, 2025
+
+* job_list `.respond_to?` updated to an instance method https://github.com/javan/whenever/pull/830
+
+* Update README.md https://github.com/javan/whenever/pull/789
+
+* CI: Bump actions/checkout from 5 to 6 https://github.com/javan/whenever/pull/869
+
+* CI: Add tests using ActiveSupport to CI https://github.com/javan/whenever/pull/868
+
+* Require MFA for gem releases https://github.com/javan/whenever/pull/867
+
 ### 1.1.0 / Nov 21, 2025
 
 * Splat whenever_roles when passing to roles https://github.com/javan/whenever/pull/777
