@@ -48,6 +48,12 @@ module Whenever
     def every(frequency, options = {})
       @current_time_scope = frequency
       @options = options
+
+      if @options[:sequential]
+        @default_sequence_id ||= 0
+        @options[:sequence] ||= "default_sequence_#{@default_sequence_id += 1}"
+      end
+
       yield
     end
 
@@ -66,7 +72,7 @@ module Whenever
 
           @jobs[options.fetch(:mailto)] ||= {}
           @jobs[options.fetch(:mailto)][@current_time_scope] ||= []
-          @jobs[options.fetch(:mailto)][@current_time_scope] << Whenever::Job.new(@options.merge(@set_variables).merge(options))
+          @jobs[options.fetch(:mailto)][@current_time_scope] << Whenever::Job.new(@set_variables.merge(@options).merge(options))
         end
       end
     end
@@ -138,10 +144,17 @@ module Whenever
     def cron_jobs_of_time(time, jobs)
       shortcut_jobs, regular_jobs = [], []
 
+      filtered_jobs = jobs.select do |job|
+        roles.empty? || roles.any? { |r| job.has_role?(r) }
+      end
+
+      grouped_jobs = filtered_jobs.group_by(&:sequence)
+      grouped_jobs.each do |sequence, jobs|
+        grouped_jobs[sequence] = JobSequence.new(jobs) if sequence
+      end
+      jobs = grouped_jobs.values.flatten
+
       jobs.each do |job|
-        next unless roles.empty? || roles.any? do |r|
-          job.has_role?(r)
-        end
         Whenever::Output::Cron.output(time, job, :chronic_options => @chronic_options) do |cron|
           cron << "\n\n"
 
