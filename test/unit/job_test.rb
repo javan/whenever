@@ -32,6 +32,16 @@ class JobTest < Whenever::TestCase
     assert_equal 'Hello :world', new_job(:template => ':matching :world', :matching => 'Hello').output
   end
 
+  should "apply the random offset in the output" do
+    job = new_job(:template => ":task", :task => 'abc123', :random_offset => 5)
+    assert_equal 'sleep $(expr $RANDOM \% 11) && abc123', job.output
+  end
+
+  should "ignore a random offset of 0" do
+    job = new_job(:template => ":task", :task => 'abc123', :random_offset => 0)
+    assert_equal 'abc123', job.output
+  end
+
   should "escape the :path" do
     assert_equal '/my/spacey\ path', new_job(:template => ':path', :path => '/my/spacey path').output
   end

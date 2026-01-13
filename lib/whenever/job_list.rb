@@ -48,6 +48,11 @@ module Whenever
     def every(frequency, options = {})
       @current_time_scope = frequency
       @options = options
+      block_given? ? yield : self
+    end
+
+    def and_about(time)
+      (@options ||= {})[:random_offset] = time
       yield
     end
 
