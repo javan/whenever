@@ -52,6 +52,10 @@ Run `whenever --help` for a complete list of options for selecting the schedule 
 ### Example schedule.rb file
 
 ```ruby
+# randomize all :hour- and :day-jobs, when no specific at-time is given.
+# This avoids hourly jobs starting at the same time.
+# set :randomize, true
+
 every 3.hours do # 1.minute 1.day 1.week 1.month 1.year is also supported
   # the following tasks are run in parallel (not in sequence)
   runner "MyModel.some_process"
@@ -68,6 +72,10 @@ every 1.day, at: ['4:30 am', '6:00 pm'] do
 end
 
 every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
+  runner "SomeModel.ladeeda"
+end
+
+every :hour, randomize: true do # each hour, but at random minute
   runner "SomeModel.ladeeda"
 end
 
