@@ -16,6 +16,7 @@ class CronTest < Whenever::TestCase
     assert_equal '* * * * *', parse_time(Whenever.seconds(1, :minute))
     assert_equal '0,5,10,15,20,25,30,35,40,45,50,55 * * * *', parse_time(Whenever.seconds(5, :minutes))
     assert_equal '7,14,21,28,35,42,49,56 * * * *', parse_time(Whenever.seconds(7, :minutes))
+    assert_equal '5,12,19,26,33,40,47,54 * * * *', parse_time(Whenever.seconds(7, :minutes), 'Test Task', '9:05 am')
     assert_equal '0,30 * * * *', parse_time(Whenever.seconds(30, :minutes))
     assert_equal '32 * * * *', parse_time(Whenever.seconds(32, :minutes))
     assert '60 * * * *' != parse_time(Whenever.seconds(60, :minutes)) # 60 minutes bumps up into the hour range
