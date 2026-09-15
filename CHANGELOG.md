@@ -1,6 +1,15 @@
 ### unreleased
 
 
+### 1.1.3 / September 15, 2026
+
+* Add support for sequential job definitions https://github.com/javan/whenever/pull/854
+
+* CI: Bump actions/checkout from 6 to 7 https://github.com/javan/whenever/pull/876
+
+* CI: Restrict GitHub Actions workflow permissions to contents: read https://github.com/javan/whenever/pull/875
+
+
 ### 1.1.2 / January 18, 2026
 
 * Add description as comment in crontab https://github.com/javan/whenever/pull/776
