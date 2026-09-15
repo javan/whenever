@@ -2,7 +2,7 @@ require 'shellwords'
 
 module Whenever
   class Job
-    attr_reader :at, :roles, :mailto, :description
+    attr_reader :at, :roles, :mailto, :description, :sequence, :halt_sequence_on_failure
 
     def initialize(options = {})
       @options = options
@@ -10,6 +10,8 @@ module Whenever
       @template                         = options.delete(:template)
       @mailto                           = options.fetch(:mailto, :default_mailto)
       @job_template                     = options.delete(:job_template) || ":job"
+      @sequence                         = options.delete(:sequence)
+      @halt_sequence_on_failure         = options.delete(:halt_sequence_on_failure)
       @roles                            = Array(options.delete(:roles))
       @description                      = options.delete(:description)
       @options[:output]                 = options.has_key?(:output) ? Whenever::Output::Redirection.new(options[:output]).to_s : ''
