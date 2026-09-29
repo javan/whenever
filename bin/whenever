@@ -44,6 +44,9 @@ OptionParser.new do |opts|
     options[:crontab_command] = crontab_command if crontab_command
   end
   opts.on('-v', '--version') { puts "Whenever v#{Whenever::VERSION}"; exit(0) }
+  opts.on('-V', '--verbose', 'Not to run jobs in silence mode') do |mode|
+    options[:verbose] = true
+  end
 end.parse!
 
 Whenever::CommandLine.execute(options)
