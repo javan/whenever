@@ -93,7 +93,8 @@ module Whenever
             raise ArgumentError, "Time must be in minutes or higher"
           when Whenever.seconds(1, :minute)...Whenever.seconds(1, :hour)
             minute_frequency = @time / 60
-            timing[0] = comma_separated_timing(minute_frequency, 59, @at || 0)
+            starting_minute = @at.is_a?(Time) ? @at.min : @at
+            timing[0] = comma_separated_timing(minute_frequency, 59, starting_minute || 0)
           when Whenever.seconds(1, :hour)...Whenever.seconds(1, :day)
             hour_frequency = (@time / 60 / 60).round
             timing[0] = @at.is_a?(Time) ? @at.min : range_or_integer(@at, 0..59, 'Minute')
