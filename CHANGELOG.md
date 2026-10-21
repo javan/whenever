@@ -1,5 +1,8 @@
 ### unreleased
 
+### 1.1.4 / October 21, 2026
+
+* Don't ship tests in the gem https://github.com/javan/whenever/pull/877
 
 ### 1.1.3 / September 15, 2026
 
