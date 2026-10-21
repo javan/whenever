@@ -20,8 +20,7 @@ Gem::Specification.new do |spec|
   spec.metadata["changelog_uri"] = "https://github.com/javan/whenever/blob/main/CHANGELOG.md"
   spec.metadata["rubygems_mfa_required"] = "true"
 
-  spec.files         = `git ls-files`.split("\n")
-  spec.test_files    = `git ls-files -- test/{functional,unit}/*`.split("\n")
+  spec.files         = `git ls-files`.split("\n").reject { |f| f.start_with?("test/") }
   spec.executables   = spec.files.grep(%r{\Abin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
